@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Table, Head, HeaderRow, HeaderCell, Body, Row, Cell } from '@zendeskgarden/react-tables'
-import { Field, MediaInput } from '@zendeskgarden/react-forms'
+import { Field, Label, MediaInput } from '@zendeskgarden/react-forms'
 import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
 import FloraTag from './FloraTag'
@@ -35,10 +35,7 @@ const Description = styled(MD)`
    `baseline`, which leaves the magnifying glass low in a taller-than-default input. */
 const SearchField = styled(Field)`
   width: 450px;
-  /* Rusty's spacing: 24px from the input to the count line, 8px from the count to
-     the table. Set here rather than as a margin on the count line so the two
-     numbers stay in one place. */
-  margin: 20px 0 24px;
+  margin-top: 20px;
 
   [data-garden-id='forms.faux_input'] {
     align-items: center;
@@ -51,10 +48,21 @@ const SearchField = styled(Field)`
   }
 `
 
+/* Garden's Field sets `font-size: 0` to collapse the whitespace between its children,
+   and its Label is inline with no margin of its own — so the label needs both the block
+   display and the 4px, the same gap the settings page puts under its own field labels. */
+const SearchLabel = styled(Label)`
+  display: block;
+  margin-bottom: 4px;
+`
+
+/* Rusty's numbers: 24px from the search input down to this line, 8px from it to the
+   table header. Both stated here, on the element they're measured from, rather than one
+   of them hiding in the search field's bottom margin. */
 const Count = styled.div`
   font-size: 14px;
   color: #646864;
-  margin-bottom: 8px;
+  margin: 24px 0 8px;
 `
 
 const BrandLink = styled(Anchor)`
@@ -119,10 +127,13 @@ export default function BrandsAuthTable({ onSelectBrand }) {
       </PageHeader>
 
       <Scroll>
+        {/* The label carries "Search brands" now; the input's placeholder is gone, at
+            Rusty's ask. A placeholder disappears the moment someone types, so it can't
+            be the only thing naming the field. */}
         <SearchField>
+          <SearchLabel>Search brands</SearchLabel>
           <MediaInput
             start={<SearchIcon />}
-            placeholder="Search brands"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
