@@ -274,8 +274,18 @@ export default function EndUserAuthPage({
                       if (inputValue !== undefined) setBrandQuery(inputValue)
                     }}
                   >
+                    {/* `isSelected` is what puts the brand's name in the field on
+                        landing. Garden takes the input's initial text from whichever
+                        *option* is flagged selected — not from `selectionValue` — so with
+                        only the controlled value below, the field sat empty until someone
+                        picked a brand, even though a brand was already loaded. */}
                     {matchingBrands.map((option) => (
-                      <Option key={option.id} value={option.id} label={option.name}>
+                      <Option
+                        key={option.id}
+                        value={option.id}
+                        label={option.name}
+                        isSelected={option.id === brand.id}
+                      >
                         {option.name}
                       </Option>
                     ))}
