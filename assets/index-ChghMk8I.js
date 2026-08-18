@@ -1186,11 +1186,18 @@ Error generating stack: `+e.message+`
   margin: 24px 0 8px;
 `,GS=B(my)`
   font-size: 14px;
-`,KS=B.div`
+  text-decoration: none;
+`,KS=B(wS)`
+  cursor: pointer;
+
+  &:hover ${GS} {
+    text-decoration: underline;
+  }
+`,qS=B.div`
   padding: 24px 0;
   font-size: 14px;
   color: #646864;
-`,qS={Active:`green`,Inactive:`neutral`},JS={Low:`neutral`,Medium:`yellow`,High:`green`,Recommended:`green`,Custom:`purple`};function YS({onSelectBrand:e}){let[t,n]=(0,g.useState)(``),r=(0,g.useMemo)(()=>{let e=t.trim().toLowerCase();return e?ox.filter(t=>t.name.toLowerCase().includes(e)):ox},[t]);return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],title:`End user authentication`,children:(0,G.jsx)(VS,{children:`Each brand has its own end user authentication settings. Select a brand to review or change them.`})}),(0,G.jsxs)(BS,{children:[(0,G.jsxs)(HS,{children:[(0,G.jsx)(US,{children:`Search brands`}),(0,G.jsx)(Cm,{start:(0,G.jsx)(Xb,{}),value:t,onChange:e=>n(e.target.value)})]}),(0,G.jsxs)(WS,{children:[r.length,` `,r.length===1?`brand`:`brands`]}),(0,G.jsxs)(IS,{children:[(0,G.jsx)(_S,{children:(0,G.jsxs)(yS,{children:[(0,G.jsx)(vS,{width:`28%`,children:`Brand`}),(0,G.jsx)(vS,{width:`16%`,children:`Password login`}),(0,G.jsx)(vS,{width:`14%`,children:`SSO`}),(0,G.jsx)(vS,{width:`14%`,children:`Status`}),(0,G.jsx)(vS,{width:`22%`,children:`Password level`}),(0,G.jsx)(vS,{hasOverflow:!0})]})}),(0,G.jsx)(dS,{children:r.map(t=>{let n=ux(t);return(0,G.jsxs)(wS,{children:[(0,G.jsx)(hS,{children:(0,G.jsx)(GS,{href:`#`,onClick:n=>{n.preventDefault(),e(t.id)},children:t.name})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:qS[cx(t)],children:cx(t)})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:qS[lx(t)],children:lx(t)})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:qS[t.status],children:t.status})}),(0,G.jsx)(hS,{children:n?(0,G.jsx)(zS,{tone:JS[n],children:n}):`—`}),(0,G.jsx)(hS,{hasOverflow:!0,children:(0,G.jsx)(Sy,{placement:`bottom-end`,button:e=>(0,G.jsx)(CS,{...e,"aria-label":`Actions for ${t.name}`}),onChange:n=>{n.value===`view`&&e(t.id)},children:(0,G.jsx)(jy,{value:`view`,children:`View`})})})]},t.id)})})]}),r.length===0&&(0,G.jsxs)(KS,{children:[`No brands match “`,t,`”.`]})]})]})}var XS=B.div`
+`,JS={Active:`green`,Inactive:`neutral`},YS={Low:`neutral`,Medium:`yellow`,High:`green`,Recommended:`green`,Custom:`purple`},XS=(e,t)=>e.name.localeCompare(t.name),ZS=e=>{let t=ux(e);return t?$b.indexOf(t):$b.length},QS={brand:XS,passwordLogin:(e,t)=>cx(e).localeCompare(cx(t))||XS(e,t),sso:(e,t)=>lx(e).localeCompare(lx(t))||XS(e,t),status:(e,t)=>e.status.localeCompare(t.status)||XS(e,t),passwordLevel:(e,t)=>ZS(e)-ZS(t)||XS(e,t)};function $S({onSelectBrand:e}){let[t,n]=(0,g.useState)(``),[r,i]=(0,g.useState)({column:`brand`,direction:`asc`}),a=(0,g.useMemo)(()=>{let e=t.trim().toLowerCase(),n=[...e?ox.filter(t=>t.name.toLowerCase().includes(e)):ox].sort(QS[r.column]);return r.direction===`desc`?n.reverse():n},[t,r]),o=e=>i(t=>t.column===e?{column:e,direction:t.direction===`asc`?`desc`:`asc`}:{column:e,direction:`asc`}),s=e=>r.column===e?r.direction:void 0;return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],title:`End user authentication`,children:(0,G.jsx)(VS,{children:`Each brand has its own end user authentication settings. Select a brand to review or change them.`})}),(0,G.jsxs)(BS,{children:[(0,G.jsxs)(HS,{children:[(0,G.jsx)(US,{children:`Search brands`}),(0,G.jsx)(Cm,{start:(0,G.jsx)(Xb,{}),value:t,onChange:e=>n(e.target.value)})]}),(0,G.jsxs)(WS,{children:[a.length,` `,a.length===1?`brand`:`brands`]}),(0,G.jsxs)(IS,{children:[(0,G.jsx)(_S,{children:(0,G.jsxs)(yS,{children:[(0,G.jsx)(PS,{width:`28%`,sort:s(`brand`),onClick:()=>o(`brand`),children:`Brand`}),(0,G.jsx)(PS,{width:`16%`,sort:s(`passwordLogin`),onClick:()=>o(`passwordLogin`),children:`Password login`}),(0,G.jsx)(PS,{width:`14%`,sort:s(`sso`),onClick:()=>o(`sso`),children:`SSO`}),(0,G.jsx)(PS,{width:`14%`,sort:s(`status`),onClick:()=>o(`status`),children:`Status`}),(0,G.jsx)(PS,{width:`22%`,sort:s(`passwordLevel`),onClick:()=>o(`passwordLevel`),children:`Password level`}),(0,G.jsx)(vS,{hasOverflow:!0})]})}),(0,G.jsx)(dS,{children:a.map(t=>{let n=ux(t);return(0,G.jsxs)(KS,{onClick:()=>e(t.id),children:[(0,G.jsx)(hS,{children:(0,G.jsx)(GS,{href:`#`,onClick:e=>e.preventDefault(),children:t.name})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:JS[cx(t)],children:cx(t)})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:JS[lx(t)],children:lx(t)})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:JS[t.status],children:t.status})}),(0,G.jsx)(hS,{children:n?(0,G.jsx)(zS,{tone:YS[n],children:n}):`—`}),(0,G.jsx)(hS,{hasOverflow:!0,onClick:e=>e.stopPropagation(),children:(0,G.jsx)(Sy,{placement:`bottom-end`,button:e=>(0,G.jsx)(CS,{...e,"aria-label":`Actions for ${t.name}`}),onChange:n=>{n.value===`view`&&e(t.id)},children:(0,G.jsx)(jy,{value:`view`,children:`View`})})})]},t.id)})})]}),a.length===0&&(0,G.jsxs)(qS,{children:[`No brands match “`,t,`”.`]})]})]})}var eC=B.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1205,36 +1212,36 @@ Error generating stack: `+e.message+`
   line-height: 1;
   flex-shrink: 0;
   user-select: none;
-`;function ZS({brand:e,size:t=24}){return(0,G.jsx)(XS,{$size:t,$color:e.logoColor,"aria-hidden":`true`,children:e.initial})}var QS=B(Qo)`
+`;function tC({brand:e,size:t=24}){return(0,G.jsx)(eC,{$size:t,$color:e.logoColor,"aria-hidden":`true`,children:e.initial})}var nC=B(Qo)`
   color: #646864;
   /* Wrapped to three lines as in the reference, rather than running the width of
      the work area. */
   max-width: 540px;
-`,$S=B.div`
+`,rC=B.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   padding: 0 32px 32px;
-`,eC=B.div`
+`,iC=B.div`
   font-size: 14px;
   color: #646864;
   margin: 24px 0 8px;
-`,tC=B.div`
+`,aC=B.div`
   display: flex;
   align-items: center;
   gap: 12px;
-`,nC=B(my)`
+`,oC=B(my)`
   font-size: 14px;
-`,rC=B.div`
+`,sC=B.div`
   display: flex;
   gap: 8px;
-`,iC={Active:`green`,Inactive:`neutral`},aC={name:(e,t)=>e.name.localeCompare(t.name),status:(e,t)=>e.status.localeCompare(t.status)||e.name.localeCompare(t.name),teamMembers:(e,t)=>e.teamMembers-t.teamMembers||e.name.localeCompare(t.name)};function oC({onSelectBrand:e,onNavigateBrandManagement:t}){let[n,r]=(0,g.useState)({column:`name`,direction:`asc`}),i=(0,g.useMemo)(()=>{let e=[...ox].sort(aC[n.column]);return n.direction===`desc`?e.reverse():e},[n]),a=e=>r(t=>t.column===e?{column:e,direction:t.direction===`asc`?`desc`:`asc`}:{column:e,direction:`asc`}),o=e=>n.column===e?n.direction:void 0;return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Brand management`,onClick:t},{label:`Brands`}],title:`Brands`,actions:(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(py,{onClick:()=>{},children:`Manage settings`}),(0,G.jsx)(py,{isPrimary:!0,onClick:()=>{},children:`Create brand`})]}),children:(0,G.jsx)(QS,{children:`Organize your account the way you organize your business. Brands can represent departments, regions, or products. Use them to arrange teams, control data access, and manage branding.`})}),(0,G.jsxs)($S,{children:[(0,G.jsxs)(eC,{children:[ox.length,` brands`]}),(0,G.jsxs)(IS,{children:[(0,G.jsx)(_S,{children:(0,G.jsxs)(yS,{children:[(0,G.jsx)(PS,{width:`46%`,sort:o(`name`),onClick:()=>a(`name`),children:`Name`}),(0,G.jsx)(PS,{width:`18%`,sort:o(`status`),onClick:()=>a(`status`),children:`Status`}),(0,G.jsx)(PS,{width:`24%`,sort:o(`teamMembers`),onClick:()=>a(`teamMembers`),children:`Team members`}),(0,G.jsx)(vS,{hasOverflow:!0})]})}),(0,G.jsx)(dS,{children:i.map(t=>(0,G.jsxs)(wS,{children:[(0,G.jsx)(hS,{children:(0,G.jsxs)(tC,{children:[(0,G.jsx)(ZS,{brand:t}),(0,G.jsx)(nC,{href:`#`,onClick:n=>{n.preventDefault(),e(t.id)},children:t.name}),(0,G.jsxs)(rC,{children:[t.isDefault&&(0,G.jsx)(zS,{tone:`purple`,children:`Default`}),t.isAgentRoute&&(0,G.jsx)(zS,{tone:`purple`,children:`Agent route`})]})]})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:iC[t.status],children:t.status})}),(0,G.jsx)(hS,{children:t.teamMembers}),(0,G.jsx)(hS,{hasOverflow:!0,children:(0,G.jsx)(CS,{"aria-label":`Actions for ${t.name}`,onClick:()=>{}})})]},t.id))})]})]})]})}var sC=[{value:`edit`,label:`Edit brand`},{value:`deactivate`,label:`Deactivate brand`},{value:`end-user-authentication`,label:`End user authentication`},{value:`delete`,label:`Delete brand`,type:`danger`}],cC=`end-user-authentication`,lC=B.div`
+`,cC={Active:`green`,Inactive:`neutral`},lC={name:(e,t)=>e.name.localeCompare(t.name),status:(e,t)=>e.status.localeCompare(t.status)||e.name.localeCompare(t.name),teamMembers:(e,t)=>e.teamMembers-t.teamMembers||e.name.localeCompare(t.name)};function uC({onSelectBrand:e,onNavigateBrandManagement:t}){let[n,r]=(0,g.useState)({column:`name`,direction:`asc`}),i=(0,g.useMemo)(()=>{let e=[...ox].sort(lC[n.column]);return n.direction===`desc`?e.reverse():e},[n]),a=e=>r(t=>t.column===e?{column:e,direction:t.direction===`asc`?`desc`:`asc`}:{column:e,direction:`asc`}),o=e=>n.column===e?n.direction:void 0;return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Brand management`,onClick:t},{label:`Brands`}],title:`Brands`,actions:(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(py,{onClick:()=>{},children:`Manage settings`}),(0,G.jsx)(py,{isPrimary:!0,onClick:()=>{},children:`Create brand`})]}),children:(0,G.jsx)(nC,{children:`Organize your account the way you organize your business. Brands can represent departments, regions, or products. Use them to arrange teams, control data access, and manage branding.`})}),(0,G.jsxs)(rC,{children:[(0,G.jsxs)(iC,{children:[ox.length,` brands`]}),(0,G.jsxs)(IS,{children:[(0,G.jsx)(_S,{children:(0,G.jsxs)(yS,{children:[(0,G.jsx)(PS,{width:`46%`,sort:o(`name`),onClick:()=>a(`name`),children:`Name`}),(0,G.jsx)(PS,{width:`18%`,sort:o(`status`),onClick:()=>a(`status`),children:`Status`}),(0,G.jsx)(PS,{width:`24%`,sort:o(`teamMembers`),onClick:()=>a(`teamMembers`),children:`Team members`}),(0,G.jsx)(vS,{hasOverflow:!0})]})}),(0,G.jsx)(dS,{children:i.map(t=>(0,G.jsxs)(wS,{children:[(0,G.jsx)(hS,{children:(0,G.jsxs)(aC,{children:[(0,G.jsx)(tC,{brand:t}),(0,G.jsx)(oC,{href:`#`,onClick:n=>{n.preventDefault(),e(t.id)},children:t.name}),(0,G.jsxs)(sC,{children:[t.isDefault&&(0,G.jsx)(zS,{tone:`purple`,children:`Default`}),t.isAgentRoute&&(0,G.jsx)(zS,{tone:`purple`,children:`Agent route`})]})]})}),(0,G.jsx)(hS,{children:(0,G.jsx)(zS,{tone:cC[t.status],children:t.status})}),(0,G.jsx)(hS,{children:t.teamMembers}),(0,G.jsx)(hS,{hasOverflow:!0,children:(0,G.jsx)(CS,{"aria-label":`Actions for ${t.name}`,onClick:()=>{}})})]},t.id))})]})]})]})}var dC=[{value:`edit`,label:`Edit brand`},{value:`deactivate`,label:`Deactivate brand`},{value:`end-user-authentication`,label:`End user authentication`},{value:`delete`,label:`Delete brand`,type:`danger`}],fC=`end-user-authentication`,pC=B.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   box-sizing: border-box;
   padding: 0 32px 32px;
-`,uC=B(py)`
+`,mC=B(py)`
   color: #1f73b7;
   border-color: #d8dcde;
 
@@ -1242,7 +1249,7 @@ Error generating stack: `+e.message+`
     color: #144a75;
     border-color: #c2c8cc;
   }
-`,dC=B($o)`
+`,hC=B($o)`
   display: block;
   font-size: 20px;
   font-weight: 700;
@@ -1250,41 +1257,41 @@ Error generating stack: `+e.message+`
   /* The screenshot leaves a deliberate gap between the brand's identity and the first
      section — this isn't a header the card sits directly beneath. */
   margin: 56px 0 24px;
-`,fC=B.div`
+`,gC=B.div`
   box-sizing: border-box;
   width: 336px;
   padding: 20px;
   border: 1px solid #eae9e8;
   border-radius: 8px;
-`,pC=B.div`
+`,_C=B.div`
   font-size: 14px;
   font-weight: 600;
   color: #2f3130;
-`,mC=B.div`
+`,vC=B.div`
   font-size: 13px;
   color: #646864;
   margin-top: 6px;
   line-height: 20px;
-`,hC=B.div`
+`,yC=B.div`
   font-size: 24px;
   font-weight: 700;
   color: #2f3130;
   margin: 12px 0 8px;
-`,gC=B(my)`
+`,bC=B(my)`
   display: inline-flex;
   align-items: center;
   text-decoration: underline;
   font-size: 14px;
-`,_C={Active:`green`,Inactive:`neutral`};function vC({brand:e,onOpenAuth:t,onNavigateBrands:n}){return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:n},{label:e.name}],title:e.name,titleBefore:(0,G.jsx)(ZS,{brand:e,size:44}),titleAfter:(0,G.jsx)(zS,{tone:_C[e.status],children:e.status}),subtitle:e.subdomain,actions:(0,G.jsx)(Sy,{placement:`bottom-end`,button:e=>(0,G.jsxs)(uC,{...e,children:[`Actions`,(0,G.jsx)(py.EndIcon,{children:(0,G.jsx)(Qb,{})})]}),onChange:e=>{e.value===cC&&t()},children:sC.map(e=>(0,G.jsx)(jy,{value:e.value,type:e.type,children:e.label},e.value))})}),(0,G.jsxs)(lC,{children:[(0,G.jsx)(dC,{tag:`h2`,children:`Who has access`}),(0,G.jsxs)(fC,{children:[(0,G.jsx)(pC,{children:`Brand members`}),(0,G.jsx)(mC,{children:`These team members can work on this brand's tickets. Their access also depends on their role.`}),(0,G.jsx)(hC,{children:e.teamMembers}),(0,G.jsxs)(gC,{href:`#`,onClick:e=>e.preventDefault(),children:[`Manage brand membership`,(0,G.jsx)(Zb,{})]})]})]})]})}var yC=B.div`
+`,xC={Active:`green`,Inactive:`neutral`};function SC({brand:e,onOpenAuth:t,onNavigateBrands:n}){return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:n},{label:e.name}],title:e.name,titleBefore:(0,G.jsx)(tC,{brand:e,size:44}),titleAfter:(0,G.jsx)(zS,{tone:xC[e.status],children:e.status}),subtitle:e.subdomain,actions:(0,G.jsx)(Sy,{placement:`bottom-end`,button:e=>(0,G.jsxs)(mC,{...e,children:[`Actions`,(0,G.jsx)(py.EndIcon,{children:(0,G.jsx)(Qb,{})})]}),onChange:e=>{e.value===fC&&t()},children:dC.map(e=>(0,G.jsx)(jy,{value:e.value,type:e.type,children:e.label},e.value))})}),(0,G.jsxs)(pC,{children:[(0,G.jsx)(hC,{tag:`h2`,children:`Who has access`}),(0,G.jsxs)(gC,{children:[(0,G.jsx)(_C,{children:`Brand members`}),(0,G.jsx)(vC,{children:`These team members can work on this brand's tickets. Their access also depends on their role.`}),(0,G.jsx)(yC,{children:e.teamMembers}),(0,G.jsxs)(bC,{href:`#`,onClick:e=>e.preventDefault(),children:[`Manage brand membership`,(0,G.jsx)(Zb,{})]})]})]})]})}var CC=B.div`
   padding: 0 32px 32px;
-`,bC=B(Qo)`
+`,wC=B(Qo)`
   color: #2f3130;
-`,xC=B(my)`
+`,TC=B(my)`
   display: inline-block;
   margin-top: 12px;
   text-decoration: underline;
   font-size: 14px;
-`;function SC({onViewBrands:e}){return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],title:`End user authentication`,children:(0,G.jsx)(bC,{children:`End user authentication is now located in brands.`})}),(0,G.jsx)(yC,{children:(0,G.jsx)(xC,{href:`#`,onClick:t=>{t.preventDefault(),e()},children:`View brands`})})]})}var CC=`data-comment-root`,wC=`data-comment-anchor`,TC=[`[data-comment-anchor]`,`tr`,`th`,`button`,`a[href]`,`label`,`input`,`select`,`section`,`nav`],EC=()=>document.querySelector(`[${CC}]`),DC=(e,t)=>{let n=EC();if(!n)return null;let r=document.elementsFromPoint(e,t).find(e=>n.contains(e));if(!r)return null;for(let e of TC){let t=r.closest(e);if(t&&n.contains(t))return t}return r},OC=e=>{let t=EC();if(!t||!t.contains(e))return null;let n=[],r=e;for(;r&&r!==t;){let e=r.parentElement;if(!e)return null;let t=r.tagName.toLowerCase(),i=[...e.children].filter(e=>e.tagName===r.tagName);n.unshift(i.length>1?`${t}:nth-of-type(${i.indexOf(r)+1})`:t),r=e}return n.join(` > `)},kC=e=>{if(!e.children.length){let t=(e.textContent||``).replace(/\s+/g,` `).trim();return t&&t!==`—`?[t]:[]}return[...e.children].flatMap(kC)},AC=e=>{if(!e)return``;let t=e.getAttribute(`aria-label`);if(t)return t.replace(/\s+/g,` `).trim().slice(0,80);let n=kC(e);return n.length?n.join(` · `).slice(0,80):(e.textContent||``).replace(/\s+/g,` `).trim().slice(0,80)},jC=(e,t,n)=>{let r=DC(e,t);if(!r)return null;let i=r.getBoundingClientRect();return{context:n,id:r.getAttribute(wC)||null,path:OC(r),label:AC(r),fraction:{x:i.width?(e-i.left)/i.width:.5,y:i.height?(t-i.top)/i.height:.5}}},MC=e=>{let t=EC();if(!t||!e)return null;if(e.id){let n=t.querySelector(`[${wC}="${CSS.escape(e.id)}"]`);if(n)return n}if(!e.path)return null;let n=null;try{n=t.querySelector(e.path)}catch{return null}return n},NC=e=>{let t=MC(e);if(!t)return null;let n=t.getBoundingClientRect();if(!n.width&&!n.height)return null;let r=e.fraction||{x:.5,y:.5};return{x:n.left+r.x*n.width,y:n.top+r.y*n.height,drifted:!!e.label&&AC(t)!==e.label}},PC=(e,t)=>{if(!e||!t)return!1;let n=new Set([...Object.keys(e),...Object.keys(t)]);for(let r of n)if(e[r]!==t[r])return!1;return!0},FC=`https://thaugdzjxphjhviwdwgi.supabase.co`,IC=`sb_publishable_gnUhxN43I7bY6dKrNkVmPA_wjRmciBQ`,LC=`prototype_comments`,RC=`prototype_comments_view`,zC=`id,project,author,body,parent_id,number,anchor,resolved,created_at`,BC=`department-spaces-authentication`,VC=!!IC,HC=`prototype-comments:${BC}`,UC=`prototype-comments:owner-key`,WC=()=>{try{return crypto.randomUUID()}catch{return`k-${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`}},GC=()=>{try{let e=window.localStorage.getItem(UC);if(e)return e;let t=WC();return window.localStorage.setItem(UC,t),t}catch{return WC()}},KC=()=>{try{return JSON.parse(window.localStorage.getItem(HC)||`[]`)}catch{return[]}},qC=e=>{try{window.localStorage.setItem(HC,JSON.stringify(e))}catch{}},JC=()=>({apikey:IC,Authorization:`Bearer ${IC}`,"Content-Type":`application/json`,"x-comment-key":GC()}),YC=async(e,t={})=>{let n=await fetch(`${FC}/rest/v1/${e}`,{...t,headers:{...JC(),...t.headers}});if(!n.ok){let e=await n.text();throw n.status===403?Error(`Supabase 403: the comment was rejected by its access rules. If this happens on every comment, see src/comments/SETUP.md.`):Error(`Supabase ${n.status}: ${e.slice(0,200)}`)}return n.status===204?null:n.json()},XC=async()=>{if(!VC)return KC().map(e=>ew({...e,is_mine:!0}));let e=`project=eq.${encodeURIComponent(BC)}&order=created_at.asc`;try{return(await YC(`${RC}?${e}`)).map(ew)}catch(t){if(!/\b404\b/.test(t.message))throw t;return(await YC(`${LC}?${e}&select=${zC}`)).map(ew)}},ZC=async({author:e,body:t,anchor:n,parentId:r=null,number:i=null})=>{let a={project:BC,author:e,body:t,parent_id:r,number:i,anchor:n||null,resolved:!1};if(!VC){let e=KC(),t={...a,id:`local-${e.length+1}-${String(e.length)}`,created_at:new Date().toISOString(),is_mine:!0};return qC([...e,t]),ew(t)}let[o]=await YC(`${LC}?select=${zC}`,{method:`POST`,headers:{Prefer:`return=representation`},body:JSON.stringify(a)});return ew({...o,is_mine:!0})},QC=async(e,t)=>{if(!VC){qC(KC().map(n=>n.id===e?{...n,resolved:t}:n));return}await YC(`${LC}?id=eq.${encodeURIComponent(e)}`,{method:`PATCH`,body:JSON.stringify({resolved:t})})},$C=async e=>{if(!VC){qC(KC().filter(t=>t.id!==e&&t.parent_id!==e));return}let t=await YC(`${LC}?id=eq.${encodeURIComponent(e)}&select=id`,{method:`DELETE`,headers:{Prefer:`return=representation`}});if(!t||t.length===0)throw Error(`That comment is already gone — someone may have deleted it first.`)},ew=e=>({id:e.id,author:e.author,body:e.body,parentId:e.parent_id??null,number:e.number??null,anchor:e.anchor??null,resolved:!!e.resolved,createdAt:e.created_at,isMine:!!e.is_mine}),tw=`prototype-comments:author`,nw=()=>{try{return window.localStorage.getItem(tw)||``}catch{return``}},rw=e=>{try{window.localStorage.setItem(tw,e)}catch{}},iw=9e3,aw=B.button`
+`;function EC({onViewBrands:e}){return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Yb,{breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],title:`End user authentication`,children:(0,G.jsx)(wC,{children:`End user authentication is now located in brands.`})}),(0,G.jsx)(CC,{children:(0,G.jsx)(TC,{href:`#`,onClick:t=>{t.preventDefault(),e()},children:`View brands`})})]})}var DC=`data-comment-root`,OC=`data-comment-anchor`,kC=[`[data-comment-anchor]`,`tr`,`th`,`button`,`a[href]`,`label`,`input`,`select`,`section`,`nav`],AC=()=>document.querySelector(`[${DC}]`),jC=(e,t)=>{let n=AC();if(!n)return null;let r=document.elementsFromPoint(e,t).find(e=>n.contains(e));if(!r)return null;for(let e of kC){let t=r.closest(e);if(t&&n.contains(t))return t}return r},MC=e=>{let t=AC();if(!t||!t.contains(e))return null;let n=[],r=e;for(;r&&r!==t;){let e=r.parentElement;if(!e)return null;let t=r.tagName.toLowerCase(),i=[...e.children].filter(e=>e.tagName===r.tagName);n.unshift(i.length>1?`${t}:nth-of-type(${i.indexOf(r)+1})`:t),r=e}return n.join(` > `)},NC=e=>{if(!e.children.length){let t=(e.textContent||``).replace(/\s+/g,` `).trim();return t&&t!==`—`?[t]:[]}return[...e.children].flatMap(NC)},PC=e=>{if(!e)return``;let t=e.getAttribute(`aria-label`);if(t)return t.replace(/\s+/g,` `).trim().slice(0,80);let n=NC(e);return n.length?n.join(` · `).slice(0,80):(e.textContent||``).replace(/\s+/g,` `).trim().slice(0,80)},FC=(e,t,n)=>{let r=jC(e,t);if(!r)return null;let i=r.getBoundingClientRect();return{context:n,id:r.getAttribute(OC)||null,path:MC(r),label:PC(r),fraction:{x:i.width?(e-i.left)/i.width:.5,y:i.height?(t-i.top)/i.height:.5}}},IC=e=>{let t=AC();if(!t||!e)return null;if(e.id){let n=t.querySelector(`[${OC}="${CSS.escape(e.id)}"]`);if(n)return n}if(!e.path)return null;let n=null;try{n=t.querySelector(e.path)}catch{return null}return n},LC=e=>{let t=IC(e);if(!t)return null;let n=t.getBoundingClientRect();if(!n.width&&!n.height)return null;let r=e.fraction||{x:.5,y:.5};return{x:n.left+r.x*n.width,y:n.top+r.y*n.height,drifted:!!e.label&&PC(t)!==e.label}},RC=(e,t)=>{if(!e||!t)return!1;let n=new Set([...Object.keys(e),...Object.keys(t)]);for(let r of n)if(e[r]!==t[r])return!1;return!0},zC=`https://thaugdzjxphjhviwdwgi.supabase.co`,BC=`sb_publishable_gnUhxN43I7bY6dKrNkVmPA_wjRmciBQ`,VC=`prototype_comments`,HC=`prototype_comments_view`,UC=`id,project,author,body,parent_id,number,anchor,resolved,created_at`,WC=`department-spaces-authentication`,GC=!!BC,KC=`prototype-comments:${WC}`,qC=`prototype-comments:owner-key`,JC=()=>{try{return crypto.randomUUID()}catch{return`k-${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`}},YC=()=>{try{let e=window.localStorage.getItem(qC);if(e)return e;let t=JC();return window.localStorage.setItem(qC,t),t}catch{return JC()}},XC=()=>{try{return JSON.parse(window.localStorage.getItem(KC)||`[]`)}catch{return[]}},ZC=e=>{try{window.localStorage.setItem(KC,JSON.stringify(e))}catch{}},QC=()=>({apikey:BC,Authorization:`Bearer ${BC}`,"Content-Type":`application/json`,"x-comment-key":YC()}),$C=async(e,t={})=>{let n=await fetch(`${zC}/rest/v1/${e}`,{...t,headers:{...QC(),...t.headers}});if(!n.ok){let e=await n.text();throw n.status===403?Error(`Supabase 403: the comment was rejected by its access rules. If this happens on every comment, see src/comments/SETUP.md.`):Error(`Supabase ${n.status}: ${e.slice(0,200)}`)}return n.status===204?null:n.json()},ew=async()=>{if(!GC)return XC().map(e=>iw({...e,is_mine:!0}));let e=`project=eq.${encodeURIComponent(WC)}&order=created_at.asc`;try{return(await $C(`${HC}?${e}`)).map(iw)}catch(t){if(!/\b404\b/.test(t.message))throw t;return(await $C(`${VC}?${e}&select=${UC}`)).map(iw)}},tw=async({author:e,body:t,anchor:n,parentId:r=null,number:i=null})=>{let a={project:WC,author:e,body:t,parent_id:r,number:i,anchor:n||null,resolved:!1};if(!GC){let e=XC(),t={...a,id:`local-${e.length+1}-${String(e.length)}`,created_at:new Date().toISOString(),is_mine:!0};return ZC([...e,t]),iw(t)}let[o]=await $C(`${VC}?select=${UC}`,{method:`POST`,headers:{Prefer:`return=representation`},body:JSON.stringify(a)});return iw({...o,is_mine:!0})},nw=async(e,t)=>{if(!GC){ZC(XC().map(n=>n.id===e?{...n,resolved:t}:n));return}await $C(`${VC}?id=eq.${encodeURIComponent(e)}`,{method:`PATCH`,body:JSON.stringify({resolved:t})})},rw=async e=>{if(!GC){ZC(XC().filter(t=>t.id!==e&&t.parent_id!==e));return}let t=await $C(`${VC}?id=eq.${encodeURIComponent(e)}&select=id`,{method:`DELETE`,headers:{Prefer:`return=representation`}});if(!t||t.length===0)throw Error(`That comment is already gone — someone may have deleted it first.`)},iw=e=>({id:e.id,author:e.author,body:e.body,parentId:e.parent_id??null,number:e.number??null,anchor:e.anchor??null,resolved:!!e.resolved,createdAt:e.created_at,isMine:!!e.is_mine}),aw=`prototype-comments:author`,ow=()=>{try{return window.localStorage.getItem(aw)||``}catch{return``}},sw=e=>{try{window.localStorage.setItem(aw,e)}catch{}},cw=9e3,lw=B.button`
   position: fixed;
   bottom: 24px;
   z-index: ${9002};
@@ -1307,14 +1314,14 @@ Error generating stack: `+e.message+`
   &:hover {
     background-color: ${e=>e.$active?`#284173`:`#f7f7f7`};
   }
-`,ow=B.div`
+`,uw=B.div`
   position: fixed;
-  z-index: ${iw};
+  z-index: ${cw};
   cursor: crosshair;
   /* No background at all: a tint over the design would change the colours being
      reviewed, which is the one thing a design review can't tolerate. */
   background-color: transparent;
-`,sw=B.button`
+`,dw=B.button`
   position: fixed;
   z-index: ${9001};
   display: flex;
@@ -1341,7 +1348,7 @@ Error generating stack: `+e.message+`
   &:hover {
     background-color: ${e=>e.$resolved?`#646864`:`#284173`};
   }
-`,cw=B.div`
+`,fw=B.div`
   position: fixed;
   z-index: ${9002};
   box-sizing: border-box;
@@ -1352,17 +1359,17 @@ Error generating stack: `+e.message+`
   box-shadow: 0 6px 20px rgba(10, 13, 14, 0.32);
   color: #ffffff;
   font-size: 14px;
-`,lw=B.div`
+`,pw=B.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
   color: #c2f0e0;
   font-size: 12px;
-`,uw=B.div`
+`,mw=B.div`
   display: flex;
   gap: 4px;
-`,dw=B.button`
+`,hw=B.button`
   box-sizing: border-box;
   padding: 2px 6px;
   border: 0;
@@ -1377,25 +1384,25 @@ Error generating stack: `+e.message+`
     background-color: rgba(255, 255, 255, 0.14);
     color: #ffffff;
   }
-`,fw=B.div`
+`,gw=B.div`
   margin-bottom: 10px;
 
   & + & {
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
   }
-`,pw=B.div`
+`,_w=B.div`
   margin-bottom: 2px;
   color: #c2f0e0;
   font-size: 12px;
-`,mw=B.div`
+`,vw=B.div`
   white-space: pre-wrap;
   word-break: break-word;
-`,hw=B.form`
+`,yw=B.form`
   display: flex;
   flex-direction: column;
   gap: 6px;
-`,gw=B.textarea`
+`,bw=B.textarea`
   box-sizing: border-box;
   width: 100%;
   min-height: 60px;
@@ -1411,7 +1418,7 @@ Error generating stack: `+e.message+`
   &::placeholder {
     color: rgba(255, 255, 255, 0.6);
   }
-`,_w=B.input`
+`,xw=B.input`
   box-sizing: border-box;
   width: 100%;
   padding: 6px 8px;
@@ -1425,11 +1432,11 @@ Error generating stack: `+e.message+`
   &::placeholder {
     color: rgba(255, 255, 255, 0.6);
   }
-`,vw=B.div`
+`,Sw=B.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-`,yw=B.button`
+`,Cw=B.button`
   box-sizing: border-box;
   min-height: 32px;
   padding: 0 12px;
@@ -1446,12 +1453,12 @@ Error generating stack: `+e.message+`
     opacity: 0.5;
     cursor: default;
   }
-`,bw=B.div`
+`,ww=B.div`
   margin-bottom: 8px;
   color: #c2f0e0;
   font-size: 12px;
   word-break: break-word;
-`,xw=zn`
+`,Tw=zn`
   #root {
     width: calc(100% - 320px);
     transition: width 120ms ease-out;
@@ -1464,7 +1471,7 @@ Error generating stack: `+e.message+`
   #root > * {
     max-width: 100%;
   }
-`,Sw=B.aside`
+`,Ew=B.aside`
   position: fixed;
   top: 0;
   right: 0;
@@ -1477,7 +1484,7 @@ Error generating stack: `+e.message+`
   border-left: 1px solid #dcdcda;
   background-color: #ffffff;
   box-shadow: -4px 0 16px rgba(10, 13, 14, 0.12);
-`,Cw=B.div`
+`,Dw=B.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1486,12 +1493,12 @@ Error generating stack: `+e.message+`
   border-bottom: 1px solid #eae9e8;
   font-size: 14px;
   font-weight: 600;
-`,ww=B.div`
+`,Ow=B.div`
   flex: 1;
   box-sizing: border-box;
   padding: 8px;
   overflow-y: auto;
-`,Tw=B.button`
+`,kw=B.button`
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -1510,48 +1517,48 @@ Error generating stack: `+e.message+`
   &:hover {
     background-color: #f7f7f7;
   }
-`,Ew=B.div`
+`,Aw=B.div`
   display: flex;
   gap: 6px;
   margin-bottom: 4px;
   color: #646864;
   font-size: 12px;
-`,Dw=B.div`
+`,jw=B.div`
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-`,Ow=B.div`
+`,Mw=B.div`
   margin-top: 4px;
   overflow: hidden;
   color: #646864;
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
-`,kw=B.div`
+`,Nw=B.div`
   padding: 16px;
   color: #646864;
   font-size: 14px;
-`,Aw={error:{background:`#fff0f1`,color:`#2f3130`},warn:{background:`#fff7d6`,color:`#2f3130`},info:{background:`#f7f7f7`,color:`#646864`}},jw=B.div`
+`,Pw={error:{background:`#fff0f1`,color:`#2f3130`},warn:{background:`#fff7d6`,color:`#2f3130`},info:{background:`#f7f7f7`,color:`#646864`}},Fw=B.div`
   box-sizing: border-box;
   padding: 8px 16px;
-  background-color: ${e=>(Aw[e.$tone]||Aw.info).background};
-  color: ${e=>(Aw[e.$tone]||Aw.info).color};
+  background-color: ${e=>(Pw[e.$tone]||Pw.info).background};
+  color: ${e=>(Pw[e.$tone]||Pw.info).color};
   font-size: 12px;
-`,Mw=24,Nw=200,Pw=()=>{let e=[...document.querySelectorAll(`nav`)].map(e=>e.getBoundingClientRect()).find(e=>e.left<=0&&e.width>0);return Math.min((e?.width||0)+Mw,Nw)},Fw=(e,t)=>{let n=new Date(e).getTime();if(Number.isNaN(n))return``;let r=Math.max(0,Math.round((t-n)/1e3));if(r<60)return`just now`;let i=Math.round(r/60);if(i<60)return`${i}m ago`;let a=Math.round(i/60);if(a<24)return`${a}h ago`;let o=Math.round(a/24);return o<31?`${o}d ago`:`${Math.round(o/30)}mo ago`};function Iw({context:e,onRestoreContext:t,toggleLeft:n}){let[r,i]=(0,g.useState)(!1),[a,o]=(0,g.useState)([]),[s,c]=(0,g.useState)(null),[l,u]=(0,g.useState)(nw),[d,f]=(0,g.useState)(()=>!nw()),[p,m]=(0,g.useState)(null),[h,_]=(0,g.useState)(null),[v,y]=(0,g.useState)(``),[b,x]=(0,g.useState)(``),[S,C]=(0,g.useState)(0),[w,T]=(0,g.useState)(()=>Date.now()),[E,D]=(0,g.useState)(Mw),O=n??E;(0,g.useEffect)(()=>{let e=!1;return XC().then(t=>{e||o(t)}).catch(t=>{e||c(t.message)}),()=>{e=!0}},[]),(0,g.useEffect)(()=>{if(!r)return;let e=()=>C(e=>e+1),t=EC();window.addEventListener(`scroll`,e,!0),window.addEventListener(`resize`,e);let n=new ResizeObserver(e);t&&n.observe(t);let i=setTimeout(e,60);return()=>{window.removeEventListener(`scroll`,e,!0),window.removeEventListener(`resize`,e),n.disconnect(),clearTimeout(i)}},[r]),(0,g.useEffect)(()=>{if(n!==void 0)return;let e=()=>D(Pw()),t=requestAnimationFrame(e),r=setTimeout(e,200);return window.addEventListener(`resize`,e),()=>{cancelAnimationFrame(t),clearTimeout(r),window.removeEventListener(`resize`,e)}},[n]),(0,g.useEffect)(()=>{if(!r)return;let e=setInterval(()=>T(Date.now()),3e4);return()=>clearInterval(e)},[r]),(0,g.useEffect)(()=>{if(!r)return;let e=e=>{e.key===`Escape`&&(p?m(null):h?_(null):i(!1))};return window.addEventListener(`keydown`,e),()=>window.removeEventListener(`keydown`,e)},[r,p,h]);let k=(0,g.useMemo)(()=>a.filter(e=>!e.parentId),[a]),A=(0,g.useCallback)(e=>a.filter(t=>t.parentId===e),[a]),j=(0,g.useMemo)(()=>k.map(t=>{if(!PC(t.anchor?.context,e))return null;let n=NC(t.anchor);return n?{comment:t,position:n}:null}).filter(Boolean),[k,e,S]),M=(0,g.useMemo)(()=>k.filter(t=>!PC(t.anchor?.context,e)),[k,e]),N=(0,g.useMemo)(()=>{let e=EC();if(!e)return null;let t=e.getBoundingClientRect();return{left:t.left,top:t.top,width:t.width,height:t.height}},[S]),P=(0,g.useMemo)(()=>p?NC(p.anchor):null,[p,S]),F=h?a.find(e=>e.id===h):null,I=(0,g.useMemo)(()=>F?NC(F.anchor):null,[F,S]),ee=t=>{if(t.metaKey||t.ctrlKey||t.altKey){let e=document.elementsFromPoint(t.clientX,t.clientY).find(e=>EC()?.contains(e))?.closest(`a[href], button, input, select, [role="button"]`);e&&e.click();return}let n=jC(t.clientX,t.clientY,e);if(!n){_(null),m(null);return}_(null),y(``),m({anchor:n})},te=async e=>{if(e.preventDefault(),!(!v.trim()||!l.trim())){rw(l.trim()),f(!1);try{let e=await ZC({author:l.trim(),body:v.trim(),anchor:p.anchor,number:k.length+1});o(t=>[...t,e]),m(null),y(``),_(e.id)}catch(e){c(e.message)}}},L=async e=>{if(e.preventDefault(),!(!b.trim()||!l.trim()||!F)){rw(l.trim()),f(!1);try{let e=await ZC({author:l.trim(),body:b.trim(),anchor:null,parentId:F.id});o(t=>[...t,e]),x(``)}catch(e){c(e.message)}}},ne=async e=>{try{await QC(e.id,!e.resolved),o(t=>t.map(t=>t.id===e.id?{...t,resolved:!e.resolved}:t))}catch(e){c(e.message)}},re=async e=>{try{await $C(e.id),o(t=>t.filter(t=>t.id!==e.id&&t.parentId!==e.id)),h===e.id&&_(null)}catch(e){c(e.message)}},ie=n=>{let r=n.anchor?.context;r&&!PC(r,e)&&t?.(r),_(n.id),m(null),x(``);let i=0,a=()=>{let e=MC(n.anchor);if(e){e.scrollIntoView({block:`center`,inline:`nearest`}),C(e=>e+1);return}i++<10&&requestAnimationFrame(a)};requestAnimationFrame(a)},ae=k.filter(e=>!e.resolved).length;return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsxs)(aw,{type:`button`,style:{left:O},$active:r,onClick:()=>{i(e=>!e),m(null),_(null)},"aria-pressed":r,children:[r?`Exit comment mode`:`Comment`,!r&&ae>0?` (${ae})`:``]}),r&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(xw,{}),N&&(0,G.jsx)(ow,{onClick:ee,style:{left:N.left,top:N.top,width:N.width,height:N.height}}),j.map(({comment:e,position:t})=>(0,G.jsx)(sw,{type:`button`,style:{left:t.x,top:t.y},$resolved:e.resolved,$dimmed:h!==null&&h!==e.id,onClick:t=>{t.stopPropagation(),m(null),x(``),_(e.id===h?null:e.id)},"aria-label":`Comment ${e.number??``} by ${e.author}`,children:e.number??`•`},e.id)),p&&P&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(sw,{as:`div`,style:{left:P.x,top:P.y},"aria-hidden":`true`,children:`+`}),(0,G.jsxs)(cw,{style:Vw(P),onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(lw,{children:[(0,G.jsx)(`span`,{children:`New comment`}),(0,G.jsx)(uw,{children:(0,G.jsx)(dw,{type:`button`,onClick:()=>m(null),children:`Cancel`})})]}),p.anchor.label&&(0,G.jsxs)(bw,{children:[`On: `,p.anchor.label]}),(0,G.jsxs)(hw,{onSubmit:te,children:[d&&(0,G.jsx)(_w,{value:l,onChange:e=>u(e.target.value),placeholder:`Your name`,"aria-label":`Your name`}),(0,G.jsx)(gw,{value:v,onChange:e=>y(e.target.value),placeholder:`Add a comment`,"aria-label":`Comment`,autoFocus:!0}),(0,G.jsx)(vw,{children:(0,G.jsx)(yw,{type:`submit`,disabled:!v.trim()||!l.trim(),children:`Comment`})})]})]})]}),F&&I&&!p&&(0,G.jsxs)(cw,{style:Vw(I),onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(lw,{children:[(0,G.jsxs)(`span`,{children:[`#`,F.number??`—`,I.drifted?` · content changed since`:``]}),(0,G.jsxs)(uw,{children:[(0,G.jsx)(dw,{type:`button`,onClick:()=>ne(F),children:F.resolved?`Unresolve`:`Resolve`}),(0,G.jsx)(dw,{type:`button`,onClick:()=>re(F),children:`Delete`}),(0,G.jsx)(dw,{type:`button`,onClick:()=>_(null),children:`Close`})]})]}),(0,G.jsxs)(fw,{children:[(0,G.jsxs)(pw,{children:[F.author,` · `,Fw(F.createdAt,w)]}),(0,G.jsx)(mw,{children:F.body})]}),A(F.id).map(e=>(0,G.jsxs)(fw,{children:[(0,G.jsxs)(pw,{children:[e.author,` · `,Fw(e.createdAt,w)]}),(0,G.jsx)(mw,{children:e.body})]},e.id)),(0,G.jsxs)(hw,{onSubmit:L,children:[d&&(0,G.jsx)(_w,{value:l,onChange:e=>u(e.target.value),placeholder:`Your name`,"aria-label":`Your name`}),(0,G.jsx)(gw,{value:b,onChange:e=>x(e.target.value),placeholder:`Reply`,"aria-label":`Reply`}),(0,G.jsx)(vw,{children:(0,G.jsx)(yw,{type:`submit`,disabled:!b.trim()||!l.trim(),children:`Reply`})})]})]}),(0,G.jsxs)(Sw,{"data-comment-sidebar":`true`,onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(Cw,{children:[(0,G.jsxs)(`span`,{children:[`Comments (`,k.length,`)`]}),(0,G.jsx)(dw,{type:`button`,style:{color:`#646864`},onClick:()=>i(!1),children:`Close`})]}),VC?(0,G.jsx)(jw,{$tone:`info`,children:`Shared — everyone with this link sees these comments. You can delete your own.`}):(0,G.jsx)(jw,{$tone:`warn`,children:`Stored in this browser only — others won't see these. See src/comments/SETUP.md to share them.`}),s&&(0,G.jsx)(jw,{$tone:`error`,children:s}),M.length>0&&(0,G.jsxs)(jw,{$tone:`info`,children:[M.length,` comment`,M.length===1?``:`s`,` on another view — click to jump there.`]}),(0,G.jsx)(jw,{$tone:`info`,children:`Click the design to comment. ⌘-click (or Ctrl-click) to navigate without leaving comment mode.`}),(0,G.jsx)(ww,{children:k.length===0?(0,G.jsx)(kw,{children:`Click anywhere on the design to leave a comment.`}):k.map(e=>(0,G.jsxs)(Tw,{type:`button`,$active:e.id===h,$resolved:e.resolved,onClick:()=>ie(e),children:[(0,G.jsxs)(Ew,{children:[(0,G.jsxs)(`span`,{children:[`#`,e.number??`—`]}),(0,G.jsx)(`span`,{children:e.author}),(0,G.jsx)(`span`,{children:Fw(e.createdAt,w)}),e.resolved&&(0,G.jsx)(`span`,{children:`· resolved`})]}),(0,G.jsx)(Dw,{children:e.body}),e.anchor?.label&&(0,G.jsxs)(Ow,{children:[`On: `,e.anchor.label]})]},e.id))})]})]})]})}var Lw=300,Rw=320,zw=320,Bw=12,Vw=e=>{let t=window.innerWidth-zw-Lw-Bw,n=Math.max(Bw,Math.min(e.x+16,t)),r=window.innerHeight-Rw-Bw;return{left:n,top:Math.max(Bw,Math.min(e.y,r))}},Hw=B.div`
+`,Iw=24,Lw=200,Rw=()=>{let e=[...document.querySelectorAll(`nav`)].map(e=>e.getBoundingClientRect()).find(e=>e.left<=0&&e.width>0);return Math.min((e?.width||0)+Iw,Lw)},zw=(e,t)=>{let n=new Date(e).getTime();if(Number.isNaN(n))return``;let r=Math.max(0,Math.round((t-n)/1e3));if(r<60)return`just now`;let i=Math.round(r/60);if(i<60)return`${i}m ago`;let a=Math.round(i/60);if(a<24)return`${a}h ago`;let o=Math.round(a/24);return o<31?`${o}d ago`:`${Math.round(o/30)}mo ago`};function Bw({context:e,onRestoreContext:t,toggleLeft:n}){let[r,i]=(0,g.useState)(!1),[a,o]=(0,g.useState)([]),[s,c]=(0,g.useState)(null),[l,u]=(0,g.useState)(ow),[d,f]=(0,g.useState)(()=>!ow()),[p,m]=(0,g.useState)(null),[h,_]=(0,g.useState)(null),[v,y]=(0,g.useState)(``),[b,x]=(0,g.useState)(``),[S,C]=(0,g.useState)(0),[w,T]=(0,g.useState)(()=>Date.now()),[E,D]=(0,g.useState)(Iw),O=n??E;(0,g.useEffect)(()=>{let e=!1;return ew().then(t=>{e||o(t)}).catch(t=>{e||c(t.message)}),()=>{e=!0}},[]),(0,g.useEffect)(()=>{if(!r)return;let e=()=>C(e=>e+1),t=AC();window.addEventListener(`scroll`,e,!0),window.addEventListener(`resize`,e);let n=new ResizeObserver(e);t&&n.observe(t);let i=setTimeout(e,60);return()=>{window.removeEventListener(`scroll`,e,!0),window.removeEventListener(`resize`,e),n.disconnect(),clearTimeout(i)}},[r]),(0,g.useEffect)(()=>{if(n!==void 0)return;let e=()=>D(Rw()),t=requestAnimationFrame(e),r=setTimeout(e,200);return window.addEventListener(`resize`,e),()=>{cancelAnimationFrame(t),clearTimeout(r),window.removeEventListener(`resize`,e)}},[n]),(0,g.useEffect)(()=>{if(!r)return;let e=setInterval(()=>T(Date.now()),3e4);return()=>clearInterval(e)},[r]),(0,g.useEffect)(()=>{if(!r)return;let e=e=>{e.key===`Escape`&&(p?m(null):h?_(null):i(!1))};return window.addEventListener(`keydown`,e),()=>window.removeEventListener(`keydown`,e)},[r,p,h]);let k=(0,g.useMemo)(()=>a.filter(e=>!e.parentId),[a]),A=(0,g.useCallback)(e=>a.filter(t=>t.parentId===e),[a]),j=(0,g.useMemo)(()=>k.map(t=>{if(!RC(t.anchor?.context,e))return null;let n=LC(t.anchor);return n?{comment:t,position:n}:null}).filter(Boolean),[k,e,S]),M=(0,g.useMemo)(()=>k.filter(t=>!RC(t.anchor?.context,e)),[k,e]),N=(0,g.useMemo)(()=>{let e=AC();if(!e)return null;let t=e.getBoundingClientRect();return{left:t.left,top:t.top,width:t.width,height:t.height}},[S]),P=(0,g.useMemo)(()=>p?LC(p.anchor):null,[p,S]),F=h?a.find(e=>e.id===h):null,I=(0,g.useMemo)(()=>F?LC(F.anchor):null,[F,S]),ee=t=>{if(t.metaKey||t.ctrlKey||t.altKey){let e=document.elementsFromPoint(t.clientX,t.clientY).find(e=>AC()?.contains(e))?.closest(`a[href], button, input, select, [role="button"]`);e&&e.click();return}let n=FC(t.clientX,t.clientY,e);if(!n){_(null),m(null);return}_(null),y(``),m({anchor:n})},te=async e=>{if(e.preventDefault(),!(!v.trim()||!l.trim())){sw(l.trim()),f(!1);try{let e=await tw({author:l.trim(),body:v.trim(),anchor:p.anchor,number:k.length+1});o(t=>[...t,e]),m(null),y(``),_(e.id)}catch(e){c(e.message)}}},L=async e=>{if(e.preventDefault(),!(!b.trim()||!l.trim()||!F)){sw(l.trim()),f(!1);try{let e=await tw({author:l.trim(),body:b.trim(),anchor:null,parentId:F.id});o(t=>[...t,e]),x(``)}catch(e){c(e.message)}}},ne=async e=>{try{await nw(e.id,!e.resolved),o(t=>t.map(t=>t.id===e.id?{...t,resolved:!e.resolved}:t))}catch(e){c(e.message)}},re=async e=>{try{await rw(e.id),o(t=>t.filter(t=>t.id!==e.id&&t.parentId!==e.id)),h===e.id&&_(null)}catch(e){c(e.message)}},ie=n=>{let r=n.anchor?.context;r&&!RC(r,e)&&t?.(r),_(n.id),m(null),x(``);let i=0,a=()=>{let e=IC(n.anchor);if(e){e.scrollIntoView({block:`center`,inline:`nearest`}),C(e=>e+1);return}i++<10&&requestAnimationFrame(a)};requestAnimationFrame(a)},ae=k.filter(e=>!e.resolved).length;return(0,G.jsxs)(G.Fragment,{children:[(0,G.jsxs)(lw,{type:`button`,style:{left:O},$active:r,onClick:()=>{i(e=>!e),m(null),_(null)},"aria-pressed":r,children:[r?`Exit comment mode`:`Comment`,!r&&ae>0?` (${ae})`:``]}),r&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Tw,{}),N&&(0,G.jsx)(uw,{onClick:ee,style:{left:N.left,top:N.top,width:N.width,height:N.height}}),j.map(({comment:e,position:t})=>(0,G.jsx)(dw,{type:`button`,style:{left:t.x,top:t.y},$resolved:e.resolved,$dimmed:h!==null&&h!==e.id,onClick:t=>{t.stopPropagation(),m(null),x(``),_(e.id===h?null:e.id)},"aria-label":`Comment ${e.number??``} by ${e.author}`,children:e.number??`•`},e.id)),p&&P&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(dw,{as:`div`,style:{left:P.x,top:P.y},"aria-hidden":`true`,children:`+`}),(0,G.jsxs)(fw,{style:Gw(P),onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(pw,{children:[(0,G.jsx)(`span`,{children:`New comment`}),(0,G.jsx)(mw,{children:(0,G.jsx)(hw,{type:`button`,onClick:()=>m(null),children:`Cancel`})})]}),p.anchor.label&&(0,G.jsxs)(ww,{children:[`On: `,p.anchor.label]}),(0,G.jsxs)(yw,{onSubmit:te,children:[d&&(0,G.jsx)(xw,{value:l,onChange:e=>u(e.target.value),placeholder:`Your name`,"aria-label":`Your name`}),(0,G.jsx)(bw,{value:v,onChange:e=>y(e.target.value),placeholder:`Add a comment`,"aria-label":`Comment`,autoFocus:!0}),(0,G.jsx)(Sw,{children:(0,G.jsx)(Cw,{type:`submit`,disabled:!v.trim()||!l.trim(),children:`Comment`})})]})]})]}),F&&I&&!p&&(0,G.jsxs)(fw,{style:Gw(I),onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(pw,{children:[(0,G.jsxs)(`span`,{children:[`#`,F.number??`—`,I.drifted?` · content changed since`:``]}),(0,G.jsxs)(mw,{children:[(0,G.jsx)(hw,{type:`button`,onClick:()=>ne(F),children:F.resolved?`Unresolve`:`Resolve`}),(0,G.jsx)(hw,{type:`button`,onClick:()=>re(F),children:`Delete`}),(0,G.jsx)(hw,{type:`button`,onClick:()=>_(null),children:`Close`})]})]}),(0,G.jsxs)(gw,{children:[(0,G.jsxs)(_w,{children:[F.author,` · `,zw(F.createdAt,w)]}),(0,G.jsx)(vw,{children:F.body})]}),A(F.id).map(e=>(0,G.jsxs)(gw,{children:[(0,G.jsxs)(_w,{children:[e.author,` · `,zw(e.createdAt,w)]}),(0,G.jsx)(vw,{children:e.body})]},e.id)),(0,G.jsxs)(yw,{onSubmit:L,children:[d&&(0,G.jsx)(xw,{value:l,onChange:e=>u(e.target.value),placeholder:`Your name`,"aria-label":`Your name`}),(0,G.jsx)(bw,{value:b,onChange:e=>x(e.target.value),placeholder:`Reply`,"aria-label":`Reply`}),(0,G.jsx)(Sw,{children:(0,G.jsx)(Cw,{type:`submit`,disabled:!b.trim()||!l.trim(),children:`Reply`})})]})]}),(0,G.jsxs)(Ew,{"data-comment-sidebar":`true`,onClick:e=>e.stopPropagation(),children:[(0,G.jsxs)(Dw,{children:[(0,G.jsxs)(`span`,{children:[`Comments (`,k.length,`)`]}),(0,G.jsx)(hw,{type:`button`,style:{color:`#646864`},onClick:()=>i(!1),children:`Close`})]}),GC?(0,G.jsx)(Fw,{$tone:`info`,children:`Shared — everyone with this link sees these comments. You can delete your own.`}):(0,G.jsx)(Fw,{$tone:`warn`,children:`Stored in this browser only — others won't see these. See src/comments/SETUP.md to share them.`}),s&&(0,G.jsx)(Fw,{$tone:`error`,children:s}),M.length>0&&(0,G.jsxs)(Fw,{$tone:`info`,children:[M.length,` comment`,M.length===1?``:`s`,` on another view — click to jump there.`]}),(0,G.jsx)(Fw,{$tone:`info`,children:`Click the design to comment. ⌘-click (or Ctrl-click) to navigate without leaving comment mode.`}),(0,G.jsx)(Ow,{children:k.length===0?(0,G.jsx)(Nw,{children:`Click anywhere on the design to leave a comment.`}):k.map(e=>(0,G.jsxs)(kw,{type:`button`,$active:e.id===h,$resolved:e.resolved,onClick:()=>ie(e),children:[(0,G.jsxs)(Aw,{children:[(0,G.jsxs)(`span`,{children:[`#`,e.number??`—`]}),(0,G.jsx)(`span`,{children:e.author}),(0,G.jsx)(`span`,{children:zw(e.createdAt,w)}),e.resolved&&(0,G.jsx)(`span`,{children:`· resolved`})]}),(0,G.jsx)(jw,{children:e.body}),e.anchor?.label&&(0,G.jsxs)(Mw,{children:[`On: `,e.anchor.label]})]},e.id))})]})]})]})}var Vw=300,Hw=320,Uw=320,Ww=12,Gw=e=>{let t=window.innerWidth-Uw-Vw-Ww,n=Math.max(Ww,Math.min(e.x+16,t)),r=window.innerHeight-Hw-Ww;return{left:n,top:Math.max(Ww,Math.min(e.y,r))}},Kw=B.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100vw;
   background-color: #f8f9f9;
   overflow: hidden;
-`,Uw=B.div`
+`,qw=B.div`
   display: flex;
   flex: 1;
   min-height: 0;
   width: 100%;
   overflow: hidden;
-`,Ww=B.main`
+`,Jw=B.main`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1561,10 +1568,10 @@ Error generating stack: `+e.message+`
   border-radius: 8px 0px 0px 0px;
   box-shadow: 0px 0px 4px rgba(10, 13, 14, 0.16);
   overflow: hidden;
-`,Gw=B.div`
+`,Yw=B.div`
   position: relative;
   flex-shrink: 0;
-`,Kw=B.div`
+`,Xw=B.div`
   position: absolute;
   top: 0;
   right: 428px;
@@ -1572,6 +1579,6 @@ Error generating stack: `+e.message+`
   display: flex;
   align-items: center;
   z-index: 10;
-`,qw=B.div`
+`,Zw=B.div`
   min-width: 360px;
-`,Jw=[{id:`opt1`,label:`Option 1 End user auth with brands dropdown`},{id:`opt2`,label:`Option 2 End user auth table`},{id:`opt3`,label:`Option 3 Brands flow`}],Yw=e=>Jw.some(t=>t.id===e),Xw={opt1:`auth`,opt2:`table`,opt3:`moved`};function Zw(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt1`),c=Jw.find(e=>e.id===o)?.label,[l,u]=(0,g.useState)(Xw.opt1),[d,f]=(0,g.useState)(ox[0].id),p=sx(d)??ox[0],m=e=>{s(e),u(Xw[e])},h=e=>{f(e),u(`brand-auth`)},_=e=>{f(e),u(`brand`)},v=o===`opt3`&&l!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)(Hw,{children:[(0,G.jsxs)(Gw,{children:[(0,G.jsx)(pl,{currentProduct:e,onProductChange:t}),(0,G.jsx)(Kw,{children:(0,G.jsx)(qw,{children:(0,G.jsx)(ov,{children:(0,G.jsx)(tv,{isCompact:!0,isEditable:!1,listboxAriaLabel:`Prototype options`,inputValue:c,selectionValue:o,onChange:({selectionValue:e})=>{e&&m(e)},children:Jw.map(e=>(0,G.jsx)(kv,{value:e.id,label:e.label,children:e.label},e.id))})})})})]}),(0,G.jsxs)(Uw,{children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(Ly,{activeItem:v,onSelect:e=>{if(e===`Brands`){u(`brands`);return}u(Xw[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)(Ww,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:f}):o===`opt2`?l===`brand-auth`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>u(`table`)},{label:p.name}],title:`${p.name} end user authentication`}):(0,G.jsx)(YS,{onSelectBrand:h}):l===`brand-auth`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>u(`brands`)},{label:p.name,onClick:()=>u(`brand`)},{label:`End user authentication`}]}):l===`brand`?(0,G.jsx)(vC,{brand:p,onOpenAuth:()=>u(`brand-auth`),onNavigateBrands:()=>u(`brands`)}):l===`brands`?(0,G.jsx)(oC,{onSelectBrand:_}):(0,G.jsx)(SC,{onViewBrands:()=>u(`brands`)})})]}),(0,G.jsx)(Iw,{toggleLeft:32,context:{option:o,route:l,brandId:d},onRestoreContext:e=>{Yw(e.option)&&s(e.option),e.brandId&&sx(e.brandId)&&f(e.brandId),e.route&&u(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(Zw,{})}));
+`,Qw=[{id:`opt1`,label:`Option 1 End user auth with brands dropdown`},{id:`opt2`,label:`Option 2 End user auth table`},{id:`opt3`,label:`Option 3 Brands flow`}],$w=e=>Qw.some(t=>t.id===e),eT={opt1:`auth`,opt2:`table`,opt3:`moved`};function tT(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt1`),c=Qw.find(e=>e.id===o)?.label,[l,u]=(0,g.useState)(eT.opt1),[d,f]=(0,g.useState)(ox[0].id),p=sx(d)??ox[0],m=e=>{s(e),u(eT[e])},h=e=>{f(e),u(`brand-auth`)},_=e=>{f(e),u(`brand`)},v=o===`opt3`&&l!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)(Kw,{children:[(0,G.jsxs)(Yw,{children:[(0,G.jsx)(pl,{currentProduct:e,onProductChange:t}),(0,G.jsx)(Xw,{children:(0,G.jsx)(Zw,{children:(0,G.jsx)(ov,{children:(0,G.jsx)(tv,{isCompact:!0,isEditable:!1,listboxAriaLabel:`Prototype options`,inputValue:c,selectionValue:o,onChange:({selectionValue:e})=>{e&&m(e)},children:Qw.map(e=>(0,G.jsx)(kv,{value:e.id,label:e.label,children:e.label},e.id))})})})})]}),(0,G.jsxs)(qw,{children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(Ly,{activeItem:v,onSelect:e=>{if(e===`Brands`){u(`brands`);return}u(eT[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)(Jw,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:f}):o===`opt2`?l===`brand-auth`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>u(`table`)},{label:p.name}],title:`${p.name} end user authentication`}):(0,G.jsx)($S,{onSelectBrand:h}):l===`brand-auth`?(0,G.jsx)(Nx,{brand:p,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>u(`brands`)},{label:p.name,onClick:()=>u(`brand`)},{label:`End user authentication`}]}):l===`brand`?(0,G.jsx)(SC,{brand:p,onOpenAuth:()=>u(`brand-auth`),onNavigateBrands:()=>u(`brands`)}):l===`brands`?(0,G.jsx)(uC,{onSelectBrand:_}):(0,G.jsx)(EC,{onViewBrands:()=>u(`brands`)})})]}),(0,G.jsx)(Bw,{toggleLeft:32,context:{option:o,route:l,brandId:d},onRestoreContext:e=>{$w(e.option)&&s(e.option),e.brandId&&sx(e.brandId)&&f(e.brandId),e.route&&u(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(tT,{})}));
