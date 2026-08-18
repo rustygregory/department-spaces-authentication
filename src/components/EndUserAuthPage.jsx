@@ -345,33 +345,40 @@ export default function EndUserAuthPage({
                 </Checkbox>
               </Field>
 
-              <Nested style={{ marginTop: '16px' }}>
-                <SubLabel>Password level</SubLabel>
-                <LevelField>
-                  <Combobox
-                    isEditable={false}
-                    listboxAriaLabel="Password levels"
-                    inputValue={passwordLevel}
-                    selectionValue={passwordLevel}
-                    onChange={({ selectionValue }) => {
-                      if (selectionValue) setPasswordLevel(selectionValue)
-                    }}
-                  >
-                    {PASSWORD_LEVELS.map((level) => (
-                      <Option key={level} value={level} label={level}>
-                        {level}
-                      </Option>
+              {/* Password level belongs to the checkbox above it, so unchecking Zendesk
+                  authentication takes the whole block out of the page rather than greying
+                  it — there's no password to set a level for, and everything below slides
+                  up into the space. Per Rusty. The level itself stays in state, so
+                  re-checking the box brings the same value back rather than a default. */}
+              {zendeskAuth && (
+                <Nested style={{ marginTop: '16px' }}>
+                  <SubLabel>Password level</SubLabel>
+                  <LevelField>
+                    <Combobox
+                      isEditable={false}
+                      listboxAriaLabel="Password levels"
+                      inputValue={passwordLevel}
+                      selectionValue={passwordLevel}
+                      onChange={({ selectionValue }) => {
+                        if (selectionValue) setPasswordLevel(selectionValue)
+                      }}
+                    >
+                      {PASSWORD_LEVELS.map((level) => (
+                        <Option key={level} value={level} label={level}>
+                          {level}
+                        </Option>
+                      ))}
+                    </Combobox>
+                  </LevelField>
+                  {/* Derived from the level, so moving the dropdown visibly changes the
+                      rules rather than leaving three sentences that contradict it. */}
+                  <Rules>
+                    {PASSWORD_RULES[passwordLevel].map((rule) => (
+                      <li key={rule}>{rule}</li>
                     ))}
-                  </Combobox>
-                </LevelField>
-                {/* Derived from the level, so moving the dropdown visibly changes the
-                    rules rather than leaving three sentences that contradict it. */}
-                <Rules>
-                  {PASSWORD_RULES[passwordLevel].map((rule) => (
-                    <li key={rule}>{rule}</li>
-                  ))}
-                </Rules>
-              </Nested>
+                  </Rules>
+                </Nested>
+              )}
             </Section>
 
             <Section $top={28}>

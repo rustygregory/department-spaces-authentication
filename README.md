@@ -76,6 +76,13 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Password login and SSO read Active / Inactive**, the same words as a brand's own
   status, so Option 2's table carries one vocabulary for "is this on" across three
   columns. They said Turned on / Turned off.
+- **Unchecking Zendesk authentication removes the Password level block**, dropdown and
+  bullets both, and the rest of the page slides up — Rusty's call, and the same logic as the
+  blank table cell below: there's no password to set a level for. It's removed rather than
+  disabled, which would keep the space and claim the control is temporarily unavailable. The
+  level stays in state, so re-checking the box brings back the value that was there. External
+  authentication's own block doesn't behave this way yet — its SSO link and provider
+  checkboxes stay put when that box is unchecked.
 - **Password level is blank — not an em dash — when password login is off.** Those brands'
   end users sign in through an external provider, so there's no password and no level to
   report. Rusty's call on both counts: the gap belongs there, and a dash would read as a
