@@ -27,7 +27,6 @@ const Scroll = styled.div`
 
 const Description = styled(MD)`
   color: #646864;
-  margin-top: 4px;
   max-width: 620px;
 `
 

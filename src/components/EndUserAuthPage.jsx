@@ -76,7 +76,6 @@ const Footer = styled.div`
 
 const Description = styled(MD)`
   color: #646864;
-  margin-top: 4px;
 `
 
 const Strip = styled(TabList)`

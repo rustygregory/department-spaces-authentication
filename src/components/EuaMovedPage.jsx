@@ -13,8 +13,11 @@ import PageHeader from './PageHeader'
  * on, which is the failure mode this option has to avoid.
  */
 
+/* Just the link. The sentence above it moved into `PageHeader` so it lands the same
+   4px below the title as every other page's description — it is this page's
+   description, and the only reason it sat 24px down was that it used to be body copy. */
 const Body = styled.div`
-  padding: 24px 32px 32px;
+  padding: 0 32px 32px;
 `
 
 const Message = styled(MD)`
@@ -40,10 +43,11 @@ export default function EuaMovedPage({ onViewBrands }) {
           { label: 'End user authentication' },
         ]}
         title="End user authentication"
-      />
+      >
+        <Message>End user authentication is now located in brands.</Message>
+      </PageHeader>
 
       <Body>
-        <Message>End user authentication is now located in brands.</Message>
         <ViewBrandsLink
           href="#"
           onClick={(event) => {

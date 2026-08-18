@@ -34,7 +34,6 @@ import { BRANDS } from '../data/brands'
 
 const Description = styled(MD)`
   color: #646864;
-  margin-top: 8px;
   /* Wrapped to three lines as in the reference, rather than running the width of
      the work area. */
   max-width: 540px;
