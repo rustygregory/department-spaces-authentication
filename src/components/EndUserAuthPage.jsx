@@ -71,7 +71,19 @@ const Footer = styled.div`
   padding: 16px 32px;
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  /* 20px between Cancel and Save, per Rusty. */
+  gap: 20px;
+`
+
+/* Cancel keeps the link button's blue and drops the underline in every state. Garden
+   emits `&:hover { text-decoration: underline }` for link buttons, which single-`&`
+   specificity would only tie with, so this doubles it. */
+const CancelButton = styled(Button)`
+  &&,
+  &&:hover,
+  &&:active {
+    text-decoration: none;
+  }
 `
 
 const Description = styled(MD)`
@@ -421,9 +433,9 @@ export default function EndUserAuthPage({
       </Scroll>
 
       <Footer>
-        <Button isLink onClick={() => {}}>
+        <CancelButton isLink onClick={() => {}}>
           Cancel
-        </Button>
+        </CancelButton>
         <Button isPrimary onClick={() => {}}>
           Save
         </Button>
