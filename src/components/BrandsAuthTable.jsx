@@ -143,11 +143,15 @@ const LEVEL_TONE = {
  * The three on/off columns sort on their label, which puts Active before Inactive
  * ascending. Password level sorts by the order in `PASSWORD_LEVELS` — the same order the
  * settings page's dropdown lists them in — rather than alphabetically, which would give
- * Custom, High, Low, Medium, Recommended and mean nothing. Every brand has a level, so
- * there's no missing value to place.
+ * Custom, High, Low, Medium, Recommended and mean nothing. The brands with password login
+ * off have no level, and their blank cells sort to the end ascending: they belong after a
+ * list of levels rather than seeded through it, and grouped rather than scattered.
  */
 const byName = (a, b) => a.name.localeCompare(b.name)
-const levelRank = (brand) => PASSWORD_LEVELS.indexOf(passwordLevelLabel(brand))
+const levelRank = (brand) => {
+  const level = passwordLevelLabel(brand)
+  return level ? PASSWORD_LEVELS.indexOf(level) : PASSWORD_LEVELS.length
+}
 
 const SORTERS = {
   brand: byName,
@@ -293,12 +297,11 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                   <Cell>
                     <FloraTag tone={STATE_TONE[brand.status]}>{brand.status}</FloraTag>
                   </Cell>
-                  {/* Always one of the five levels, per Rusty — every brand has one set,
-                      password login on or off, so this column has no blanks and no em
-                      dashes in it. */}
-                  <Cell>
-                    <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag>
-                  </Cell>
+                  {/* Empty when password login is off — those end users sign in through an
+                      external provider, so there is no password and no level to show.
+                      Blank rather than an em dash, per Rusty: a dash reads as a value that
+                      couldn't be found, and this is a setting that doesn't apply. */}
+                  <Cell>{level && <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag>}</Cell>
                   {/* One item, deliberately: View goes exactly where clicking the row goes.
                       A menu holding a single option is worth having anyway — it's where
                       Edit, Deactivate and the rest would land, so a reviewer can judge

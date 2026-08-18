@@ -101,8 +101,20 @@ const slugify = (name) =>
  * users", so a brand with both switched off is a state the product doesn't allow,
  * and a table row showing it would read as a bug in the prototype rather than as
  * data. When the index would produce that pair, Zendesk authentication wins. */
+
+/* The brands with password login off — ten of the 51, per Rusty, which is the number of
+ * blank Password level cells Option 2's table shows. Listed rather than derived: the
+ * modulo that used to decide this produced seven, because the "at least one method"
+ * rule above kept switching password login back on for brands that had no external
+ * provider either. Every index here has external authentication on, so none of them
+ * trips that rule, and the count is exactly what it says.
+ *
+ * Spread through the roster rather than bunched, so they're visible wherever a reviewer
+ * is looking and the Password level sort has something to gather at its end. */
+const NO_PASSWORD_LOGIN = new Set([2, 6, 9, 14, 20, 26, 33, 38, 44, 50])
+
 function authFor(index) {
-  const zendeskAuth = index % 5 !== 3
+  const zendeskAuth = !NO_PASSWORD_LOGIN.has(index)
   const externalAuth = index % 3 !== 1
   return {
     zendeskAuth: zendeskAuth || !externalAuth,
@@ -191,12 +203,11 @@ export const saveBrandAuth = (id, auth) => {
 export const passwordLoginLabel = (brand) => (brand.auth.zendeskAuth ? 'Active' : 'Inactive')
 export const ssoLabel = (brand) => (brand.auth.externalAuth ? 'Active' : 'Inactive')
 
-/* Always one of the five levels, per Rusty — every brand has a password level set,
- * whether or not password login is currently on, so the column never has a blank or an
- * em dash in it. (It used to return null with Zendesk authentication off, on the reading
- * that a level isn't "in force" then; the level is stored either way, and an empty cell
- * reads as missing data rather than as a setting that's idle.) */
-export const passwordLevelLabel = (brand) => brand.auth.passwordLevel
+/* Null when Zendesk authentication is off, per Rusty: that brand's end users sign in
+ * through an external provider, so there is no password and no level to report. Option 2's
+ * cell then renders **empty** — not an em dash, which would read as a value that couldn't
+ * be looked up rather than as a setting that doesn't apply. */
+export const passwordLevelLabel = (brand) => (brand.auth.zendeskAuth ? brand.auth.passwordLevel : null)
 
 /* The bullet list under Password level. Derived from the level so changing the
  * dropdown visibly changes the rules — the Low set is verbatim from the reference

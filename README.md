@@ -76,11 +76,14 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Password login and SSO read Active / Inactive**, the same words as a brand's own
   status, so Option 2's table carries one vocabulary for "is this on" across three
   columns. They said Turned on / Turned off.
-- **Password level always shows one of the five levels** — Low, Medium, High, Recommended or
-  Custom — with no blanks and no em dashes, at Rusty's ask. Every brand has a level stored
-  whether or not password login is currently on. It used to em-dash the rows with Zendesk
-  authentication off, on the reading that a level isn't in force then; an empty cell reads as
-  missing data instead.
+- **Password level is blank — not an em dash — when password login is off.** Those brands'
+  end users sign in through an external provider, so there's no password and no level to
+  report. Rusty's call on both counts: the gap belongs there, and a dash would read as a
+  value that couldn't be looked up rather than as a setting that doesn't apply. **Ten of the
+  51 brands** are in that state, listed explicitly as `NO_PASSWORD_LOGIN` in
+  [src/data/brands.js](src/data/brands.js) — it was seven when a modulo decided it, because
+  the "at least one method must be on" rule kept switching password login back on for brands
+  that had no external provider either.
 - **Column set in Option 2 is subject to change** — Rusty flagged that when specifying it.
 - **Option 2's row menu holds one item, *View***, which goes exactly where clicking the
   brand name goes. A one-item menu is the point: it's where Edit / Deactivate would land,
@@ -95,8 +98,9 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Option 2's five columns all sort, defaulting to Brand ascending.** Every comparator
   tiebreaks on the brand name — with three Active/Inactive columns most rows tie, and
   without it sorting by Status would look like a shuffle. Password level sorts in
-  `PASSWORD_LEVELS` order (the settings dropdown's order), not alphabetically. Sort cycles
-  asc → desc with no unsorted state, same as Option 3's list.
+  `PASSWORD_LEVELS` order (the settings dropdown's order), not alphabetically, and the ten
+  brands with no level gather at the end ascending. Sort cycles asc → desc with no unsorted
+  state, same as Option 3's list.
 - **Option 2's search field has a label, not a placeholder.** A placeholder vanishes as
   soon as someone types, so it can't be the only thing naming the field.
 - **The info Alert** is nudged lighter than Flora's flat grey, to match the reference
