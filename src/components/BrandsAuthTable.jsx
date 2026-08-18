@@ -5,6 +5,7 @@ import {
   Head,
   HeaderRow,
   HeaderCell,
+  SortableCell,
   Body,
   Row,
   Cell,
@@ -17,7 +18,13 @@ import { MD } from '@zendeskgarden/react-typography'
 import FloraTag from './FloraTag'
 import PageHeader from './PageHeader'
 import { SearchIcon } from './icons'
-import { BRANDS, passwordLevelLabel, passwordLoginLabel, ssoLabel } from '../data/brands'
+import {
+  BRANDS,
+  PASSWORD_LEVELS,
+  passwordLevelLabel,
+  passwordLoginLabel,
+  ssoLabel,
+} from '../data/brands'
 
 /* Option 2: End user authentication opens as a list of brands, and the settings are
  * one level down.
@@ -75,8 +82,30 @@ const Count = styled.div`
   margin: 24px 0 8px;
 `
 
+/* The brand name is the row's *indicator* now that the whole row is clickable, so it
+   carries Garden's primary blue without an underline at rest — an underline on every
+   row would read as 51 links to click, when the thing you click is the row. It
+   underlines on hover, and on hover of the row rather than of the four characters in
+   "RPM", because that's the target the pointer is actually over. */
 const BrandLink = styled(Anchor)`
   font-size: 14px;
+  text-decoration: none;
+`
+
+/* Rusty's ask: click anywhere in the row to drill into the brand. Garden already
+   supplies the row's hover fill and border (see StyledRow's colorStyles), so this adds
+   the pointer, and the name's underline follows the same hover.
+
+   Deliberately no `tabIndex` on the row: a focusable <tr> would put a third tab stop on
+   every one of 51 rows, in front of the brand link and the kebab that already do this
+   from the keyboard. Enter on the brand link bubbles a click up to here, so the keyboard
+   path and the pointer path end in the same handler. */
+const ClickableRow = styled(Row)`
+  cursor: pointer;
+
+  &:hover ${BrandLink} {
+    text-decoration: underline;
+  }
 `
 
 const Empty = styled.div`
@@ -106,13 +135,64 @@ const LEVEL_TONE = {
   Custom: 'purple',
 }
 
+/* Sorting, per column. Every comparator falls back to the brand name, so rows that tie —
+ * and with three Active/Inactive columns most of them do — land in alphabetical order
+ * rather than in whatever order the roster happens to hold. Without that, sorting by
+ * Status would look like it had shuffled the table.
+ *
+ * The three on/off columns sort on their label, which puts Active before Inactive
+ * ascending. Password level sorts by the order in `PASSWORD_LEVELS` — the same order the
+ * settings page's dropdown lists them in — rather than alphabetically, which would give
+ * Custom, High, Low, Medium, Recommended and mean nothing. Brands with no level (password
+ * login off, the em-dash rows) sort last ascending: they have no level, so they belong at
+ * the end of a list of levels rather than seeded through it.
+ */
+const byName = (a, b) => a.name.localeCompare(b.name)
+const levelRank = (brand) => {
+  const level = passwordLevelLabel(brand)
+  return level ? PASSWORD_LEVELS.indexOf(level) : PASSWORD_LEVELS.length
+}
+
+const SORTERS = {
+  brand: byName,
+  passwordLogin: (a, b) =>
+    passwordLoginLabel(a).localeCompare(passwordLoginLabel(b)) || byName(a, b),
+  sso: (a, b) => ssoLabel(a).localeCompare(ssoLabel(b)) || byName(a, b),
+  status: (a, b) => a.status.localeCompare(b.status) || byName(a, b),
+  passwordLevel: (a, b) => levelRank(a) - levelRank(b) || byName(a, b),
+}
+
 export default function BrandsAuthTable({ onSelectBrand }) {
   const [query, setQuery] = useState('')
 
+  /* Brand ascending is the default, per Rusty — the roster's own order is neither
+     alphabetical nor meaningful, and a table of 51 rows is in *some* order whether or not
+     anyone chose it. Cycles asc → desc → asc; there's no unsorted state to return to,
+     the same as the Brands list in Option 3. */
+  const [sort, setSort] = useState({ column: 'brand', direction: 'asc' })
+
+  // Filter first, then sort — sorting the whole roster and filtering after would do the
+  // same thing at 51 rows, but this is the order that stays right if the roster grows.
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase()
-    return needle ? BRANDS.filter((brand) => brand.name.toLowerCase().includes(needle)) : BRANDS
-  }, [query])
+    const matching = needle
+      ? BRANDS.filter((brand) => brand.name.toLowerCase().includes(needle))
+      : BRANDS
+    const sorted = [...matching].sort(SORTERS[sort.column])
+    return sort.direction === 'desc' ? sorted.reverse() : sorted
+  }, [query, sort])
+
+  const toggle = (column) =>
+    setSort((current) =>
+      current.column === column
+        ? { column, direction: current.direction === 'asc' ? 'desc' : 'asc' }
+        : { column, direction: 'asc' },
+    )
+
+  // Garden's SortableCell takes 'asc' | 'desc' | undefined. Undefined is "sortable, but
+  // not the column in force" — the double chevron in Rusty's screenshot — so passing it
+  // for the other four columns is what makes them all read as sortable.
+  const sortOf = (column) => (sort.column === column ? sort.direction : undefined)
 
   return (
     <>
@@ -164,11 +244,31 @@ export default function BrandsAuthTable({ onSelectBrand }) {
         <Table>
           <Head>
             <HeaderRow>
-              <HeaderCell width="28%">Brand</HeaderCell>
-              <HeaderCell width="16%">Password login</HeaderCell>
-              <HeaderCell width="14%">SSO</HeaderCell>
-              <HeaderCell width="14%">Status</HeaderCell>
-              <HeaderCell width="22%">Password level</HeaderCell>
+              <SortableCell width="28%" sort={sortOf('brand')} onClick={() => toggle('brand')}>
+                Brand
+              </SortableCell>
+              <SortableCell
+                width="16%"
+                sort={sortOf('passwordLogin')}
+                onClick={() => toggle('passwordLogin')}
+              >
+                Password login
+              </SortableCell>
+              <SortableCell width="14%" sort={sortOf('sso')} onClick={() => toggle('sso')}>
+                SSO
+              </SortableCell>
+              <SortableCell width="14%" sort={sortOf('status')} onClick={() => toggle('status')}>
+                Status
+              </SortableCell>
+              <SortableCell
+                width="22%"
+                sort={sortOf('passwordLevel')}
+                onClick={() => toggle('passwordLevel')}
+              >
+                Password level
+              </SortableCell>
+              {/* The overflow column stays a plain header — there's nothing in it to
+                  order by. */}
               <HeaderCell hasOverflow />
             </HeaderRow>
           </Head>
@@ -176,15 +276,13 @@ export default function BrandsAuthTable({ onSelectBrand }) {
             {rows.map((brand) => {
               const level = passwordLevelLabel(brand)
               return (
-                <Row key={brand.id}>
+                <ClickableRow key={brand.id} onClick={() => onSelectBrand(brand.id)}>
                   <Cell>
-                    <BrandLink
-                      href="#"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        onSelectBrand(brand.id)
-                      }}
-                    >
+                    {/* The anchor only cancels the `#`; the row above it does the
+                        navigating, so there's one path in whether the reader clicked the
+                        name, clicked the Password level column, or pressed Enter on the
+                        link — a click from the keyboard bubbles up here too. */}
+                    <BrandLink href="#" onClick={(event) => event.preventDefault()}>
                       {brand.name}
                     </BrandLink>
                   </Cell>
@@ -203,11 +301,13 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                       no password to set a level for, and a chip would claim a level
                       that isn't in force. */}
                   <Cell>{level ? <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag> : '—'}</Cell>
-                  {/* One item, deliberately: View goes exactly where the brand name goes.
+                  {/* One item, deliberately: View goes exactly where clicking the row goes.
                       A menu holding a single option is worth having anyway — it's where
                       Edit, Deactivate and the rest would land, so a reviewer can judge
                       whether this row wants a menu at all. */}
-                  <Cell hasOverflow>
+                  {/* stopPropagation so opening the kebab isn't also a click on the row —
+                      it would drill in behind the menu it just opened. */}
+                  <Cell hasOverflow onClick={(event) => event.stopPropagation()}>
                     <Menu
                       placement="bottom-end"
                       button={(props) => (
@@ -223,7 +323,7 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                       <Item value="view">View</Item>
                     </Menu>
                   </Cell>
-                </Row>
+                </ClickableRow>
               )
             })}
           </Body>

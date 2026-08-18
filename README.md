@@ -82,6 +82,18 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
   brand name goes. A one-item menu is the point: it's where Edit / Deactivate would land,
   so a reviewer can judge whether these rows want a menu at all. Unlike the Brands list's
   kebab, this one works.
+- **Option 2's whole row is clickable**, and the brand name is only the indicator: primary
+  blue, no underline at rest, underlined when the *row* is hovered. There is no focusable
+  `<tr>` — that would add a third tab stop to each of 51 rows in front of the link and the
+  kebab, which already do the same thing from the keyboard. Enter on the brand link bubbles
+  a click to the row, so pointer and keyboard end in one handler; the kebab's cell stops
+  propagation so opening the menu doesn't drill in behind it.
+- **Option 2's five columns all sort, defaulting to Brand ascending.** Every comparator
+  tiebreaks on the brand name — with three Active/Inactive columns most rows tie, and
+  without it sorting by Status would look like a shuffle. Password level sorts in
+  `PASSWORD_LEVELS` order (the settings dropdown's order), not alphabetically, and the
+  em-dash rows sort last ascending. Sort cycles asc → desc with no unsorted state, same as
+  Option 3's list.
 - **Option 2's search field has a label, not a placeholder.** A placeholder vanishes as
   soon as someone types, so it can't be the only thing naming the field.
 - **The info Alert** is nudged lighter than Flora's flat grey, to match the reference
