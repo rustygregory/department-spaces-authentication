@@ -64,8 +64,10 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Brand logos are placeholders** — a coloured square with the brand's initial. The real
   page shows uploaded images and there are no assets for 51 brands.
 - **Every tag is `FloraTag`**, built to Rusty's Flora tag sheet: pale fill + the same
-  hue's dark text (palette 200/900), fully round `isPill` ends, Garden's `large` size
-  because that's what the sheet measures at. Garden's own named hues render *solid*
+  hue's dark text (palette 200/900), fully round `isPill` ends, and a **20px height cap**
+  — Rusty's rule, and Garden's `medium` size exactly, so the two agree rather than one
+  clipping the other. (The sheet's chips measure ~32px; the cap is the later
+  instruction.) Garden's own named hues render *solid*
   chips with white text, which is what this used to look like. The sheet has no blue
   swatch, so Default / Agent route on the Brands list took its generic purple "Tag"
   style; they were blue, from the pre-Flora screenshot of that page. Low password level

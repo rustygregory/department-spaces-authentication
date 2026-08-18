@@ -17,11 +17,11 @@ import { PALETTE } from '../flora-theme/elements/palette'
  * the sheet.
  *
  * **Shape.** Fully round ends — `isPill`, which Garden renders as a 100px radius
- * rather than its default 4px. Size is `large` because that's what the sheet measures
- * at: its chips are ~32px tall with ~12px of side padding, which is Garden's large
- * exactly (medium is 20px/8px and reads cramped against the sheet). It does make table
- * rows chunkier than they were — `SIZE` below is the one line to change if Rusty wants
- * them tighter.
+ * rather than its default 4px. Height is capped at **20px**, Rusty's rule for every tag
+ * in the prototype, which is Garden's `medium` exactly — so the size and the cap agree
+ * and neither is fighting the other. (The sheet's own chips measure ~32px, Garden's
+ * `large`; the cap is the later instruction and it wins.) `MAX_HEIGHT` is stated as CSS
+ * as well as picked by size, so bumping `SIZE` can't quietly make tall tags again.
  *
  * Note the sheet has **no blue swatch**. `Tag` — the purple one — is its generic label
  * chip, so that's what the Brands list's Default / Agent route tags use now; they were
@@ -36,14 +36,16 @@ const TONES = {
   purple: { bg: PALETTE.purple[200], fg: PALETTE.purple[900] },
 }
 
-const SIZE = 'large'
+const SIZE = 'medium'
+const MAX_HEIGHT = 20
 
-/* `&&` doubles the specificity. Garden sets both `background-color` and a `&:hover`
-   colour of its own from the hue logic, and without the extra weight which of the two
-   rules wins would come down to stylesheet order. */
+/* `&&` doubles the specificity. Garden sets a `height`, a `background-color` and a
+   `&:hover` colour of its own, and without the extra weight which of the two rules wins
+   would come down to stylesheet order. */
 const Chip = styled(Tag).attrs({ isPill: true, size: SIZE })`
   &&,
   &&:hover {
+    max-height: ${MAX_HEIGHT}px;
     background-color: ${(props) => TONES[props.$tone].bg};
     color: ${(props) => TONES[props.$tone].fg};
   }
