@@ -162,6 +162,23 @@ export const BRANDS = NAMES.map((name, index) => {
 
 export const getBrand = (id) => BRANDS.find((brand) => brand.id === id)
 
+/* Save. The settings page edits a local copy and commits it here, so a saved change to
+ * Dinoco's password level is the value Option 2's table shows when the reader goes back to
+ * it — a Save that a table then contradicted would be worse than no Save at all.
+ *
+ * It writes onto the roster entry rather than into a store with subscribers: the screens
+ * that read `auth` re-render when navigation state changes, which is the only way to leave
+ * this page, so nothing needs to be notified. The brand object itself keeps its identity,
+ * which matters — the settings page re-seeds its fields whenever the `brand` it was handed
+ * changes, and a new object would make saving look like a reset.
+ *
+ * Still nothing past a reload. This is session state, not a backend. */
+export const saveBrandAuth = (id, auth) => {
+  const brand = getBrand(id)
+  if (brand) brand.auth = { ...brand.auth, ...auth }
+  return brand
+}
+
 /* Column values for Option 2's table, derived from the same `auth` object the
  * settings page renders. Derived rather than stored so the table and the page it
  * drills into cannot disagree — the failure mode being a row that says Inactive

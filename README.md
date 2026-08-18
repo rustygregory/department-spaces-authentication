@@ -37,6 +37,7 @@ Comment mode needs `.env.local` (already present, gitignored) — see **Comments
 | [src/components/PageHeader.jsx](src/components/PageHeader.jsx) | Breadcrumbs + title for every screen — the one place page-title geometry lives |
 | [src/components/FloraTag.jsx](src/components/FloraTag.jsx) | The one tag — Flora's pale fill, tinted text and pill shape; the one place tag colour lives |
 | [src/components/EndUserAuthPage.jsx](src/components/EndUserAuthPage.jsx) | The settings screen, shared by all three options |
+| [src/components/SaveToast.jsx](src/components/SaveToast.jsx) | The success toast after Save — the one place its 70/40 placement lives |
 | [src/components/BrandsAuthTable.jsx](src/components/BrandsAuthTable.jsx) | Option 2's brand table |
 | [src/components/EuaMovedPage.jsx](src/components/EuaMovedPage.jsx) | Option 3's signpost |
 | [src/components/BrandsListPage.jsx](src/components/BrandsListPage.jsx) | Option 3's Brands list |
@@ -118,7 +119,14 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
   standing rule for bottom bars; the reference screenshot shows the bounded version.
 - **Section headings inside a page are still bold** ("Who has access") — only the page
   titles went regular.
-- **Nothing persists.** Every control is live within the session; a reload resets it.
+- **Save commits, and stays put.** It writes the settings onto the shared roster and shows a
+  success toast 70px from the top of the screen and 40px from the right, rather than
+  navigating anywhere — so a saved change to Dinoco's password level is what Option 2's table
+  shows when you go back to it. A Save the table then contradicted would be worse than no
+  Save. Cancel reverts to the saved values for the same reason: it shouldn't be the only
+  inert control on a bar whose other button works. The toast is Garden's `Notification` under
+  Flora's override, placed by hand — `ToastProvider` owns the offsets, which is the part
+  Rusty specified. **A reload still resets everything**; this is session state, not a backend.
 - **`currentProduct` is `admin-center`, with a hyphen.** That's the id in the template's
   product list, and MainNav compares against it literally — `admin_center` isn't
   rejected, it just silently falls back to Support's nav rail.

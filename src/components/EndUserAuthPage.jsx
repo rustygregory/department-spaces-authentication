@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Tabs, TabList, Tab, TabPanel } from '@zendeskgarden/react-tabs'
 import { Field, Label, Hint, Checkbox, Radio } from '@zendeskgarden/react-forms'
@@ -7,8 +7,9 @@ import { Alert, Title } from '@zendeskgarden/react-notifications'
 import { Anchor, Button } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
 import PageHeader from './PageHeader'
+import SaveToast from './SaveToast'
 import { ExternalLinkIcon } from './icons'
-import { BRANDS, PASSWORD_LEVELS, PASSWORD_RULES } from '../data/brands'
+import { BRANDS, PASSWORD_LEVELS, PASSWORD_RULES, saveBrandAuth } from '../data/brands'
 
 /* The End user authentication settings screen — the one page all three options are
  * arguments about, so there is exactly one copy of it and the options differ by
@@ -210,13 +211,38 @@ export default function EndUserAuthPage({
   const [providers, setProviders] = useState(brand.auth.providers)
   const [signInMode, setSignInMode] = useState(brand.auth.signInMode)
 
-  useEffect(() => {
+  /* Also what Cancel does: go back to the brand's saved values. A Cancel that did nothing,
+     sitting next to a Save that commits, would be the odd one out. */
+  const revert = useCallback(() => {
     setZendeskAuth(brand.auth.zendeskAuth)
     setPasswordLevel(brand.auth.passwordLevel)
     setExternalAuth(brand.auth.externalAuth)
     setProviders(brand.auth.providers)
     setSignInMode(brand.auth.signInMode)
   }, [brand])
+
+  useEffect(revert, [revert])
+
+  /* Save keeps the reader on the brand they're looking at — Rusty's ask — and says so with
+     a toast rather than by navigating somewhere. `saves` is a counter, not a flag: saving
+     twice has to give the second toast its own four seconds, and a flag that's already true
+     wouldn't restart the timer. */
+  const [saves, setSaves] = useState(0)
+  const [isSaved, setIsSaved] = useState(false)
+
+  const handleSave = () => {
+    saveBrandAuth(brand.id, {
+      zendeskAuth,
+      passwordLevel,
+      externalAuth,
+      providers,
+      signInMode,
+    })
+    setSaves((count) => count + 1)
+    setIsSaved(true)
+  }
+
+  const dismissToast = useCallback(() => setIsSaved(false), [])
 
   /* The brand switcher's typed filter. Garden's Combobox doesn't narrow its own
      options — it reports what was typed and leaves the list to the caller — so this
@@ -433,13 +459,19 @@ export default function EndUserAuthPage({
       </Scroll>
 
       <Footer>
-        <CancelButton isLink onClick={() => {}}>
+        <CancelButton isLink onClick={revert}>
           Cancel
         </CancelButton>
-        <Button isPrimary onClick={() => {}}>
+        <Button isPrimary onClick={handleSave}>
           Save
         </Button>
       </Footer>
+
+      {isSaved && (
+        <SaveToast title="Changes saved" onClose={dismissToast} resetKey={saves}>
+          {brand.name} end user authentication settings were updated.
+        </SaveToast>
+      )}
     </Shell>
   )
 }
