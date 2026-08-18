@@ -1,7 +1,17 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Table, Head, HeaderRow, HeaderCell, Body, Row, Cell } from '@zendeskgarden/react-tables'
+import {
+  Table,
+  Head,
+  HeaderRow,
+  HeaderCell,
+  Body,
+  Row,
+  Cell,
+  OverflowButton,
+} from '@zendeskgarden/react-tables'
 import { Field, Label, MediaInput } from '@zendeskgarden/react-forms'
+import { Menu, Item } from '@zendeskgarden/react-dropdowns'
 import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
 import FloraTag from './FloraTag'
@@ -145,18 +155,21 @@ export default function BrandsAuthTable({ onSelectBrand }) {
           {rows.length} {rows.length === 1 ? 'brand' : 'brands'}
         </Count>
 
-        {/* No icons in this table, by Rusty's standing rule — the search glyph above
-            is the exception it allows.
+        {/* No icons in this table, by Rusty's standing rule — the search glyph above and
+            Garden's own overflow control are the exceptions it allows.
             Columns are subject to change (Rusty flagged this when specifying them),
-            so they're listed in one place rather than spread through the row. */}
+            so they're listed in one place rather than spread through the row.
+            The five widths total 94%; the rest goes to the unsized overflow column, the
+            same way the Brands list sizes its own. */}
         <Table>
           <Head>
             <HeaderRow>
-              <HeaderCell width="30%">Brand</HeaderCell>
-              <HeaderCell width="17%">Password login</HeaderCell>
-              <HeaderCell width="15%">SSO</HeaderCell>
-              <HeaderCell width="15%">Status</HeaderCell>
-              <HeaderCell width="23%">Password level</HeaderCell>
+              <HeaderCell width="28%">Brand</HeaderCell>
+              <HeaderCell width="16%">Password login</HeaderCell>
+              <HeaderCell width="14%">SSO</HeaderCell>
+              <HeaderCell width="14%">Status</HeaderCell>
+              <HeaderCell width="22%">Password level</HeaderCell>
+              <HeaderCell hasOverflow />
             </HeaderRow>
           </Head>
           <Body>
@@ -190,6 +203,26 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                       no password to set a level for, and a chip would claim a level
                       that isn't in force. */}
                   <Cell>{level ? <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag> : '—'}</Cell>
+                  {/* One item, deliberately: View goes exactly where the brand name goes.
+                      A menu holding a single option is worth having anyway — it's where
+                      Edit, Deactivate and the rest would land, so a reviewer can judge
+                      whether this row wants a menu at all. */}
+                  <Cell hasOverflow>
+                    <Menu
+                      placement="bottom-end"
+                      button={(props) => (
+                        <OverflowButton {...props} aria-label={`Actions for ${brand.name}`} />
+                      )}
+                      /* Garden reports a clicked item as `changes.value`, not on
+                         `selectedItems` — this menu performs an action, it holds no
+                         selection. */
+                      onChange={(changes) => {
+                        if (changes.value === 'view') onSelectBrand(brand.id)
+                      }}
+                    >
+                      <Item value="view">View</Item>
+                    </Menu>
+                  </Cell>
                 </Row>
               )
             })}

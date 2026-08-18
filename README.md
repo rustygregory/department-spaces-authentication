@@ -78,6 +78,12 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Password level shows an em dash, not a tag, when password login is off.** There's no
   password to set a level for, and a chip would claim a level that isn't in force.
 - **Column set in Option 2 is subject to change** — Rusty flagged that when specifying it.
+- **Option 2's row menu holds one item, *View***, which goes exactly where clicking the
+  brand name goes. A one-item menu is the point: it's where Edit / Deactivate would land,
+  so a reviewer can judge whether these rows want a menu at all. Unlike the Brands list's
+  kebab, this one works.
+- **Option 2's search field has a label, not a placeholder.** A placeholder vanishes as
+  soon as someone types, so it can't be the only thing naming the field.
 - **The info Alert** is nudged lighter than Flora's flat grey, to match the reference
   screenshot, which predates Flora. Know which of the two you're looking at before
   "fixing" either.
