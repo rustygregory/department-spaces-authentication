@@ -165,6 +165,13 @@ const CHANNEL_TABS = [
 
 const listboxHeightFor = (rows) => `${rows * 36 + 8}px`
 
+/* The brand menu in alphabetical order, per Rusty. Sorted here rather than in the roster:
+   the roster's order is its own — Dinoco and Rusteze lead it because they're the two brands
+   that actually exist in staging, which is what makes the reference screenshots line up
+   with the prototype, and `BRANDS[0]` is the brand every option opens on. A menu of 51 is
+   a different job from a roster of 51: nobody scans it for the order it was written in. */
+const BRANDS_BY_NAME = [...BRANDS].sort((a, b) => a.name.localeCompare(b.name))
+
 /**
  * @param brand        the brand whose settings are shown
  * @param breadcrumbs  [{ label, onClick? }] — omitted inside a brand's own tab,
@@ -201,11 +208,14 @@ export default function EndUserAuthPage({
 
   /* The brand switcher's typed filter. Garden's Combobox doesn't narrow its own
      options — it reports what was typed and leaves the list to the caller — so this
-     is what makes the search dynamic across all 51 brands. */
+     is what makes the search dynamic across all 51 brands. Filtering an
+     already-alphabetical list keeps it alphabetical, so there's nothing to re-sort. */
   const [brandQuery, setBrandQuery] = useState('')
   const matchingBrands = useMemo(() => {
     const needle = brandQuery.trim().toLowerCase()
-    return needle ? BRANDS.filter((option) => option.name.toLowerCase().includes(needle)) : BRANDS
+    return needle
+      ? BRANDS_BY_NAME.filter((option) => option.name.toLowerCase().includes(needle))
+      : BRANDS_BY_NAME
   }, [brandQuery])
 
   const toggleProvider = (key) => setProviders((current) => ({ ...current, [key]: !current[key] }))
