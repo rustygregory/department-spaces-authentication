@@ -76,8 +76,11 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Password login and SSO read Active / Inactive**, the same words as a brand's own
   status, so Option 2's table carries one vocabulary for "is this on" across three
   columns. They said Turned on / Turned off.
-- **Password level shows an em dash, not a tag, when password login is off.** There's no
-  password to set a level for, and a chip would claim a level that isn't in force.
+- **Password level always shows one of the five levels** — Low, Medium, High, Recommended or
+  Custom — with no blanks and no em dashes, at Rusty's ask. Every brand has a level stored
+  whether or not password login is currently on. It used to em-dash the rows with Zendesk
+  authentication off, on the reading that a level isn't in force then; an empty cell reads as
+  missing data instead.
 - **Column set in Option 2 is subject to change** — Rusty flagged that when specifying it.
 - **Option 2's row menu holds one item, *View***, which goes exactly where clicking the
   brand name goes. A one-item menu is the point: it's where Edit / Deactivate would land,
@@ -92,9 +95,8 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
 - **Option 2's five columns all sort, defaulting to Brand ascending.** Every comparator
   tiebreaks on the brand name — with three Active/Inactive columns most rows tie, and
   without it sorting by Status would look like a shuffle. Password level sorts in
-  `PASSWORD_LEVELS` order (the settings dropdown's order), not alphabetically, and the
-  em-dash rows sort last ascending. Sort cycles asc → desc with no unsorted state, same as
-  Option 3's list.
+  `PASSWORD_LEVELS` order (the settings dropdown's order), not alphabetically. Sort cycles
+  asc → desc with no unsorted state, same as Option 3's list.
 - **Option 2's search field has a label, not a placeholder.** A placeholder vanishes as
   soon as someone types, so it can't be the only thing naming the field.
 - **The info Alert** is nudged lighter than Flora's flat grey, to match the reference

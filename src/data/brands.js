@@ -191,10 +191,12 @@ export const saveBrandAuth = (id, auth) => {
 export const passwordLoginLabel = (brand) => (brand.auth.zendeskAuth ? 'Active' : 'Inactive')
 export const ssoLabel = (brand) => (brand.auth.externalAuth ? 'Active' : 'Inactive')
 
-/* Password level only means anything while Zendesk authentication is on. With it
- * off there is no password to set a level for, so the cell shows an em dash rather
- * than a tag claiming a level that isn't in force. */
-export const passwordLevelLabel = (brand) => (brand.auth.zendeskAuth ? brand.auth.passwordLevel : null)
+/* Always one of the five levels, per Rusty — every brand has a password level set,
+ * whether or not password login is currently on, so the column never has a blank or an
+ * em dash in it. (It used to return null with Zendesk authentication off, on the reading
+ * that a level isn't "in force" then; the level is stored either way, and an empty cell
+ * reads as missing data rather than as a setting that's idle.) */
+export const passwordLevelLabel = (brand) => brand.auth.passwordLevel
 
 /* The bullet list under Password level. Derived from the level so changing the
  * dropdown visibly changes the rules — the Low set is verbatim from the reference

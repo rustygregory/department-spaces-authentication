@@ -143,15 +143,11 @@ const LEVEL_TONE = {
  * The three on/off columns sort on their label, which puts Active before Inactive
  * ascending. Password level sorts by the order in `PASSWORD_LEVELS` — the same order the
  * settings page's dropdown lists them in — rather than alphabetically, which would give
- * Custom, High, Low, Medium, Recommended and mean nothing. Brands with no level (password
- * login off, the em-dash rows) sort last ascending: they have no level, so they belong at
- * the end of a list of levels rather than seeded through it.
+ * Custom, High, Low, Medium, Recommended and mean nothing. Every brand has a level, so
+ * there's no missing value to place.
  */
 const byName = (a, b) => a.name.localeCompare(b.name)
-const levelRank = (brand) => {
-  const level = passwordLevelLabel(brand)
-  return level ? PASSWORD_LEVELS.indexOf(level) : PASSWORD_LEVELS.length
-}
+const levelRank = (brand) => PASSWORD_LEVELS.indexOf(passwordLevelLabel(brand))
 
 const SORTERS = {
   brand: byName,
@@ -297,10 +293,12 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                   <Cell>
                     <FloraTag tone={STATE_TONE[brand.status]}>{brand.status}</FloraTag>
                   </Cell>
-                  {/* An em dash rather than a tag when password login is off: there is
-                      no password to set a level for, and a chip would claim a level
-                      that isn't in force. */}
-                  <Cell>{level ? <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag> : '—'}</Cell>
+                  {/* Always one of the five levels, per Rusty — every brand has one set,
+                      password login on or off, so this column has no blanks and no em
+                      dashes in it. */}
+                  <Cell>
+                    <FloraTag tone={LEVEL_TONE[level]}>{level}</FloraTag>
+                  </Cell>
                   {/* One item, deliberately: View goes exactly where clicking the row goes.
                       A menu holding a single option is worth having anyway — it's where
                       Edit, Deactivate and the rest would land, so a reviewer can judge
