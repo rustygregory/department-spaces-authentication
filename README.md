@@ -4,7 +4,8 @@ A prototype for one question: **end user authentication is becoming per-brand �
 does the brand dimension live?**
 
 Today Account › Security › End user authentication is a single account-wide page. Three
-answers are on the table, switchable from the dropdown in the top right:
+answers are on the table, switchable from the **Option** menu in the prototype bar at the
+very top of the window:
 
 | Option | Shape | The argument it makes |
 | --- | --- | --- |
@@ -33,6 +34,7 @@ Comment mode needs `.env.local` (already present, gitignored) — see **Comments
 | File | What it is |
 | --- | --- |
 | [src/App.jsx](src/App.jsx) | Chrome, the option switcher, and all navigation state |
+| [src/prototype-bar/PrototypeBar.jsx](src/prototype-bar/PrototypeBar.jsx) | The prototype info bar — title, version/date, the Option switcher, and the slot the Comment button sits in. Built to Rusty's component sheet: slate band, two light pills |
 | [src/components/AdminCenterNav.jsx](src/components/AdminCenterNav.jsx) | The Account sub-nav, every real item, only two clickable |
 | [src/components/PageHeader.jsx](src/components/PageHeader.jsx) | Breadcrumbs + title for every screen — the one place page-title geometry lives |
 | [src/components/FloraTag.jsx](src/components/FloraTag.jsx) | The one tag — Flora's pale fill, tinted text and pill shape; the one place tag colour lives |
@@ -140,6 +142,19 @@ Things that look like bugs but aren't, and things a reviewer may want changed:
   inert control on a bar whose other button works. The toast is Garden's `Notification` under
   Flora's override, placed by hand — `ToastProvider` owns the offsets, which is the part
   Rusty specified. **A reload still resets everything**; this is session state, not a backend.
+- **The prototype bar follows Rusty's component sheet, and its hexes are eyeballed.** Slate
+  band, white title, grey meta, and the switcher and Comment button as matching light pills
+  — read off the PNG rather than from a token list, so they're approximations of it. The
+  switcher's pill carries the **whole option title** and is sized to it, chevron at the right
+  end, with no "Option" label beside it: the title already starts with the word. One
+  consequence — the pill's width changes with the selection, so the Comment button beside it
+  shifts a little when the option changes. Sizing the pill to the longest of the three titles
+  would hold it still, at the cost of dead space on the short ones. The menu panel is
+  `width: max-content` now rather than a measured 376px, so editing a label can't leave a
+  stale number behind. The Comment button's *inline* colours live in
+  [src/comments/CommentLayer.jsx](src/comments/CommentLayer.jsx) — the one edit to that
+  otherwise-droppable directory; its floating variant is untouched, and comment mode *on* is
+  the same blue in both.
 - **`currentProduct` is `admin-center`, with a hyphen.** That's the id in the template's
   product list, and MainNav compares against it literally — `admin_center` isn't
   rejected, it just silently falls back to Support's nav rail.
@@ -151,7 +166,12 @@ skill, backed by the shared Supabase project (`project` column namespaces protot
 there's no per-prototype setup beyond `PROJECT` in
 [src/comments/store.js](src/comments/store.js) and copying `.env.local`).
 
-Pins attach to the `MainContent` work area only, so the top bar, option switcher, global
+The **Comment** button is portalled into the prototype bar (`toggleContainer` on
+`CommentLayer`) rather than floating over the bottom-left of the page, so it covers none
+of the design. With no `toggleContainer`, the layer falls back to the floating button and
+still drops into any prototype unedited.
+
+Pins attach to the `MainContent` work area only, so the prototype bar, the top bar, global
 nav and the Account sub-nav stay clickable with comment mode on. The trade-off: a reviewer
 can't pin a comment *on* the "End user authentication" nav item, which is itself part of
 what Option 3 changes. Keeping the sub-nav live wins — covering it would strand a reviewer

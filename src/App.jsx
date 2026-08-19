@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { ThemeProvider } from './flora-theme/elements/ThemeProvider'
 import { TopBar, MainNav } from 'zendesk-globalnav-template'
-import { Combobox, Field, Option } from '@zendeskgarden/react-dropdowns'
 import styled from 'styled-components'
+import PrototypeBar from './prototype-bar/PrototypeBar'
 import AdminCenterNav from './components/AdminCenterNav'
 import EndUserAuthPage from './components/EndUserAuthPage'
 import BrandsAuthTable from './components/BrandsAuthTable'
@@ -22,11 +22,23 @@ import './App.css'
  * so what a reviewer is comparing is only the navigation.
  */
 
+/* The whole window: our prototype bar, then the product below it.
+   Sized in percent rather than viewport units so that comment mode — which
+   narrows #root to make room for its sidebar — actually narrows this too. A
+   100vw child ignores a narrower parent and slides under the sidebar. */
+const Shell = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`
+
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  flex: 1;
+  min-height: 0;
   background-color: #f8f9f9;
   overflow: hidden;
 `
@@ -52,48 +64,21 @@ const MainContent = styled.main`
 `
 
 const TopBarRow = styled.div`
-  position: relative;
   flex-shrink: 0;
 `
 
-// Option switcher overlaid on the top bar, positioned as in our other prototypes:
-// the TopBar search box (320px) starts 404px from the right edge, so 428px leaves a
-// 24px gap beside it.
-const VersionOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  right: 428px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-`
-
-/* Wide enough that no option label wraps. Garden pads each option 36px either side,
-   so the floor is the longest label's text width + 72. The longest here — "Option 1
-   End user auth with brands dropdown", 41 characters — measures 268px of 14px system
-   text, so the floor is 340.
-
-   360px is that plus a little room. It grows leftward from `right: 428px` and there
-   is nothing to its left on this top bar (no tab strip, unlike organization-hierarchy),
-   so the width is free.
-
-   Measure, don't estimate — an estimate here was 38px short in organization-hierarchy
-   and one label silently wrapped to a 48px-tall row. If a label changes, measure the
-   option's *text node*: the option element's own width is the wrapper's and tells you
-   nothing. Rusty has said wrapping is acceptable for these longer titles if it comes
-   to that; single-line is still the target, and the check is that every option's
-   `getBoundingClientRect().height` is equal. */
-const VersionFieldWrapper = styled.div`
-  min-width: 360px;
-`
-
 /* The three options. Ids are permanent — a comment pin stores one, so renaming an id
-   would silently point old pins at a different option. */
+   would silently point old pins at a different option.
+
+   One `label` each, shown in full both on the switcher's button and in its menu, at
+   Rusty's ask — the button used to carry a `short` form ("Option 2") with the word
+   "Option" printed beside it, which said less in more space. There was a Garden Combobox
+   overlaid on the Zendesk top bar before that; it read as a Zendesk control rather than a
+   prototype one, which is why the prototype bar exists at all. */
 const OPTIONS = [
-  { id: 'opt1', label: 'Option 1 End user auth with brands dropdown' },
-  { id: 'opt2', label: 'Option 2 End user auth table' },
-  { id: 'opt3', label: 'Option 3 Brands flow' },
+  { id: 'opt1', label: 'Option 1 — End user auth with brands dropdown' },
+  { id: 'opt2', label: 'Option 2 — End user auth table' },
+  { id: 'opt3', label: 'Option 3 — Brands flow' },
 ]
 
 const isKnownOption = (id) => OPTIONS.some((option) => option.id === id)
@@ -124,7 +109,10 @@ export default function App() {
   const [isSubnavExpanded, setIsSubnavExpanded] = useState(false)
 
   const [option, setOption] = useState('opt1')
-  const optionLabel = OPTIONS.find((entry) => entry.id === option)?.label
+
+  /* The prototype bar's slot for the Comment button, held in state rather than a
+     ref so that its arrival re-renders and CommentLayer can portal into it. */
+  const [commentSlot, setCommentSlot] = useState(null)
 
   const [route, setRoute] = useState(HOME_ROUTE.opt1)
   // Which brand is being looked at. Option 1 reads it as the dropdown's selection;
@@ -246,69 +234,61 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <PageContainer>
-        <TopBarRow>
-          <TopBar currentProduct={currentProduct} onProductChange={setCurrentProduct} />
-          <VersionOverlay>
-            <VersionFieldWrapper>
-              <Field>
-                <Combobox
-                  isCompact
-                  isEditable={false}
-                  // Garden warns on every render without this and defaults to
-                  // "Options".
-                  listboxAriaLabel="Prototype options"
-                  inputValue={optionLabel}
-                  selectionValue={option}
-                  onChange={({ selectionValue }) => {
-                    if (selectionValue) selectOption(selectionValue)
-                  }}
-                >
-                  {OPTIONS.map((entry) => (
-                    <Option key={entry.id} value={entry.id} label={entry.label}>
-                      {entry.label}
-                    </Option>
-                  ))}
-                </Combobox>
-              </Field>
-            </VersionFieldWrapper>
-          </VersionOverlay>
-        </TopBarRow>
-        <ContentRow>
-          <MainNav
-            currentProduct="admin-center"
-            activeNavItem={activeNavItem}
-            setActiveNavItem={setActiveNavItem}
-            isSubnavExpanded={isSubnavExpanded}
-            setIsSubnavExpanded={setIsSubnavExpanded}
-          />
-          <AdminCenterNav
-            activeItem={activeNavLabel}
-            onSelect={onSelectNavItem}
-            // Brands is only a destination in Option 3; elsewhere the brand lives
-            // inside the auth page and the nav item would offer a screen the option
-            // doesn't have.
-            brandsEnabled={option === 'opt3'}
-          />
-          {/* Comment mode pins to this wrapper only — inside the chrome, so the top
-              bar, the option switcher, the global nav rail and the Account sub-nav all
-              stay clickable with comment mode on. The trade-off worth naming to Rusty:
-              a reviewer can't pin a comment *on* the "End user authentication" nav
-              item, which is itself part of what Option 3 changes. Keeping the sub-nav
-              live wins, because covering it would strand a reviewer on whichever
-              screen they entered on. */}
-          <MainContent data-comment-root="true">{renderWorkArea()}</MainContent>
-        </ContentRow>
+      <Shell>
+        {/* Our chrome, above the product's. The option switcher and the Comment
+            button both live here, so neither covers the design. */}
+        <PrototypeBar
+          title="Department spaces authentication"
+          meta="Aug 2026"
+          versions={OPTIONS}
+          versionId={option}
+          onVersionChange={selectOption}
+          versionLabel="Option"
+          commentSlotRef={setCommentSlot}
+        />
+        <PageContainer>
+          <TopBarRow>
+            <TopBar currentProduct={currentProduct} onProductChange={setCurrentProduct} />
+          </TopBarRow>
+          <ContentRow>
+            <MainNav
+              currentProduct="admin-center"
+              activeNavItem={activeNavItem}
+              setActiveNavItem={setActiveNavItem}
+              isSubnavExpanded={isSubnavExpanded}
+              setIsSubnavExpanded={setIsSubnavExpanded}
+            />
+            <AdminCenterNav
+              activeItem={activeNavLabel}
+              onSelect={onSelectNavItem}
+              // Brands is only a destination in Option 3; elsewhere the brand lives
+              // inside the auth page and the nav item would offer a screen the option
+              // doesn't have.
+              brandsEnabled={option === 'opt3'}
+            />
+            {/* Comment mode pins to this wrapper only — inside the chrome, so the
+                prototype bar, the top bar, the global nav rail and the Account sub-nav
+                all stay clickable with comment mode on. The trade-off worth naming to
+                Rusty: a reviewer can't pin a comment *on* the "End user
+                authentication" nav item, which is itself part of what Option 3
+                changes. Keeping the sub-nav live wins, because covering it would
+                strand a reviewer on whichever screen they entered on. */}
+            <MainContent data-comment-root="true">{renderWorkArea()}</MainContent>
+          </ContentRow>
+        </PageContainer>
 
         {/* Comment mode. Outside the prototype's own flow: with it off, nothing here
             intercepts a click and the prototype behaves as if it weren't installed.
+
+            Its button is portalled into the prototype bar rather than floated over the
+            bottom-left of the page, so it covers nothing — `commentSlot` is that slot.
 
             `context` is what a pin remembers about the view it was made in. All three
             values matter, because the same screen position holds different content per
             option, per route and per brand — a pin without them would reopen pointing
             at something else. */}
         <CommentLayer
-          toggleLeft={32}
+          toggleContainer={commentSlot}
           context={{ option, route, brandId }}
           onRestoreContext={(saved) => {
             /* Guarded against an id no option answers to: that would leave the
@@ -321,7 +301,7 @@ export default function App() {
             if (saved.route) setRoute(saved.route)
           }}
         />
-      </PageContainer>
+      </Shell>
     </ThemeProvider>
   )
 }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 import {
   describeAnchor,
@@ -33,6 +34,10 @@ import {
  * - `onRestoreContext` — called with a stored context so the host can put the app
  *   back into the state a comment was made in
  *
+ * Optionally, `toggleContainer` — a DOM node to render the Comment button into
+ * instead of floating it over the page. A host with a prototype info bar of its
+ * own has a better place for it; see PrototypeBar.
+ *
  * Neither this file nor anchor.js interprets what's in `context` — it is compared
  * for equality and handed back verbatim. That is what makes the whole directory
  * droppable into another prototype unedited.
@@ -43,37 +48,63 @@ import {
    them. */
 const Z = 9000
 
-/* Bottom-left rather than bottom-right, which is where a floating action button
-   conventionally sits. Two reasons it moved: the sidebar opens from the right and
-   slides the app out from under a right-hand button, so the toggle ended up
-   sitting on top of the panel it had just opened; and the right-hand end of a page
-   is where the design's own content runs to, while the left edge is usually nav
-   chrome the review is not about.
-
-   `left` is supplied at render from the measured nav rail (see leftNavWidth) so the
-   button clears it instead of covering a nav item. */
+/* Two placements, one button.
+ *
+ * `$inline` — the host gave us a `toggleContainer`, usually a prototype info bar
+ * above the app. The best case: the button is in a strip that is not the design,
+ * so it covers nothing at all. Smaller and unshadowed there, because it's sitting
+ * in chrome rather than floating over content.
+ *
+ * Floating, otherwise — bottom-left rather than the conventional bottom-right.
+ * Two reasons it isn't on the right: the sidebar opens from there and slides the
+ * app out from under a right-hand button, so the toggle ended up on top of the
+ * panel it had just opened; and the right-hand end of a page is where the design's
+ * own content runs to, while the left edge is usually nav chrome the review is not
+ * about. `left` is supplied at render from the measured nav rail (see
+ * toggleLeftOffset) so the button clears it instead of covering a nav item.
+ *
+ * The two placements also differ in colour at rest, and for the same reason. Floating
+ * over the design it's white with a hairline border, which is what reads as a control
+ * sitting on top of a page. Inline it takes the light pill from the prototype bar's own
+ * component sheet, so it matches the switcher beside it rather than being a white chip on
+ * a slate band. Comment mode *on* is the same blue in both — that state has to look
+ * identical wherever the button lives. */
 const ToggleButton = styled.button`
-  position: fixed;
-  bottom: 24px;
+  position: ${(props) => (props.$inline ? 'static' : 'fixed')};
+  ${(props) => (props.$inline ? '' : 'bottom: 24px;')}
   z-index: ${Z + 2};
   display: flex;
   align-items: center;
   gap: 8px;
   box-sizing: border-box;
-  min-height: 40px;
+  min-height: ${(props) => (props.$inline ? 32 : 40)}px;
   padding: 0 16px;
-  border: 1px solid ${(props) => (props.$active ? '#284173' : '#dcdcda')};
-  border-radius: 20px;
-  background-color: ${(props) => (props.$active ? '#406cc4' : '#ffffff')};
-  color: ${(props) => (props.$active ? '#ffffff' : '#2f3130')};
-  box-shadow: 0 2px 8px rgba(10, 13, 14, 0.16);
+  border: ${(props) => {
+    if (props.$active) return '1px solid #284173'
+    return props.$inline ? '0' : '1px solid #dcdcda'
+  }};
+  /* Fully round inline, to the same pill as the switcher. */
+  border-radius: ${(props) => (props.$inline ? '999px' : '20px')};
+  background-color: ${(props) => {
+    if (props.$active) return '#406cc4'
+    return props.$inline ? '#ced2d0' : '#ffffff'
+  }};
+  color: ${(props) => {
+    if (props.$active) return '#ffffff'
+    return props.$inline ? '#22282a' : '#2f3130'
+  }};
+  box-shadow: ${(props) => (props.$inline ? 'none' : '0 2px 8px rgba(10, 13, 14, 0.16)')};
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.$active ? '#284173' : '#f7f7f7')};
+    background-color: ${(props) => {
+      if (props.$active) return '#284173'
+      return props.$inline ? '#bfc4c2' : '#f7f7f7'
+    }};
   }
 `
 
@@ -442,8 +473,10 @@ export default function CommentLayer({
   context,
   onRestoreContext,
   // Pixels from the left edge for the Comment toggle. Omit to measure the host's nav
-  // rail instead — see toggleLeftOffset.
+  // rail instead — see toggleLeftOffset. Ignored when `toggleContainer` is given.
   toggleLeft: toggleLeftProp,
+  // A DOM node to render the toggle into, rather than floating it over the page.
+  toggleContainer,
 }) {
   const [isOn, setIsOn] = useState(false)
   const [comments, setComments] = useState([])
@@ -520,9 +553,11 @@ export default function CommentLayer({
   /* Position the toggle clear of the nav rail. Not gated on `isOn` — the button is
      visible whether or not comment mode is running, so this has to track a resize
      either way. Measured after a frame, since on the very first paint the host's
-     nav has no width yet. Skipped entirely when the host gave us a number. */
+     nav has no width yet. Skipped entirely when the host gave us a number, or a
+     container to put the button in — then it isn't floating and has no left edge
+     to clear. */
   useEffect(() => {
-    if (toggleLeftProp !== undefined) return undefined
+    if (toggleContainer || toggleLeftProp !== undefined) return undefined
     const measure = () => setMeasuredLeft(toggleLeftOffset())
     const frame = requestAnimationFrame(measure)
     const timer = setTimeout(measure, 200)
@@ -532,7 +567,7 @@ export default function CommentLayer({
       clearTimeout(timer)
       window.removeEventListener('resize', measure)
     }
-  }, [toggleLeftProp])
+  }, [toggleLeftProp, toggleContainer])
 
   // Keeps "2m ago" honest without re-rendering constantly.
   useEffect(() => {
@@ -744,22 +779,33 @@ export default function CommentLayer({
 
   const unresolvedCount = roots.filter((comment) => !comment.resolved).length
 
+  const toggle = (
+    <ToggleButton
+      type="button"
+      $inline={Boolean(toggleContainer)}
+      // Only the floating placement needs positioning; inline it sits where the
+      // host put it.
+      style={toggleContainer ? undefined : { left: toggleLeft }}
+      $active={isOn}
+      onClick={() => {
+        setIsOn((value) => !value)
+        setDraft(null)
+        setOpenId(null)
+      }}
+      aria-pressed={isOn}
+    >
+      {isOn ? 'Exit comment mode' : 'Comment'}
+      {!isOn && unresolvedCount > 0 ? ` (${unresolvedCount})` : ''}
+    </ToggleButton>
+  )
+
   return (
     <>
-      <ToggleButton
-        type="button"
-        style={{ left: toggleLeft }}
-        $active={isOn}
-        onClick={() => {
-          setIsOn((value) => !value)
-          setDraft(null)
-          setOpenId(null)
-        }}
-        aria-pressed={isOn}
-      >
-        {isOn ? 'Exit comment mode' : 'Comment'}
-        {!isOn && unresolvedCount > 0 ? ` (${unresolvedCount})` : ''}
-      </ToggleButton>
+      {/* Portalled rather than returned by the host, so the button and the
+          comment state it reflects stay in one component. `toggleContainer` is
+          null on the first render — a callback ref hasn't fired yet — and the
+          button appears a frame later. */}
+      {toggleContainer ? createPortal(toggle, toggleContainer) : toggle}
 
       {isOn && (
         <>
