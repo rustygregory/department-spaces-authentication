@@ -14,7 +14,6 @@ import { BRANDS, saveBrandAuth } from '../data/brands'
  * `onSaved`     — called with { sourceName, targetName } then panel closes
  */
 
-const BAR_HEIGHT = 52
 const PANEL_WIDTH = 380
 const FLORA_MARGIN = 4
 
@@ -25,9 +24,11 @@ const panelIn = keyframes`
   to   { transform: translateX(0); }
 `
 
+/* Top is the measured bottom edge of the Zendesk chrome (passed from App via
+   contentTop), so the panel height matches the work area exactly. */
 const Panel = styled.div`
   position: fixed;
-  top: ${BAR_HEIGHT + FLORA_MARGIN}px;
+  top: ${(p) => (p.$top ?? 0) + FLORA_MARGIN}px;
   right: ${FLORA_MARGIN}px;
   bottom: ${FLORA_MARGIN}px;
   width: ${PANEL_WIDTH}px;
@@ -92,12 +93,13 @@ const PanelStatic = styled.div`
   padding: 20px 24px 0;
 `
 
-/* Only the settings summary scrolls — the controls above stay visible. */
+/* Only the settings summary scrolls — the controls above stay visible.
+   padding-top: 12px is the gap between ConfirmText and the first summary group. */
 const PanelBody = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 16px 24px 20px;
+  padding: 12px 24px 20px;
 `
 
 const SourceLabel = styled.div`
@@ -113,13 +115,17 @@ const BrandField = styled(ComboField)`
 
 const ConfirmText = styled.div`
   margin-top: 16px;
-  margin-bottom: 0;
+  /* The 12px below this is handled by PanelBody's padding-top. */
   font-size: 14px;
   color: #646864;
 `
 
 const SummarySection = styled.div`
-  margin-top: 16px;
+  /* 8px between groups; the first group needs no top margin since PanelBody
+     padding-top already gives the 12px gap from ConfirmText. */
+  & + & {
+    margin-top: 8px;
+  }
 `
 
 const SectionHeading = styled.div`
@@ -213,7 +219,7 @@ function SettingsSummary({ brand }) {
   )
 }
 
-export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
+export default function CopySettingsPanel({ targetBrand, contentTop, onClose, onSaved }) {
   const sourceBrands = useMemo(
     () =>
       [...BRANDS]
@@ -245,7 +251,7 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
   }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
 
   return (
-    <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title">
+    <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title" $top={contentTop}>
       <PanelHeader>
         <PanelTitle id="copy-panel-title">Copy settings to {targetBrand.name}</PanelTitle>
         <CloseButton aria-label="Close" onClick={onClose}>
@@ -287,7 +293,7 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
             )}
           </Combobox>
         </BrandField>
-        <ConfirmText>Copy these settings into {targetBrand.name}</ConfirmText>
+        <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
       </PanelStatic>
 
       <PanelBody>

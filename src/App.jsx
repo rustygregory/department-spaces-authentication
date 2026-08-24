@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ThemeProvider } from './flora-theme/elements/ThemeProvider'
 import { TopBar, MainNav } from 'zendesk-globalnav-template'
 import styled from 'styled-components'
@@ -127,6 +127,21 @@ export default function App() {
   /* The prototype bar's slot for the Comment button, held in state rather than a
      ref so that its arrival re-renders and CommentLayer can portal into it. */
   const [commentSlot, setCommentSlot] = useState(null)
+
+  /* Measure where ContentRow starts so the copy panel's top aligns with the
+     work area, not with the viewport top (which would include the top bar). */
+  const contentRowRef = useRef(null)
+  const [contentTop, setContentTop] = useState(0)
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (contentRowRef.current) {
+        setContentTop(contentRowRef.current.getBoundingClientRect().top)
+      }
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   /* Copy-settings panel — lives in App so it survives navigating from the table
      into a brand's settings page while it's open. Closing on option switch since
@@ -284,7 +299,7 @@ export default function App() {
           <TopBarRow>
             <TopBar currentProduct={currentProduct} onProductChange={setCurrentProduct} />
           </TopBarRow>
-          <ContentRow>
+          <ContentRow ref={contentRowRef}>
             <MainNav
               currentProduct="admin-center"
               activeNavItem={activeNavItem}
@@ -318,6 +333,7 @@ export default function App() {
         {copyPanelTarget && (
           <CopySettingsPanel
             targetBrand={copyPanelTarget}
+            contentTop={contentTop}
             onClose={() => setCopyPanelTarget(null)}
             onSaved={handleCopyPanelSaved}
           />
