@@ -56,7 +56,7 @@ const ContentRow = styled.div`
 /* Always in the DOM — transitions from 0 to the panel width so MainContent
    visibly narrows as the panel opens, without the panel itself being a flex
    item (which caused the Combobox listbox body-scroll bug). */
-const PANEL_SPACE = 388
+const PANEL_SPACE = 381
 const PanelSpacer = styled.div`
   flex-shrink: 0;
   width: ${(p) => (p.$open ? `${PANEL_SPACE}px` : '0px')};

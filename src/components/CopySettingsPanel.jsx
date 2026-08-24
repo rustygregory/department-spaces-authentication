@@ -15,30 +15,26 @@ import { BRANDS, saveBrandAuth } from '../data/brands'
  */
 
 const PANEL_WIDTH = 380
-const FLORA_MARGIN = 4
 
 const listboxHeightFor = (rows) => `${rows * 36 + 8}px`
 
 const panelIn = keyframes`
-  from { transform: translateX(calc(100% + ${FLORA_MARGIN * 2}px)); }
+  from { transform: translateX(100%); }
   to   { transform: translateX(0); }
 `
 
-/* Top is the measured bottom edge of the Zendesk chrome (passed from App via
-   contentTop), so the panel height matches the work area exactly. */
 const Panel = styled.div`
   position: fixed;
-  top: ${(p) => (p.$top ?? 0) + FLORA_MARGIN}px;
-  right: ${FLORA_MARGIN}px;
-  bottom: ${FLORA_MARGIN}px;
+  top: ${(p) => p.$top ?? 0}px;
+  right: 0;
+  bottom: 0;
   width: ${PANEL_WIDTH}px;
   z-index: 2000;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 4px 32px rgba(10, 13, 14, 0.2);
+  border-left: 1px solid #eae9e8;
   animation: ${panelIn} 180ms ease-out;
 `
 
@@ -167,6 +163,9 @@ const CancelButton = styled.button`
 `
 
 const SaveButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 40px;
   padding: 0 24px;
   border: 0;
@@ -302,7 +301,7 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
 
       <PanelFooter>
         <CancelButton onClick={onClose}>Cancel</CancelButton>
-        <SaveButton onClick={handleSave}>Save settings</SaveButton>
+        <SaveButton onClick={handleSave}>Copy settings</SaveButton>
       </PanelFooter>
     </Panel>
   )
