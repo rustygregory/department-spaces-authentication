@@ -83,11 +83,21 @@ const CloseButton = styled.button`
   }
 `
 
+/* The Combobox and confirm text live here — a non-scrolling zone. This is what
+   stops the scroll-to-top bug: when Garden returns focus to the Combobox input
+   after selection, the browser tries to scroll-into-view the input, but this
+   container has no overflow so nothing moves. */
+const PanelStatic = styled.div`
+  flex-shrink: 0;
+  padding: 20px 24px 0;
+`
+
+/* Only the settings summary scrolls — the controls above stay visible. */
 const PanelBody = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 16px 24px 20px;
 `
 
 const SourceLabel = styled.div`
@@ -103,6 +113,7 @@ const BrandField = styled(ComboField)`
 
 const ConfirmText = styled.div`
   margin-top: 16px;
+  margin-bottom: 0;
   font-size: 14px;
   color: #646864;
 `
@@ -242,7 +253,7 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
         </CloseButton>
       </PanelHeader>
 
-      <PanelBody>
+      <PanelStatic>
         <SourceLabel>Choose a brand to copy settings</SourceLabel>
         <BrandField>
           <Combobox
@@ -276,8 +287,10 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
             )}
           </Combobox>
         </BrandField>
-
         <ConfirmText>Copy these settings into {targetBrand.name}</ConfirmText>
+      </PanelStatic>
+
+      <PanelBody>
         <SettingsSummary brand={sourceBrand} />
       </PanelBody>
 
