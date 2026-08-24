@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ThemeProvider } from './flora-theme/elements/ThemeProvider'
 import { TopBar, MainNav } from 'zendesk-globalnav-template'
 import styled from 'styled-components'
@@ -10,6 +10,8 @@ import BrandsListPage from './components/BrandsListPage'
 import BrandDetailPage from './components/BrandDetailPage'
 import EuaMovedPage from './components/EuaMovedPage'
 import CommentLayer from './comments/CommentLayer'
+import CopySettingsPanel from './components/CopySettingsPanel'
+import SaveToast from './components/SaveToast'
 import { BRANDS, getBrand } from './data/brands'
 import './App.css'
 
@@ -113,6 +115,19 @@ export default function App() {
      ref so that its arrival re-renders and CommentLayer can portal into it. */
   const [commentSlot, setCommentSlot] = useState(null)
 
+  /* Copy-settings panel — lives in App so it survives navigating from the table
+     into a brand's settings page while it's open. Closing on option switch since
+     the concept of "copy to [brand from table row]" is opt2-specific. */
+  const [copyPanelTarget, setCopyPanelTarget] = useState(null)
+  const [copyToast, setCopyToast] = useState(null)
+  const [copyCount, setCopyCount] = useState(0)
+
+  const handleCopyPanelSaved = useCallback(({ sourceName, targetName }) => {
+    setCopyPanelTarget(null)
+    setCopyToast({ sourceName, targetName })
+    setCopyCount((n) => n + 1)
+  }, [])
+
   const [route, setRoute] = useState(HOME_ROUTE.opt1)
   // Which brand is being looked at. Option 1 reads it as the dropdown's selection;
   // Options 2 and 3 as the row that was clicked. Defaults to the first of the roster.
@@ -126,6 +141,7 @@ export default function App() {
   const selectOption = (next) => {
     setOption(next)
     setRoute(HOME_ROUTE[next])
+    setCopyPanelTarget(null)
   }
 
   const openBrandAuth = (id) => {
@@ -189,7 +205,13 @@ export default function App() {
           />
         )
       }
-      return <BrandsAuthTable onSelectBrand={openBrandAuth} />
+      return (
+        <BrandsAuthTable
+          onSelectBrand={openBrandAuth}
+          onOpenCopyPanel={setCopyPanelTarget}
+          copyRefreshKey={copyCount}
+        />
+      )
     }
 
     // Option 3.
@@ -273,8 +295,28 @@ export default function App() {
                 changes. Keeping the sub-nav live wins, because covering it would
                 strand a reviewer on whichever screen they entered on. */}
             <MainContent data-comment-root="true">{renderWorkArea()}</MainContent>
+            {/* Panel is a flex sibling so it pushes MainContent rather than
+                covering it. Survives opt2 table → brand-auth navigation. */}
+            {copyPanelTarget && (
+              <CopySettingsPanel
+                targetBrand={copyPanelTarget}
+                onClose={() => setCopyPanelTarget(null)}
+                onSaved={handleCopyPanelSaved}
+              />
+            )}
           </ContentRow>
         </PageContainer>
+
+        {copyToast && (
+          <SaveToast
+            title="Settings copied"
+            right={20}
+            onClose={() => setCopyToast(null)}
+            resetKey={copyCount}
+          >
+            {copyToast.sourceName} settings copied to {copyToast.targetName}.
+          </SaveToast>
+        )}
 
         {/* Comment mode. Outside the prototype's own flow: with it off, nothing here
             intercepts a click and the prototype behaves as if it weren't installed.

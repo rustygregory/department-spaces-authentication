@@ -1,53 +1,44 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { createPortal } from 'react-dom'
 import styled, { keyframes } from 'styled-components'
 import { Combobox, Field as ComboField, Option } from '@zendeskgarden/react-dropdowns'
 import { BRANDS, saveBrandAuth } from '../data/brands'
 
-/* Side panel for copying one brand's end-user auth settings into another.
+/* Copy-settings side panel — a 380px flex sibling of MainContent so it pushes
+ * the work area rather than overlapping it.
  *
  * Follows Flora's DrawerModal spec:
- *   border-radius: 24px (Flora xxl)
- *   margin: 4px from viewport edges (Flora xxs)
- *   no border, card shadow
+ *   border-radius: 24px (Flora xxl), applied to the two outer corners
+ *   no border on the seam with MainContent — the left shadow separates them
  *
- * No backdrop — the table behind it stays interactive, so a reviewer can look
- * at another brand's row while deciding what to copy. The panel closes on
- * Cancel, the × button, or Escape.
- *
- * `targetBrand` — the brand to copy INTO (the row the overflow menu was on)
- * `onClose`     — called to close without saving
- * `onSaved`     — called with { sourceName, targetName } after saving
+ * `targetBrand` — the brand to copy INTO
+ * `onClose`     — Cancel, × or Escape
+ * `onSaved`     — called with { sourceName, targetName } then panel closes
  */
 
-const BAR_HEIGHT = 52
 const PANEL_WIDTH = 380
-/* Flora xxs = 4px — the margin the DrawerModal override sets on all sides. */
-const FLORA_MARGIN = 4
 
 const listboxHeightFor = (rows) => `${rows * 36 + 8}px`
 
-const slideIn = keyframes`
-  from { transform: translateX(calc(100% + ${FLORA_MARGIN * 2}px)); }
-  to   { transform: translateX(0); }
+/* Animate the width so MainContent visibly shrinks as the panel slides in —
+   the push is the animation, not a translate. `overflow: hidden` clips the
+   panel's own content during the grow so nothing spills out mid-animation. */
+const panelIn = keyframes`
+  from { width: 0; }
+  to   { width: ${PANEL_WIDTH}px; }
 `
 
-/* The panel sits above Garden's own overlays (~400) and the work-area content,
-   but below the prototype bar's menu (9500) and the comment layer (9000). */
 const Panel = styled.div`
-  position: fixed;
-  top: ${BAR_HEIGHT + FLORA_MARGIN}px;
-  right: ${FLORA_MARGIN}px;
-  bottom: ${FLORA_MARGIN}px;
+  flex-shrink: 0;
   width: ${PANEL_WIDTH}px;
-  z-index: 2000;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 4px 32px rgba(10, 13, 14, 0.2);
-  animation: ${slideIn} 180ms ease-out;
+  /* Top-right and bottom-right corners match the Flora DrawerModal radius (xxl = 24px).
+     Left corners are flush against MainContent — no gap, no overlap. */
+  border-radius: 0 24px 24px 0;
+  box-shadow: -4px 0 16px rgba(10, 13, 14, 0.1);
+  animation: ${panelIn} 180ms ease-out;
 `
 
 const PanelHeader = styled.div`
@@ -64,8 +55,6 @@ const PanelTitle = styled.h2`
   font-size: 16px;
   font-weight: 700;
   color: #2f3130;
-  /* The brand name can be long; truncate rather than wrap so the close button
-     always has room. */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -244,8 +233,8 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
     onClose()
   }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
 
-  return createPortal(
-    <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title">
+  return (
+    <Panel role="complementary" aria-labelledby="copy-panel-title">
       <PanelHeader>
         <PanelTitle id="copy-panel-title">Copy settings to {targetBrand.name}</PanelTitle>
         <CloseButton aria-label="Close" onClick={onClose}>
@@ -296,7 +285,6 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
         <CancelButton onClick={onClose}>Cancel</CancelButton>
         <SaveButton onClick={handleSave}>Save settings</SaveButton>
       </PanelFooter>
-    </Panel>,
-    document.body,
+    </Panel>
   )
 }

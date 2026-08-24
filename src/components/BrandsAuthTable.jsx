@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import {
   Table,
@@ -15,9 +15,7 @@ import { Field, Label, MediaInput } from '@zendeskgarden/react-forms'
 import { Menu, Item } from '@zendeskgarden/react-dropdowns'
 import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
-import CopySettingsPanel from './CopySettingsPanel'
 import FloraTag from './FloraTag'
-import SaveToast from './SaveToast'
 import PageHeader from './PageHeader'
 import { SearchIcon } from './icons'
 import {
@@ -165,21 +163,8 @@ const SORTERS = {
   passwordLevel: (a, b) => levelRank(a) - levelRank(b) || byName(a, b),
 }
 
-export default function BrandsAuthTable({ onSelectBrand }) {
+export default function BrandsAuthTable({ onSelectBrand, onOpenCopyPanel, copyRefreshKey = 0 }) {
   const [query, setQuery] = useState('')
-  /* Which brand's "Copy settings" modal is open — null when none. */
-  const [copyTarget, setCopyTarget] = useState(null)
-  /* Incremented after a copy so the table re-reads the mutated brand data. */
-  const [refreshKey, setRefreshKey] = useState(0)
-  /* Toast shown after a successful copy: null, or { sourceName, targetName }. */
-  const [copyToast, setCopyToast] = useState(null)
-  const [copyCount, setCopyCount] = useState(0)
-
-  const handleCopySaved = useCallback(({ sourceName, targetName }) => {
-    setRefreshKey((k) => k + 1)
-    setCopyToast({ sourceName, targetName })
-    setCopyCount((n) => n + 1)
-  }, [])
 
   /* Brand ascending is the default, per Rusty — the roster's own order is neither
      alphabetical nor meaningful, and a table of 51 rows is in *some* order whether or not
@@ -196,9 +181,9 @@ export default function BrandsAuthTable({ onSelectBrand }) {
       : BRANDS
     const sorted = [...matching].sort(SORTERS[sort.column])
     return sort.direction === 'desc' ? sorted.reverse() : sorted
-    // refreshKey: re-read brand data after a copy-settings save
+    // copyRefreshKey: re-read brand data after a copy-settings save (App increments it)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, sort, refreshKey])
+  }, [query, sort, copyRefreshKey])
 
   const toggle = (column) =>
     setSort((current) =>
@@ -336,7 +321,7 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                       )}
                       onChange={(changes) => {
                         if (changes.value === 'view') onSelectBrand(brand.id)
-                        if (changes.value === 'copy-settings') setCopyTarget(brand)
+                        if (changes.value === 'copy-settings') onOpenCopyPanel?.(brand)
                       }}
                     >
                       <Item value="view">View</Item>
@@ -352,24 +337,6 @@ export default function BrandsAuthTable({ onSelectBrand }) {
         {rows.length === 0 && <Empty>No brands match “{query}”.</Empty>}
       </Scroll>
 
-      {copyTarget && (
-        <CopySettingsPanel
-          targetBrand={copyTarget}
-          onClose={() => setCopyTarget(null)}
-          onSaved={handleCopySaved}
-        />
-      )}
-
-      {copyToast && (
-        <SaveToast
-          title="Settings copied"
-          right={20}
-          onClose={() => setCopyToast(null)}
-          resetKey={copyCount}
-        >
-          {copyToast.sourceName} settings copied to {copyToast.targetName}.
-        </SaveToast>
-      )}
     </>
   )
 }
