@@ -1047,8 +1047,7 @@ Error generating stack: `+e.message+`
 `,Wl=B.button`
   box-sizing: border-box;
   display: flex;
-  /* Top-align so the check mark sits beside the title line, not the middle of two lines. */
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   width: 100%;
   padding: 9px 12px;
@@ -1066,24 +1065,20 @@ Error generating stack: `+e.message+`
   }
 `,Gl=B.span`
   flex-shrink: 0;
-  /* Nudge down 1px so the ✓ optical-centres with the title's cap height. */
-  margin-top: 1px;
   width: 14px;
   color: #406cc4;
   font-size: 12px;
 `,Kl=B.div`
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: baseline;
+  gap: 8px;
 `,ql=B.span`
   font-size: 14px;
   font-weight: 600;
-  line-height: 20px;
 `,Jl=B.span`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: #646864;
-  line-height: 16px;
 `,Yl=B.div`
   display: flex;
   align-items: center;
