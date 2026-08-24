@@ -1758,33 +1758,37 @@ Error generating stack: `+e.message+`
     color: #2f3130;
   }
 `,RT=B.div`
+  flex-shrink: 0;
+  padding: 20px 24px 0;
+`,zT=B.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 20px 24px;
-`,zT=B.div`
+  padding: 16px 24px 20px;
+`,BT=B.div`
   font-size: 14px;
   font-weight: 700;
   color: #2f3130;
   margin-bottom: 8px;
-`,BT=B(Jv)`
+`,VT=B(Jv)`
   width: 100%;
-`,VT=B.div`
-  margin-top: 16px;
-  font-size: 14px;
-  color: #646864;
 `,HT=B.div`
   margin-top: 16px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #646864;
 `,UT=B.div`
+  margin-top: 16px;
+`,WT=B.div`
   font-size: 14px;
   color: #2f3130;
-`,WT=B.ul`
+`,GT=B.ul`
   margin: 4px 0 0;
   padding-left: 20px;
   font-size: 14px;
   color: #2f3130;
   line-height: 24px;
-`,GT=B.div`
+`,KT=B.div`
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1792,7 +1796,7 @@ Error generating stack: `+e.message+`
   gap: 20px;
   padding: 16px 24px;
   border-top: 1px solid #eae9e8;
-`,KT=B.button`
+`,qT=B.button`
   padding: 0;
   border: 0;
   background: transparent;
@@ -1805,7 +1809,7 @@ Error generating stack: `+e.message+`
   &:hover {
     text-decoration: underline;
   }
-`,qT=B.button`
+`,JT=B.button`
   min-height: 40px;
   padding: 0 24px;
   border: 0;
@@ -1821,26 +1825,26 @@ Error generating stack: `+e.message+`
   &:hover {
     background-color: #1f2120;
   }
-`;function JT({brand:e}){let t=Object.entries(e.auth.providers).filter(([,e])=>e).map(([e])=>e.charAt(0).toUpperCase()+e.slice(1));return(0,G.jsxs)(G.Fragment,{children:[e.auth.zendeskAuth&&(0,G.jsxs)(HT,{children:[(0,G.jsx)(UT,{children:`Zendesk authentication`}),(0,G.jsx)(WT,{children:(0,G.jsx)(`li`,{children:e.auth.passwordLevel})})]}),e.auth.externalAuth&&t.length>0&&(0,G.jsxs)(HT,{children:[(0,G.jsx)(UT,{children:`External authentication`}),(0,G.jsx)(WT,{children:t.map(e=>(0,G.jsx)(`li`,{children:e},e))})]}),(0,G.jsxs)(HT,{children:[(0,G.jsx)(UT,{children:`How end users sign in`}),(0,G.jsx)(WT,{children:(0,G.jsx)(`li`,{children:e.auth.signInMode===`sso`?`Redirect to SSO`:`Let them choose`})})]})]})}function YT({targetBrand:e,onClose:t,onSaved:n}){let r=(0,g.useMemo)(()=>[...Vx].filter(t=>t.id!==e.id).sort((e,t)=>e.name.localeCompare(t.name)),[e.id]),[i,a]=(0,g.useState)(r[0]),[o,s]=(0,g.useState)(``),c=(0,g.useMemo)(()=>{let e=o.trim().toLowerCase();return e?r.filter(t=>t.name.toLowerCase().includes(e)):r},[r,o]);(0,g.useEffect)(()=>{let e=e=>{e.key===`Escape`&&t()};return document.addEventListener(`keydown`,e),()=>document.removeEventListener(`keydown`,e)},[t]);let l=(0,g.useCallback)(()=>{Ux(e.id,{...i.auth}),n({sourceName:i.name,targetName:e.name}),t()},[e.id,e.name,i.auth,i.name,n,t]);return(0,G.jsxs)(PT,{role:`complementary`,"aria-labelledby":`copy-panel-title`,children:[(0,G.jsxs)(FT,{children:[(0,G.jsxs)(IT,{id:`copy-panel-title`,children:[`Copy settings to `,e.name]}),(0,G.jsx)(LT,{"aria-label":`Close`,onClick:t,children:`✕`})]}),(0,G.jsxs)(RT,{children:[(0,G.jsx)(zT,{children:`Choose a brand to copy settings`}),(0,G.jsx)(BT,{children:(0,G.jsxs)(Uv,{isAutocomplete:!0,listboxAriaLabel:`Brands`,listboxMaxHeight:MT(10),selectionValue:i.id,onChange:({selectionValue:e,inputValue:t,isExpanded:n})=>{if(e){let t=r.find(t=>t.id===e);t&&a(t),s(``);return}if(n!==void 0){s(``);return}t!==void 0&&s(t)},children:[c.map(e=>(0,G.jsx)(_y,{value:e.id,label:e.name,isSelected:e.id===i.id,children:e.name},e.id)),c.length===0&&(0,G.jsx)(_y,{isDisabled:!0,value:`none`,label:`No brands found`,children:`No brands found`})]})}),(0,G.jsxs)(VT,{children:[`Copy these settings into `,e.name]}),(0,G.jsx)(JT,{brand:i})]}),(0,G.jsxs)(GT,{children:[(0,G.jsx)(KT,{onClick:t,children:`Cancel`}),(0,G.jsx)(qT,{onClick:l,children:`Save settings`})]})]})}var XT=B.div`
+`;function YT({brand:e}){let t=Object.entries(e.auth.providers).filter(([,e])=>e).map(([e])=>e.charAt(0).toUpperCase()+e.slice(1));return(0,G.jsxs)(G.Fragment,{children:[e.auth.zendeskAuth&&(0,G.jsxs)(UT,{children:[(0,G.jsx)(WT,{children:`Zendesk authentication`}),(0,G.jsx)(GT,{children:(0,G.jsx)(`li`,{children:e.auth.passwordLevel})})]}),e.auth.externalAuth&&t.length>0&&(0,G.jsxs)(UT,{children:[(0,G.jsx)(WT,{children:`External authentication`}),(0,G.jsx)(GT,{children:t.map(e=>(0,G.jsx)(`li`,{children:e},e))})]}),(0,G.jsxs)(UT,{children:[(0,G.jsx)(WT,{children:`How end users sign in`}),(0,G.jsx)(GT,{children:(0,G.jsx)(`li`,{children:e.auth.signInMode===`sso`?`Redirect to SSO`:`Let them choose`})})]})]})}function XT({targetBrand:e,onClose:t,onSaved:n}){let r=(0,g.useMemo)(()=>[...Vx].filter(t=>t.id!==e.id).sort((e,t)=>e.name.localeCompare(t.name)),[e.id]),[i,a]=(0,g.useState)(r[0]),[o,s]=(0,g.useState)(``),c=(0,g.useMemo)(()=>{let e=o.trim().toLowerCase();return e?r.filter(t=>t.name.toLowerCase().includes(e)):r},[r,o]);(0,g.useEffect)(()=>{let e=e=>{e.key===`Escape`&&t()};return document.addEventListener(`keydown`,e),()=>document.removeEventListener(`keydown`,e)},[t]);let l=(0,g.useCallback)(()=>{Ux(e.id,{...i.auth}),n({sourceName:i.name,targetName:e.name}),t()},[e.id,e.name,i.auth,i.name,n,t]);return(0,G.jsxs)(PT,{role:`complementary`,"aria-labelledby":`copy-panel-title`,children:[(0,G.jsxs)(FT,{children:[(0,G.jsxs)(IT,{id:`copy-panel-title`,children:[`Copy settings to `,e.name]}),(0,G.jsx)(LT,{"aria-label":`Close`,onClick:t,children:`✕`})]}),(0,G.jsxs)(RT,{children:[(0,G.jsx)(BT,{children:`Choose a brand to copy settings`}),(0,G.jsx)(VT,{children:(0,G.jsxs)(Uv,{isAutocomplete:!0,listboxAriaLabel:`Brands`,listboxMaxHeight:MT(10),selectionValue:i.id,onChange:({selectionValue:e,inputValue:t,isExpanded:n})=>{if(e){let t=r.find(t=>t.id===e);t&&a(t),s(``);return}if(n!==void 0){s(``);return}t!==void 0&&s(t)},children:[c.map(e=>(0,G.jsx)(_y,{value:e.id,label:e.name,isSelected:e.id===i.id,children:e.name},e.id)),c.length===0&&(0,G.jsx)(_y,{isDisabled:!0,value:`none`,label:`No brands found`,children:`No brands found`})]})}),(0,G.jsxs)(HT,{children:[`Copy these settings into `,e.name]})]}),(0,G.jsx)(zT,{children:(0,G.jsx)(YT,{brand:i})}),(0,G.jsxs)(KT,{children:[(0,G.jsx)(qT,{onClick:t,children:`Cancel`}),(0,G.jsx)(JT,{onClick:l,children:`Save settings`})]})]})}var ZT=B.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
-`,ZT=B.div`
+`,QT=B.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
   background-color: #f8f9f9;
   overflow: hidden;
-`,QT=B.div`
+`,$T=B.div`
   display: flex;
   flex: 1;
   min-height: 0;
   width: 100%;
   overflow: hidden;
-`,$T=B.main`
+`,eE=B.main`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1850,6 +1854,6 @@ Error generating stack: `+e.message+`
   border-radius: 8px 0px 0px 0px;
   box-shadow: 0px 0px 4px rgba(10, 13, 14, 0.16);
   overflow: hidden;
-`,eE=B.div`
+`,tE=B.div`
   flex-shrink: 0;
-`,tE=[{id:`opt2`,label:`Option 2`,description:`End user auth table`},{id:`opt1`,label:`Option 1`,description:`End user auth with brands dropdown`,archived:!0},{id:`opt3`,label:`Option 3`,description:`Brands flow`,archived:!0}],nE=e=>tE.some(t=>t.id===e),rE={opt1:`auth`,opt2:`table`,opt3:`moved`};function iE(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt2`),[c,l]=(0,g.useState)(null),[u,d]=(0,g.useState)(null),[f,p]=(0,g.useState)(null),[m,h]=(0,g.useState)(0),_=(0,g.useCallback)(({sourceName:e,targetName:t})=>{d(null),p({sourceName:e,targetName:t}),h(e=>e+1)},[]),[v,y]=(0,g.useState)(rE.opt1),[b,x]=(0,g.useState)(Vx[0].id),S=Hx(b)??Vx[0],C=e=>{s(e),y(rE[e]),d(null)},w=e=>{x(e),y(`brand-auth`)},T=e=>{x(e),y(`brand`)},E=o===`opt3`&&v!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)(XT,{children:[(0,G.jsx)(Ql,{title:`Department spaces authentication`,meta:`Aug 2026`,versions:tE,versionId:o,onVersionChange:C,versionLabel:`Option`,commentSlotRef:l}),(0,G.jsxs)(ZT,{children:[(0,G.jsx)(eE,{children:(0,G.jsx)(pl,{currentProduct:e,onProductChange:t})}),(0,G.jsxs)(QT,{children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(iu,{activeItem:E,onSelect:e=>{if(e===`Brands`){y(`brands`);return}y(rE[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)($T,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:x}):o===`opt2`?v===`brand-auth`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>y(`table`)},{label:S.name}],title:`${S.name} end user authentication`}):(0,G.jsx)(RC,{onSelectBrand:w,onOpenCopyPanel:d,copyRefreshKey:m}):v===`brand-auth`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>y(`brands`)},{label:S.name,onClick:()=>y(`brand`)},{label:`End user authentication`}]}):v===`brand`?(0,G.jsx)(sw,{brand:S,onOpenAuth:()=>y(`brand-auth`),onNavigateBrands:()=>y(`brands`)}):v===`brands`?(0,G.jsx)(YC,{onSelectBrand:T}):(0,G.jsx)(dw,{onViewBrands:()=>y(`brands`)})}),u&&(0,G.jsx)(YT,{targetBrand:u,onClose:()=>d(null),onSaved:_})]})]}),f&&(0,G.jsxs)(kx,{title:`Settings copied`,right:20,onClose:()=>p(null),resetKey:m,children:[f.sourceName,` settings copied to `,f.targetName,`.`]}),(0,G.jsx)(TT,{toggleContainer:c,context:{option:o,route:v,brandId:b},onRestoreContext:e=>{nE(e.option)&&s(e.option),e.brandId&&Hx(e.brandId)&&x(e.brandId),e.route&&y(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(iE,{})}));
+`,nE=[{id:`opt2`,label:`Option 2`,description:`End user auth table`},{id:`opt1`,label:`Option 1`,description:`End user auth with brands dropdown`,archived:!0},{id:`opt3`,label:`Option 3`,description:`Brands flow`,archived:!0}],rE=e=>nE.some(t=>t.id===e),iE={opt1:`auth`,opt2:`table`,opt3:`moved`};function aE(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt2`),[c,l]=(0,g.useState)(null),[u,d]=(0,g.useState)(null),[f,p]=(0,g.useState)(null),[m,h]=(0,g.useState)(0),_=(0,g.useCallback)(({sourceName:e,targetName:t})=>{d(null),p({sourceName:e,targetName:t}),h(e=>e+1)},[]),[v,y]=(0,g.useState)(iE.opt1),[b,x]=(0,g.useState)(Vx[0].id),S=Hx(b)??Vx[0],C=e=>{s(e),y(iE[e]),d(null)},w=e=>{x(e),y(`brand-auth`)},T=e=>{x(e),y(`brand`)},E=o===`opt3`&&v!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)(ZT,{children:[(0,G.jsx)(Ql,{title:`Department spaces authentication`,meta:`Aug 2026`,versions:nE,versionId:o,onVersionChange:C,versionLabel:`Option`,commentSlotRef:l}),(0,G.jsxs)(QT,{children:[(0,G.jsx)(tE,{children:(0,G.jsx)(pl,{currentProduct:e,onProductChange:t})}),(0,G.jsxs)($T,{children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(iu,{activeItem:E,onSelect:e=>{if(e===`Brands`){y(`brands`);return}y(iE[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)(eE,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:x}):o===`opt2`?v===`brand-auth`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>y(`table`)},{label:S.name}],title:`${S.name} end user authentication`}):(0,G.jsx)(RC,{onSelectBrand:w,onOpenCopyPanel:d,copyRefreshKey:m}):v===`brand-auth`?(0,G.jsx)(vS,{brand:S,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>y(`brands`)},{label:S.name,onClick:()=>y(`brand`)},{label:`End user authentication`}]}):v===`brand`?(0,G.jsx)(sw,{brand:S,onOpenAuth:()=>y(`brand-auth`),onNavigateBrands:()=>y(`brands`)}):v===`brands`?(0,G.jsx)(YC,{onSelectBrand:T}):(0,G.jsx)(dw,{onViewBrands:()=>y(`brands`)})}),u&&(0,G.jsx)(XT,{targetBrand:u,onClose:()=>d(null),onSaved:_})]})]}),f&&(0,G.jsxs)(kx,{title:`Settings copied`,right:20,onClose:()=>p(null),resetKey:m,children:[f.sourceName,` settings copied to `,f.targetName,`.`]}),(0,G.jsx)(TT,{toggleContainer:c,context:{option:o,route:v,brandId:b},onRestoreContext:e=>{rE(e.option)&&s(e.option),e.brandId&&Hx(e.brandId)&&x(e.brandId),e.route&&y(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(aE,{})}));
