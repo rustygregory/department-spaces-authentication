@@ -184,7 +184,8 @@ const Menu = styled.div`
 const MenuItem = styled.button`
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  /* Top-align so the check mark sits beside the title line, not the middle of two lines. */
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
   padding: 9px 12px;
@@ -195,9 +196,6 @@ const MenuItem = styled.button`
   font-family: inherit;
   font-size: 14px;
   text-align: left;
-  /* With the panel at max-content, nothing should wrap — this makes that explicit
-     rather than leaving it to the width to enforce. */
-  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
@@ -209,9 +207,33 @@ const MenuItem = styled.button`
    an indent that only appears on one row makes the list look ragged. */
 const Check = styled.span`
   flex-shrink: 0;
+  /* Nudge down 1px so the ✓ optical-centres with the title's cap height. */
+  margin-top: 1px;
   width: 14px;
   color: #406cc4;
   font-size: 12px;
+`
+
+const ItemContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+
+/* The "Option N" heading — semi-bold, per Rusty. */
+const ItemTitle = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+`
+
+/* The description sub-line — lighter colour, smaller. No em dash: the two-line
+   layout makes the relationship clear without punctuation. */
+const ItemDesc = styled.span`
+  font-size: 12px;
+  font-weight: 400;
+  color: #646864;
+  line-height: 16px;
 `
 
 const CommentSlot = styled.div`
@@ -270,8 +292,6 @@ export default function PrototypeBar({
               aria-expanded={isOpen}
               aria-haspopup="listbox"
             >
-              {/* The title itself is the button's accessible name — which is why there's
-                  no `aria-label` here to override it. */}
               {selected?.label ?? versionLabel}
               <ChevronDown $open={isOpen} />
             </Trigger>
@@ -290,7 +310,10 @@ export default function PrototypeBar({
                     }}
                   >
                     <Check>{entry.id === versionId ? '✓' : ''}</Check>
-                    {entry.label}
+                    <ItemContent>
+                      <ItemTitle>{entry.label}</ItemTitle>
+                      {entry.description && <ItemDesc>{entry.description}</ItemDesc>}
+                    </ItemContent>
                   </MenuItem>
                 ))}
               </Menu>

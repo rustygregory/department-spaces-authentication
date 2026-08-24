@@ -70,15 +70,14 @@ const TopBarRow = styled.div`
 /* The three options. Ids are permanent — a comment pin stores one, so renaming an id
    would silently point old pins at a different option.
 
-   One `label` each, shown in full both on the switcher's button and in its menu, at
-   Rusty's ask — the button used to carry a `short` form ("Option 2") with the word
-   "Option" printed beside it, which said less in more space. There was a Garden Combobox
-   overlaid on the Zendesk top bar before that; it read as a Zendesk control rather than a
-   prototype one, which is why the prototype bar exists at all. */
+   `label` is the short title shown both on the trigger button and as the first line of the
+   menu item — "Option 1", "Option 2", "Option 3", semi-bold. `description` is the sub-line
+   in the menu only, regular weight, no em dash. The em dash + inline description were
+   replaced at Rusty's ask (2026-08-24). Ids are permanent — comment pins store them. */
 const OPTIONS = [
-  { id: 'opt1', label: 'Option 1 — End user auth with brands dropdown' },
-  { id: 'opt2', label: 'Option 2 — End user auth table' },
-  { id: 'opt3', label: 'Option 3 — Brands flow' },
+  { id: 'opt1', label: 'Option 1', description: 'End user auth with brands dropdown' },
+  { id: 'opt2', label: 'Option 2', description: 'End user auth table' },
+  { id: 'opt3', label: 'Option 3', description: 'Brands flow' },
 ]
 
 const isKnownOption = (id) => OPTIONS.some((option) => option.id === id)

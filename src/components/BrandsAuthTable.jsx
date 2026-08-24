@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import {
   Table,
@@ -15,6 +15,7 @@ import { Field, Label, MediaInput } from '@zendeskgarden/react-forms'
 import { Menu, Item } from '@zendeskgarden/react-dropdowns'
 import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
+import CopySettingsModal from './CopySettingsModal'
 import FloraTag from './FloraTag'
 import PageHeader from './PageHeader'
 import { SearchIcon } from './icons'
@@ -165,6 +166,12 @@ const SORTERS = {
 
 export default function BrandsAuthTable({ onSelectBrand }) {
   const [query, setQuery] = useState('')
+  /* Which brand's "Copy settings" modal is open — null when none. */
+  const [copyTarget, setCopyTarget] = useState(null)
+  /* Incremented after a copy so the table re-reads the mutated brand data. */
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  const handleCopySaved = useCallback(() => setRefreshKey((k) => k + 1), [])
 
   /* Brand ascending is the default, per Rusty — the roster's own order is neither
      alphabetical nor meaningful, and a table of 51 rows is in *some* order whether or not
@@ -181,7 +188,9 @@ export default function BrandsAuthTable({ onSelectBrand }) {
       : BRANDS
     const sorted = [...matching].sort(SORTERS[sort.column])
     return sort.direction === 'desc' ? sorted.reverse() : sorted
-  }, [query, sort])
+    // refreshKey: re-read brand data after a copy-settings save
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, sort, refreshKey])
 
   const toggle = (column) =>
     setSort((current) =>
@@ -317,14 +326,13 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                       button={(props) => (
                         <OverflowButton {...props} aria-label={`Actions for ${brand.name}`} />
                       )}
-                      /* Garden reports a clicked item as `changes.value`, not on
-                         `selectedItems` — this menu performs an action, it holds no
-                         selection. */
                       onChange={(changes) => {
                         if (changes.value === 'view') onSelectBrand(brand.id)
+                        if (changes.value === 'copy-settings') setCopyTarget(brand)
                       }}
                     >
                       <Item value="view">View</Item>
+                      <Item value="copy-settings">Copy brand settings to here</Item>
                     </Menu>
                   </Cell>
                 </ClickableRow>
@@ -335,6 +343,14 @@ export default function BrandsAuthTable({ onSelectBrand }) {
 
         {rows.length === 0 && <Empty>No brands match “{query}”.</Empty>}
       </Scroll>
+
+      {copyTarget && (
+        <CopySettingsModal
+          targetBrand={copyTarget}
+          onClose={() => setCopyTarget(null)}
+          onSaved={handleCopySaved}
+        />
+      )}
     </>
   )
 }
