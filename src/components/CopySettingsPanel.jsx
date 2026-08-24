@@ -3,41 +3,41 @@ import styled, { keyframes } from 'styled-components'
 import { Combobox, Field as ComboField, Option } from '@zendeskgarden/react-dropdowns'
 import { BRANDS, saveBrandAuth } from '../data/brands'
 
-/* Copy-settings side panel — a 380px flex sibling of MainContent so it pushes
- * the work area rather than overlapping it.
+/* Copy-settings side panel — position:fixed so its Combobox listbox never
+ * touches the document layout. The push effect comes from a PanelSpacer in
+ * App's ContentRow flex row, not from this panel being a flex item.
  *
- * Follows Flora's DrawerModal spec:
- *   border-radius: 24px (Flora xxl), applied to the two outer corners
- *   no border on the seam with MainContent — the left shadow separates them
+ * Follows Flora's DrawerModal spec: border-radius 24px (xxl), 4px margins.
  *
  * `targetBrand` — the brand to copy INTO
  * `onClose`     — Cancel, × or Escape
  * `onSaved`     — called with { sourceName, targetName } then panel closes
  */
 
+const BAR_HEIGHT = 52
 const PANEL_WIDTH = 380
+const FLORA_MARGIN = 4
 
 const listboxHeightFor = (rows) => `${rows * 36 + 8}px`
 
-/* Animate the width so MainContent visibly shrinks as the panel slides in —
-   the push is the animation, not a translate. `overflow: hidden` clips the
-   panel's own content during the grow so nothing spills out mid-animation. */
 const panelIn = keyframes`
-  from { width: 0; }
-  to   { width: ${PANEL_WIDTH}px; }
+  from { transform: translateX(calc(100% + ${FLORA_MARGIN * 2}px)); }
+  to   { transform: translateX(0); }
 `
 
 const Panel = styled.div`
-  flex-shrink: 0;
+  position: fixed;
+  top: ${BAR_HEIGHT + FLORA_MARGIN}px;
+  right: ${FLORA_MARGIN}px;
+  bottom: ${FLORA_MARGIN}px;
   width: ${PANEL_WIDTH}px;
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: #ffffff;
-  /* Top-right and bottom-right corners match the Flora DrawerModal radius (xxl = 24px).
-     Left corners are flush against MainContent — no gap, no overlap. */
-  border-radius: 0 24px 24px 0;
-  box-shadow: -4px 0 16px rgba(10, 13, 14, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(10, 13, 14, 0.2);
   animation: ${panelIn} 180ms ease-out;
 `
 
@@ -245,7 +245,7 @@ export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
   }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
 
   return (
-    <Panel role="complementary" aria-labelledby="copy-panel-title">
+    <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title">
       <PanelHeader>
         <PanelTitle id="copy-panel-title">Copy settings to {targetBrand.name}</PanelTitle>
         <CloseButton aria-label="Close" onClick={onClose}>

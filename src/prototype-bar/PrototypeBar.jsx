@@ -120,21 +120,41 @@ const Trigger = styled.button`
   align-items: center;
   gap: 10px;
   min-height: 32px;
-  padding: 0 16px;
+  padding: 6px 16px;
   border: 0;
-  /* Fully round, whatever the height — a pill, not a rounded rectangle. */
   border-radius: 999px;
   background-color: ${(props) => (props.$open ? '#bfc4c2' : '#ced2d0')};
   color: #22282a;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
     background-color: #bfc4c2;
   }
+`
+
+/* Left side of the trigger: label stacked above description. */
+const TriggerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  text-align: left;
+`
+
+const TriggerLabel = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+`
+
+const TriggerDesc = styled.span`
+  font-size: 11px;
+  font-weight: 400;
+  color: #4c5254;
+  line-height: 1.2;
+  white-space: nowrap;
 `
 
 /* A drawn chevron rather than the "▾" glyph: the glyph renders at a different weight
@@ -303,7 +323,10 @@ export default function PrototypeBar({
               aria-expanded={isOpen}
               aria-haspopup="listbox"
             >
-              {selected?.label ?? versionLabel}
+              <TriggerContent>
+                <TriggerLabel>{selected?.label ?? versionLabel}</TriggerLabel>
+                {selected?.description && <TriggerDesc>{selected.description}</TriggerDesc>}
+              </TriggerContent>
               <ChevronDown $open={isOpen} />
             </Trigger>
             {isOpen && (

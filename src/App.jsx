@@ -53,6 +53,16 @@ const ContentRow = styled.div`
   overflow: hidden;
 `
 
+/* Always in the DOM — transitions from 0 to the panel width so MainContent
+   visibly narrows as the panel opens, without the panel itself being a flex
+   item (which caused the Combobox listbox body-scroll bug). */
+const PANEL_SPACE = 388
+const PanelSpacer = styled.div`
+  flex-shrink: 0;
+  width: ${(p) => (p.$open ? `${PANEL_SPACE}px` : '0px')};
+  transition: width 180ms ease-out;
+`
+
 const MainContent = styled.main`
   box-sizing: border-box;
   display: flex;
@@ -298,17 +308,20 @@ export default function App() {
                 changes. Keeping the sub-nav live wins, because covering it would
                 strand a reviewer on whichever screen they entered on. */}
             <MainContent data-comment-root="true">{renderWorkArea()}</MainContent>
-            {/* Panel is a flex sibling so it pushes MainContent rather than
-                covering it. Survives opt2 table → brand-auth navigation. */}
-            {copyPanelTarget && (
-              <CopySettingsPanel
-                targetBrand={copyPanelTarget}
-                onClose={() => setCopyPanelTarget(null)}
-                onSaved={handleCopyPanelSaved}
-              />
-            )}
+            {/* Spacer reserves the panel's width in the flex row so MainContent
+                shrinks when the panel opens. The panel itself is position:fixed
+                so its Combobox listbox never touches the document layout. */}
+            <PanelSpacer $open={Boolean(copyPanelTarget)} />
           </ContentRow>
         </PageContainer>
+
+        {copyPanelTarget && (
+          <CopySettingsPanel
+            targetBrand={copyPanelTarget}
+            onClose={() => setCopyPanelTarget(null)}
+            onSaved={handleCopyPanelSaved}
+          />
+        )}
 
         {copyToast && (
           <SaveToast
