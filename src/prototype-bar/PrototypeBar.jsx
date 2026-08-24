@@ -230,6 +230,21 @@ const ItemDesc = styled.span`
   color: #646864;
 `
 
+const MenuDivider = styled.div`
+  height: 1px;
+  background: #eae9e8;
+  margin: 4px 0;
+`
+
+const MenuSectionLabel = styled.div`
+  padding: 6px 12px 2px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #999b97;
+`
+
 const CommentSlot = styled.div`
   display: flex;
   align-items: center;
@@ -248,6 +263,8 @@ export default function PrototypeBar({
   const groupRef = useRef(null)
 
   const selected = versions?.find((entry) => entry.id === versionId)
+  const activeVersions = versions?.filter((v) => !v.archived) ?? []
+  const archivedVersions = versions?.filter((v) => v.archived) ?? []
 
   /* Close on a click anywhere else, and on Escape. Both are bound only while the
      menu is open, so the bar adds no listeners to the page at rest. */
@@ -291,7 +308,7 @@ export default function PrototypeBar({
             </Trigger>
             {isOpen && (
               <Menu role="listbox" aria-label={versionLabel}>
-                {versions.map((entry) => (
+                {activeVersions.map((entry) => (
                   <MenuItem
                     key={entry.id}
                     type="button"
@@ -310,6 +327,31 @@ export default function PrototypeBar({
                     </ItemContent>
                   </MenuItem>
                 ))}
+                {archivedVersions.length > 0 && (
+                  <>
+                    <MenuDivider />
+                    <MenuSectionLabel>Archive</MenuSectionLabel>
+                    {archivedVersions.map((entry) => (
+                      <MenuItem
+                        key={entry.id}
+                        type="button"
+                        role="option"
+                        aria-selected={entry.id === versionId}
+                        $selected={entry.id === versionId}
+                        onClick={() => {
+                          setIsOpen(false)
+                          if (entry.id !== versionId) onVersionChange?.(entry.id)
+                        }}
+                      >
+                        <Check>{entry.id === versionId ? '✓' : ''}</Check>
+                        <ItemContent>
+                          <ItemTitle>{entry.label}</ItemTitle>
+                          {entry.description && <ItemDesc>{entry.description}</ItemDesc>}
+                        </ItemContent>
+                      </MenuItem>
+                    ))}
+                  </>
+                )}
               </Menu>
             )}
           </ControlGroup>

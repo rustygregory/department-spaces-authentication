@@ -76,10 +76,13 @@ const TopBarRow = styled.div`
    menu item — "Option 1", "Option 2", "Option 3", semi-bold. `description` is the sub-line
    in the menu only, regular weight, no em dash. The em dash + inline description were
    replaced at Rusty's ask (2026-08-24). Ids are permanent — comment pins store them. */
+/* opt2 is the working option — it comes first and is not archived. opt1 and opt3
+   are archived alternatives kept for comparison. The switcher shows them below a
+   separator so a reviewer always knows which one is current. */
 const OPTIONS = [
-  { id: 'opt1', label: 'Option 1', description: 'End user auth with brands dropdown' },
   { id: 'opt2', label: 'Option 2', description: 'End user auth table' },
-  { id: 'opt3', label: 'Option 3', description: 'Brands flow' },
+  { id: 'opt1', label: 'Option 1', description: 'End user auth with brands dropdown', archived: true },
+  { id: 'opt3', label: 'Option 3', description: 'Brands flow', archived: true },
 ]
 
 const isKnownOption = (id) => OPTIONS.some((option) => option.id === id)
@@ -109,7 +112,7 @@ export default function App() {
   const [activeNavItem, setActiveNavItem] = useState(0)
   const [isSubnavExpanded, setIsSubnavExpanded] = useState(false)
 
-  const [option, setOption] = useState('opt1')
+  const [option, setOption] = useState('opt2')
 
   /* The prototype bar's slot for the Comment button, held in state rather than a
      ref so that its arrival re-renders and CommentLayer can portal into it. */
