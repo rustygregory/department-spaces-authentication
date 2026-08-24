@@ -15,7 +15,7 @@ import { Field, Label, MediaInput } from '@zendeskgarden/react-forms'
 import { Menu, Item } from '@zendeskgarden/react-dropdowns'
 import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
-import CopySettingsModal from './CopySettingsModal'
+import CopySettingsPanel from './CopySettingsPanel'
 import FloraTag from './FloraTag'
 import SaveToast from './SaveToast'
 import PageHeader from './PageHeader'
@@ -353,7 +353,7 @@ export default function BrandsAuthTable({ onSelectBrand }) {
       </Scroll>
 
       {copyTarget && (
-        <CopySettingsModal
+        <CopySettingsPanel
           targetBrand={copyTarget}
           onClose={() => setCopyTarget(null)}
           onSaved={handleCopySaved}

@@ -1,67 +1,87 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Combobox, Field as ComboField, Option } from '@zendeskgarden/react-dropdowns'
 import { BRANDS, saveBrandAuth } from '../data/brands'
 
-/* Modal that copies one brand's end-user auth settings into another.
+/* Side panel for copying one brand's end-user auth settings into another.
+ *
+ * Follows Flora's DrawerModal spec:
+ *   border-radius: 24px (Flora xxl)
+ *   margin: 4px from viewport edges (Flora xxs)
+ *   no border, card shadow
+ *
+ * No backdrop — the table behind it stays interactive, so a reviewer can look
+ * at another brand's row while deciding what to copy. The panel closes on
+ * Cancel, the × button, or Escape.
  *
  * `targetBrand` — the brand to copy INTO (the row the overflow menu was on)
  * `onClose`     — called to close without saving
- * `onSaved`     — called after saving, so the table can re-render
+ * `onSaved`     — called with { sourceName, targetName } after saving
  */
+
+const BAR_HEIGHT = 52
+const PANEL_WIDTH = 380
+/* Flora xxs = 4px — the margin the DrawerModal override sets on all sides. */
+const FLORA_MARGIN = 4
 
 const listboxHeightFor = (rows) => `${rows * 36 + 8}px`
 
-const Overlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 9100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(10, 13, 14, 0.5);
+const slideIn = keyframes`
+  from { transform: translateX(calc(100% + ${FLORA_MARGIN * 2}px)); }
+  to   { transform: translateX(0); }
 `
 
-const Dialog = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 600px;
-  max-height: calc(100vh - 80px);
-  margin: 0 24px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 48px rgba(10, 13, 14, 0.32);
+/* The panel sits above Garden's own overlays (~400) and the work-area content,
+   but below the prototype bar's menu (9500) and the comment layer (9000). */
+const Panel = styled.div`
+  position: fixed;
+  top: ${BAR_HEIGHT + FLORA_MARGIN}px;
+  right: ${FLORA_MARGIN}px;
+  bottom: ${FLORA_MARGIN}px;
+  width: ${PANEL_WIDTH}px;
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(10, 13, 14, 0.2);
+  animation: ${slideIn} 180ms ease-out;
 `
 
-const ModalHeader = styled.div`
+const PanelHeader = styled.div`
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid #eae9e8;
-  flex-shrink: 0;
 `
 
-const ModalTitle = styled.h2`
+const PanelTitle = styled.h2`
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #2f3130;
+  /* The brand name can be long; truncate rather than wrap so the close button
+     always has room. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const CloseButton = styled.button`
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
+  margin-left: 8px;
   padding: 0;
   border: 0;
-  border-radius: 4px;
+  border-radius: 12px;
   background: transparent;
   color: #646864;
   font-size: 16px;
@@ -74,11 +94,11 @@ const CloseButton = styled.button`
   }
 `
 
-const ModalBody = styled.div`
+const PanelBody = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 24px;
+  padding: 20px 24px;
 `
 
 const SourceLabel = styled.div`
@@ -88,8 +108,6 @@ const SourceLabel = styled.div`
   margin-bottom: 8px;
 `
 
-/* The Combobox needs a Field wrapper for its internal context. No visible label
-   here — `SourceLabel` above is doing that job. */
 const BrandField = styled(ComboField)`
   width: 100%;
 `
@@ -117,7 +135,7 @@ const BulletList = styled.ul`
   line-height: 24px;
 `
 
-const ModalFooter = styled.div`
+const PanelFooter = styled.div`
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -127,7 +145,7 @@ const ModalFooter = styled.div`
   border-top: 1px solid #eae9e8;
 `
 
-const GoBackButton = styled.button`
+const CancelButton = styled.button`
   padding: 0;
   border: 0;
   background: transparent;
@@ -160,8 +178,6 @@ const SaveButton = styled.button`
   }
 `
 
-/* The settings preview under the dropdown — derived from the source brand so
-   it updates as soon as the user picks a different one. */
 function SettingsSummary({ brand }) {
   const providers = Object.entries(brand.auth.providers)
     .filter(([, on]) => on)
@@ -197,10 +213,12 @@ function SettingsSummary({ brand }) {
   )
 }
 
-export default function CopySettingsModal({ targetBrand, onClose, onSaved }) {
-  /* All 50 other brands, alphabetical, built once per target. */
+export default function CopySettingsPanel({ targetBrand, onClose, onSaved }) {
   const sourceBrands = useMemo(
-    () => [...BRANDS].filter((b) => b.id !== targetBrand.id).sort((a, b) => a.name.localeCompare(b.name)),
+    () =>
+      [...BRANDS]
+        .filter((b) => b.id !== targetBrand.id)
+        .sort((a, b) => a.name.localeCompare(b.name)),
     [targetBrand.id],
   )
 
@@ -212,7 +230,6 @@ export default function CopySettingsModal({ targetBrand, onClose, onSaved }) {
     return needle ? sourceBrands.filter((b) => b.name.toLowerCase().includes(needle)) : sourceBrands
   }, [sourceBrands, query])
 
-  /* Escape to close. */
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
@@ -221,84 +238,65 @@ export default function CopySettingsModal({ targetBrand, onClose, onSaved }) {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [onClose])
 
-  /* Prevent the page from scrolling while the modal is open. */
-  useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [])
-
   const handleSave = useCallback(() => {
     saveBrandAuth(targetBrand.id, { ...sourceBrand.auth })
     onSaved({ sourceName: sourceBrand.name, targetName: targetBrand.name })
     onClose()
   }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
 
-  /* Stop clicks inside the dialog reaching the overlay's onClose. */
-  const stopProp = useCallback((e) => e.stopPropagation(), [])
-
   return createPortal(
-    <Overlay onClick={onClose}>
-      <Dialog
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="copy-modal-title"
-        onClick={stopProp}
-      >
-        <ModalHeader>
-          <ModalTitle id="copy-modal-title">Copy settings to {targetBrand.name}</ModalTitle>
-          <CloseButton aria-label="Close" onClick={onClose}>
-            ✕
-          </CloseButton>
-        </ModalHeader>
+    <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title">
+      <PanelHeader>
+        <PanelTitle id="copy-panel-title">Copy settings to {targetBrand.name}</PanelTitle>
+        <CloseButton aria-label="Close" onClick={onClose}>
+          ✕
+        </CloseButton>
+      </PanelHeader>
 
-        <ModalBody>
-          <SourceLabel>Choose a brand to copy settings</SourceLabel>
-          <BrandField>
-            <Combobox
-              isAutocomplete
-              listboxAriaLabel="Brands"
-              listboxMaxHeight={listboxHeightFor(10)}
-              selectionValue={sourceBrand.id}
-              onChange={({ selectionValue, inputValue, isExpanded }) => {
-                if (selectionValue) {
-                  const found = sourceBrands.find((b) => b.id === selectionValue)
-                  if (found) setSourceBrand(found)
-                  setQuery('')
-                  return
-                }
-                if (isExpanded !== undefined) {
-                  setQuery('')
-                  return
-                }
-                if (inputValue !== undefined) setQuery(inputValue)
-              }}
-            >
-              {matching.map((b) => (
-                <Option key={b.id} value={b.id} label={b.name} isSelected={b.id === sourceBrand.id}>
-                  {b.name}
-                </Option>
-              ))}
-              {matching.length === 0 && (
-                <Option isDisabled value="none" label="No brands found">
-                  No brands found
-                </Option>
-              )}
-            </Combobox>
-          </BrandField>
+      <PanelBody>
+        <SourceLabel>Choose a brand to copy settings</SourceLabel>
+        <BrandField>
+          <Combobox
+            isAutocomplete
+            listboxAriaLabel="Brands"
+            listboxMaxHeight={listboxHeightFor(10)}
+            selectionValue={sourceBrand.id}
+            onChange={({ selectionValue, inputValue, isExpanded }) => {
+              if (selectionValue) {
+                const found = sourceBrands.find((b) => b.id === selectionValue)
+                if (found) setSourceBrand(found)
+                setQuery('')
+                return
+              }
+              if (isExpanded !== undefined) {
+                setQuery('')
+                return
+              }
+              if (inputValue !== undefined) setQuery(inputValue)
+            }}
+          >
+            {matching.map((b) => (
+              <Option key={b.id} value={b.id} label={b.name} isSelected={b.id === sourceBrand.id}>
+                {b.name}
+              </Option>
+            ))}
+            {matching.length === 0 && (
+              <Option isDisabled value="none" label="No brands found">
+                No brands found
+              </Option>
+            )}
+          </Combobox>
+        </BrandField>
 
-          <ConfirmText>Copy these settings into {targetBrand.name}</ConfirmText>
-          <SettingsSummary brand={sourceBrand} />
-        </ModalBody>
+        <ConfirmText>Copy these settings into {targetBrand.name}</ConfirmText>
+        <SettingsSummary brand={sourceBrand} />
+      </PanelBody>
 
-        <ModalFooter>
-          <GoBackButton onClick={onClose}>Go back</GoBackButton>
-          <SaveButton onClick={handleSave}>Save settings</SaveButton>
-        </ModalFooter>
-      </Dialog>
-    </Overlay>,
+      <PanelFooter>
+        <CancelButton onClick={onClose}>Cancel</CancelButton>
+        <SaveButton onClick={handleSave}>Save settings</SaveButton>
+      </PanelFooter>
+    </Panel>,
     document.body,
   )
 }
