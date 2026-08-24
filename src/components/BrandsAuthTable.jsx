@@ -23,6 +23,7 @@ import {
   PASSWORD_LEVELS,
   passwordLevelLabel,
   passwordLoginLabel,
+  signInModeLabel,
   ssoLabel,
 } from '../data/brands'
 
@@ -158,7 +159,7 @@ const SORTERS = {
   passwordLogin: (a, b) =>
     passwordLoginLabel(a).localeCompare(passwordLoginLabel(b)) || byName(a, b),
   sso: (a, b) => ssoLabel(a).localeCompare(ssoLabel(b)) || byName(a, b),
-  status: (a, b) => a.status.localeCompare(b.status) || byName(a, b),
+  signInMode: (a, b) => signInModeLabel(a).localeCompare(signInModeLabel(b)) || byName(a, b),
   passwordLevel: (a, b) => levelRank(a) - levelRank(b) || byName(a, b),
 }
 
@@ -257,11 +258,15 @@ export default function BrandsAuthTable({ onSelectBrand }) {
               <SortableCell width="14%" sort={sortOf('sso')} onClick={() => toggle('sso')}>
                 SSO
               </SortableCell>
-              <SortableCell width="14%" sort={sortOf('status')} onClick={() => toggle('status')}>
-                Status
+              <SortableCell
+                width="18%"
+                sort={sortOf('signInMode')}
+                onClick={() => toggle('signInMode')}
+              >
+                End user sign in
               </SortableCell>
               <SortableCell
-                width="22%"
+                width="18%"
                 sort={sortOf('passwordLevel')}
                 onClick={() => toggle('passwordLevel')}
               >
@@ -294,9 +299,7 @@ export default function BrandsAuthTable({ onSelectBrand }) {
                   <Cell>
                     <FloraTag tone={STATE_TONE[ssoLabel(brand)]}>{ssoLabel(brand)}</FloraTag>
                   </Cell>
-                  <Cell>
-                    <FloraTag tone={STATE_TONE[brand.status]}>{brand.status}</FloraTag>
-                  </Cell>
+                  <Cell>{signInModeLabel(brand)}</Cell>
                   {/* Empty when password login is off — those end users sign in through an
                       external provider, so there is no password and no level to show.
                       Blank rather than an em dash, per Rusty: a dash reads as a value that

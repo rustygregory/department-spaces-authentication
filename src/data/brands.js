@@ -202,6 +202,8 @@ export const saveBrandAuth = (id, auth) => {
  * the subject. */
 export const passwordLoginLabel = (brand) => (brand.auth.zendeskAuth ? 'Active' : 'Inactive')
 export const ssoLabel = (brand) => (brand.auth.externalAuth ? 'Active' : 'Inactive')
+export const signInModeLabel = (brand) =>
+  brand.auth.signInMode === 'sso' ? 'Redirect to SSO' : 'Let them choose'
 
 /* Null when Zendesk authentication is off, per Rusty: that brand's end users sign in
  * through an external provider, so there is no password and no level to report. Option 2's
