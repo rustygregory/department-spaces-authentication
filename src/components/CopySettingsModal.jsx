@@ -232,9 +232,9 @@ export default function CopySettingsModal({ targetBrand, onClose, onSaved }) {
 
   const handleSave = useCallback(() => {
     saveBrandAuth(targetBrand.id, { ...sourceBrand.auth })
-    onSaved()
+    onSaved({ sourceName: sourceBrand.name, targetName: targetBrand.name })
     onClose()
-  }, [targetBrand.id, sourceBrand.auth, onSaved, onClose])
+  }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
 
   /* Stop clicks inside the dialog reaching the overlay's onClose. */
   const stopProp = useCallback((e) => e.stopPropagation(), [])

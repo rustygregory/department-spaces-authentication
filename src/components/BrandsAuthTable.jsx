@@ -17,6 +17,7 @@ import { Anchor } from '@zendeskgarden/react-buttons'
 import { MD } from '@zendeskgarden/react-typography'
 import CopySettingsModal from './CopySettingsModal'
 import FloraTag from './FloraTag'
+import SaveToast from './SaveToast'
 import PageHeader from './PageHeader'
 import { SearchIcon } from './icons'
 import {
@@ -170,8 +171,15 @@ export default function BrandsAuthTable({ onSelectBrand }) {
   const [copyTarget, setCopyTarget] = useState(null)
   /* Incremented after a copy so the table re-reads the mutated brand data. */
   const [refreshKey, setRefreshKey] = useState(0)
+  /* Toast shown after a successful copy: null, or { sourceName, targetName }. */
+  const [copyToast, setCopyToast] = useState(null)
+  const [copyCount, setCopyCount] = useState(0)
 
-  const handleCopySaved = useCallback(() => setRefreshKey((k) => k + 1), [])
+  const handleCopySaved = useCallback(({ sourceName, targetName }) => {
+    setRefreshKey((k) => k + 1)
+    setCopyToast({ sourceName, targetName })
+    setCopyCount((n) => n + 1)
+  }, [])
 
   /* Brand ascending is the default, per Rusty — the roster's own order is neither
      alphabetical nor meaningful, and a table of 51 rows is in *some* order whether or not
@@ -350,6 +358,17 @@ export default function BrandsAuthTable({ onSelectBrand }) {
           onClose={() => setCopyTarget(null)}
           onSaved={handleCopySaved}
         />
+      )}
+
+      {copyToast && (
+        <SaveToast
+          title="Settings copied"
+          right={20}
+          onClose={() => setCopyToast(null)}
+          resetKey={copyCount}
+        >
+          {copyToast.sourceName} settings copied to {copyToast.targetName}.
+        </SaveToast>
       )}
     </>
   )

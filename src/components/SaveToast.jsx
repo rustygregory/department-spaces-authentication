@@ -15,7 +15,6 @@ import { Notification, Title, Close } from '@zendeskgarden/react-notifications'
  */
 
 const TOP = 70
-const RIGHT = 40
 
 // Dismisses itself; the close button is for a reader who wants it gone sooner.
 const DISMISS_AFTER = 4000
@@ -23,7 +22,7 @@ const DISMISS_AFTER = 4000
 const Anchored = styled.div`
   position: fixed;
   top: ${TOP}px;
-  right: ${RIGHT}px;
+  right: ${(props) => props.$right}px;
   /* Above the work area and the global nav, below nothing else on this screen. */
   z-index: 100;
 `
@@ -45,18 +44,19 @@ const Body = styled.div`
  * @param title    the bold first line
  * @param children the line under it, e.g. which brand was saved
  * @param onClose  called by the close button and by the timer
+ * @param right    px from the right edge of the viewport; defaults to 40
  * @param resetKey change it to restart the dismiss timer — two saves in a row have to give
  *                 the second one its own four seconds, and the toast never unmounts between
  *                 them for the timer to restart on its own
  */
-export default function SaveToast({ title, children, onClose, resetKey }) {
+export default function SaveToast({ title, children, onClose, resetKey, right = 40 }) {
   useEffect(() => {
     const timer = setTimeout(onClose, DISMISS_AFTER)
     return () => clearTimeout(timer)
   }, [onClose, resetKey])
 
   return (
-    <Anchored>
+    <Anchored $right={right}>
       <Toast type="success" role="status" aria-live="polite">
         <Title>{title}</Title>
         {children && <Body>{children}</Body>}
