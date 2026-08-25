@@ -1782,26 +1782,47 @@ Error generating stack: `+e.message+`
 `,UT=B(Zv)`
   width: 100%;
 `,WT=B.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin-top: 16px;
-  /* The 12px below this is handled by PanelBody's padding-top. */
+`,GT=B.div`
   font-size: 14px;
   color: #646864;
-`,GT=B.div`
+`,KT=B.button`
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1f73b7;
+  font-family: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`,qT=B.div`
   /* 8px between groups; the first group needs no top margin since PanelBody
      padding-top already gives the 12px gap from ConfirmText. */
   & + & {
     margin-top: 8px;
   }
-`,KT=B.div`
+`,JT=B.div`
   font-size: 14px;
   color: #2f3130;
-`,qT=B.ul`
+`,YT=B.ul`
   margin: 4px 0 0;
   padding-left: 20px;
   font-size: 14px;
   color: #2f3130;
   line-height: 24px;
-`,JT=B.div`
+`,XT=B.div`
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1809,7 +1830,7 @@ Error generating stack: `+e.message+`
   gap: 20px;
   padding: 16px 24px;
   border-top: 1px solid #eae9e8;
-`,YT=B.button`
+`,ZT=B.button`
   padding: 0;
   border: 0;
   background: transparent;
@@ -1822,7 +1843,7 @@ Error generating stack: `+e.message+`
   &:hover {
     text-decoration: underline;
   }
-`,XT=B.button`
+`,QT=B.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1841,30 +1862,30 @@ Error generating stack: `+e.message+`
   &:hover {
     background-color: #1f2120;
   }
-`;function ZT({brand:e}){let t=Object.entries(e.auth.providers).filter(([,e])=>e).map(([e])=>e.charAt(0).toUpperCase()+e.slice(1));return(0,G.jsxs)(G.Fragment,{children:[e.auth.zendeskAuth&&(0,G.jsxs)(GT,{children:[(0,G.jsx)(KT,{children:`Zendesk authentication`}),(0,G.jsx)(qT,{children:(0,G.jsx)(`li`,{children:e.auth.passwordLevel})})]}),e.auth.externalAuth&&t.length>0&&(0,G.jsxs)(GT,{children:[(0,G.jsx)(KT,{children:`External authentication`}),(0,G.jsx)(qT,{children:t.map(e=>(0,G.jsx)(`li`,{children:e},e))})]}),(0,G.jsxs)(GT,{children:[(0,G.jsx)(KT,{children:`How end users sign in`}),(0,G.jsx)(qT,{children:(0,G.jsx)(`li`,{children:e.auth.signInMode===`sso`?`Redirect to SSO`:`Let them choose`})})]})]})}function QT({targetBrand:e,contentTop:t,onClose:n,onSaved:r}){let i=(0,g.useMemo)(()=>[...Ux].filter(t=>t.id!==e.id).sort((e,t)=>e.name.localeCompare(t.name)),[e.id]),[a,o]=(0,g.useState)(null),[s,c]=(0,g.useState)(``),l=(0,g.useMemo)(()=>{let e=s.trim().toLowerCase();return e?i.filter(t=>t.name.toLowerCase().includes(e)):i},[i,s]);(0,g.useEffect)(()=>{let e=e=>{e.key===`Escape`&&n()};return document.addEventListener(`keydown`,e),()=>document.removeEventListener(`keydown`,e)},[n]);let u=(0,g.useCallback)(()=>{a&&(Gx(e.id,{...a.auth}),r({sourceName:a.name,targetName:e.name}),n())},[e.id,e.name,a,r,n]);return(0,G.jsxs)(IT,{role:`dialog`,"aria-modal":`false`,"aria-labelledby":`copy-panel-title`,$top:t,children:[(0,G.jsxs)(LT,{children:[(0,G.jsxs)(RT,{id:`copy-panel-title`,children:[`Copy settings to `,e.name]}),(0,G.jsx)(zT,{"aria-label":`Close`,onClick:n,children:`✕`})]}),(0,G.jsxs)(BT,{children:[(0,G.jsx)(HT,{children:`Copy settings from`}),(0,G.jsx)(UT,{children:(0,G.jsxs)(Kv,{isAutocomplete:!0,listboxAriaLabel:`Brands`,listboxMaxHeight:PT(10),selectionValue:a?.id,onChange:({selectionValue:e,inputValue:t,isExpanded:n})=>{if(e){let t=i.find(t=>t.id===e);t&&o(t),c(``);return}if(n!==void 0){c(``);return}t!==void 0&&c(t)},children:[l.map(e=>(0,G.jsx)(by,{value:e.id,label:e.name,isSelected:e.id===a?.id,children:e.name},e.id)),l.length===0&&(0,G.jsx)(by,{isDisabled:!0,value:`none`,label:`No brands found`,children:`No brands found`})]})}),a&&(0,G.jsxs)(WT,{children:[`Copy these settings into `,e.name,`.`]})]}),(0,G.jsx)(VT,{children:a&&(0,G.jsx)(ZT,{brand:a})}),(0,G.jsxs)(JT,{children:[(0,G.jsx)(YT,{onClick:n,children:`Cancel`}),(0,G.jsx)(XT,{onClick:u,children:`Copy settings`})]})]})}var $T=B.div`
+`;function $T({brand:e}){let t=Object.entries(e.auth.providers).filter(([,e])=>e).map(([e])=>e.charAt(0).toUpperCase()+e.slice(1));return(0,G.jsxs)(G.Fragment,{children:[e.auth.zendeskAuth&&(0,G.jsxs)(qT,{children:[(0,G.jsx)(JT,{children:`Zendesk authentication`}),(0,G.jsx)(YT,{children:(0,G.jsx)(`li`,{children:e.auth.passwordLevel})})]}),e.auth.externalAuth&&t.length>0&&(0,G.jsxs)(qT,{children:[(0,G.jsx)(JT,{children:`External authentication`}),(0,G.jsx)(YT,{children:t.map(e=>(0,G.jsx)(`li`,{children:e},e))})]}),(0,G.jsxs)(qT,{children:[(0,G.jsx)(JT,{children:`How end users sign in`}),(0,G.jsx)(YT,{children:(0,G.jsx)(`li`,{children:e.auth.signInMode===`sso`?`Redirect to SSO`:`Let them choose`})})]})]})}function eE({targetBrand:e,contentTop:t,onClose:n,onSaved:r}){let i=(0,g.useMemo)(()=>[...Ux].filter(t=>t.id!==e.id).sort((e,t)=>e.name.localeCompare(t.name)),[e.id]),[a,o]=(0,g.useState)(null),[s,c]=(0,g.useState)(``),l=(0,g.useMemo)(()=>{let e=s.trim().toLowerCase();return e?i.filter(t=>t.name.toLowerCase().includes(e)):i},[i,s]);(0,g.useEffect)(()=>{let e=e=>{e.key===`Escape`&&n()};return document.addEventListener(`keydown`,e),()=>document.removeEventListener(`keydown`,e)},[n]);let u=(0,g.useCallback)(()=>{if(!a)return;let e=Wx(a.id);e&&o({...e})},[a]),d=(0,g.useCallback)(()=>{a&&(Gx(e.id,{...a.auth}),r({sourceName:a.name,targetName:e.name}),n())},[e.id,e.name,a,r,n]);return(0,G.jsxs)(IT,{role:`dialog`,"aria-modal":`false`,"aria-labelledby":`copy-panel-title`,$top:t,children:[(0,G.jsxs)(LT,{children:[(0,G.jsxs)(RT,{id:`copy-panel-title`,children:[`Copy settings to `,e.name]}),(0,G.jsx)(zT,{"aria-label":`Close`,onClick:n,children:`✕`})]}),(0,G.jsxs)(BT,{children:[(0,G.jsx)(HT,{children:`Copy settings from`}),(0,G.jsx)(UT,{children:(0,G.jsxs)(Kv,{isAutocomplete:!0,listboxAriaLabel:`Brands`,listboxMaxHeight:PT(10),selectionValue:a?.id,onChange:({selectionValue:e,inputValue:t,isExpanded:n})=>{if(e){let t=i.find(t=>t.id===e);t&&o(t),c(``);return}if(n!==void 0){c(``);return}t!==void 0&&c(t)},children:[l.map(e=>(0,G.jsx)(by,{value:e.id,label:e.name,isSelected:e.id===a?.id,children:e.name},e.id)),l.length===0&&(0,G.jsx)(by,{isDisabled:!0,value:`none`,label:`No brands found`,children:`No brands found`})]})}),a&&(0,G.jsxs)(WT,{children:[(0,G.jsxs)(GT,{children:[`Copy these settings into `,e.name,`.`]}),(0,G.jsx)(KT,{onClick:u,children:`↻ Refresh`})]})]}),(0,G.jsx)(VT,{children:a&&(0,G.jsx)($T,{brand:a})}),(0,G.jsxs)(XT,{children:[(0,G.jsx)(ZT,{onClick:n,children:`Cancel`}),(0,G.jsx)(QT,{onClick:d,children:`Copy settings`})]})]})}var tE=B.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
-`,eE=B.div`
+`,nE=B.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
   background-color: #f8f9f9;
   overflow: hidden;
-`,tE=B.div`
+`,rE=B.div`
   display: flex;
   flex: 1;
   min-height: 0;
   width: 100%;
   overflow: hidden;
-`,nE=381,rE=B.div`
+`,iE=381,aE=B.div`
   flex-shrink: 0;
-  width: ${e=>e.$open?`${nE}px`:`0px`};
+  width: ${e=>e.$open?`${iE}px`:`0px`};
   transition: width 180ms ease-out;
-`,iE=B.main`
+`,oE=B.main`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1874,6 +1895,6 @@ Error generating stack: `+e.message+`
   border-radius: 8px 0px 0px 0px;
   box-shadow: 0px 0px 4px rgba(10, 13, 14, 0.16);
   overflow: hidden;
-`,aE=B.div`
+`,sE=B.div`
   flex-shrink: 0;
-`,oE=[{id:`opt2`,label:`Option 2`,description:`End user auth table`},{id:`opt1`,label:`Option 1`,description:`End user auth with brands dropdown`,archived:!0},{id:`opt3`,label:`Option 3`,description:`Brands flow`,archived:!0}],sE=e=>oE.some(t=>t.id===e),cE={opt1:`auth`,opt2:`table`,opt3:`moved`};function lE(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt2`),[c,l]=(0,g.useState)(null),u=(0,g.useRef)(null),[d,f]=(0,g.useState)(0);(0,g.useLayoutEffect)(()=>{let e=()=>{u.current&&f(u.current.getBoundingClientRect().top)};return e(),window.addEventListener(`resize`,e),()=>window.removeEventListener(`resize`,e)},[]);let[p,m]=(0,g.useState)(null),[h,_]=(0,g.useState)(null),[v,y]=(0,g.useState)(0),b=(0,g.useCallback)(({sourceName:e,targetName:t})=>{m(null),_({sourceName:e,targetName:t}),y(e=>e+1)},[]),[x,S]=(0,g.useState)(cE.opt1),[C,w]=(0,g.useState)(Ux[0].id),T=Wx(C)??Ux[0],E=e=>{s(e),S(cE[e]),m(null)},D=e=>{w(e),S(`brand-auth`)},O=e=>{w(e),S(`brand`)},k=o===`opt3`&&x!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)($T,{children:[(0,G.jsx)(tu,{title:`Department spaces authentication`,meta:`Aug 2026`,versions:oE,versionId:o,onVersionChange:E,versionLabel:`Option`,commentSlotRef:l}),(0,G.jsxs)(eE,{children:[(0,G.jsx)(aE,{children:(0,G.jsx)(pl,{currentProduct:e,onProductChange:t})}),(0,G.jsxs)(tE,{ref:u,children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(su,{activeItem:k,onSelect:e=>{if(e===`Brands`){S(`brands`);return}S(cE[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)(iE,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:w,toastTop:124}):o===`opt2`?x===`brand-auth`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>S(`table`)},{label:T.name}],title:`${T.name} end user authentication`,toastTop:124}):(0,G.jsx)(BC,{onSelectBrand:D,onOpenCopyPanel:m,copyRefreshKey:v}):x===`brand-auth`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>S(`brands`)},{label:T.name,onClick:()=>S(`brand`)},{label:`End user authentication`}],toastTop:124}):x===`brand`?(0,G.jsx)(lw,{brand:T,onOpenAuth:()=>S(`brand-auth`),onNavigateBrands:()=>S(`brands`)}):x===`brands`?(0,G.jsx)(ZC,{onSelectBrand:O}):(0,G.jsx)(pw,{onViewBrands:()=>S(`brands`)})}),(0,G.jsx)(rE,{$open:!!p})]})]}),p&&(0,G.jsx)(QT,{targetBrand:p,contentTop:d,onClose:()=>m(null),onSaved:b}),h&&(0,G.jsxs)(jx,{title:`Settings copied`,top:124,right:20,onClose:()=>_(null),resetKey:v,children:[h.sourceName,` settings copied to `,h.targetName,`.`]}),(0,G.jsx)(DT,{toggleContainer:c,context:{option:o,route:x,brandId:C},onRestoreContext:e=>{sE(e.option)&&s(e.option),e.brandId&&Wx(e.brandId)&&w(e.brandId),e.route&&S(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(lE,{})}));
+`,cE=[{id:`opt2`,label:`Option 2`,description:`End user auth table`},{id:`opt1`,label:`Option 1`,description:`End user auth with brands dropdown`,archived:!0},{id:`opt3`,label:`Option 3`,description:`Brands flow`,archived:!0}],lE=e=>cE.some(t=>t.id===e),uE={opt1:`auth`,opt2:`table`,opt3:`moved`};function dE(){let[e,t]=(0,g.useState)(`admin-center`),[n,r]=(0,g.useState)(0),[i,a]=(0,g.useState)(!1),[o,s]=(0,g.useState)(`opt2`),[c,l]=(0,g.useState)(null),u=(0,g.useRef)(null),[d,f]=(0,g.useState)(0);(0,g.useLayoutEffect)(()=>{let e=()=>{u.current&&f(u.current.getBoundingClientRect().top)};return e(),window.addEventListener(`resize`,e),()=>window.removeEventListener(`resize`,e)},[]);let[p,m]=(0,g.useState)(null),[h,_]=(0,g.useState)(null),[v,y]=(0,g.useState)(0),b=(0,g.useCallback)(({sourceName:e,targetName:t})=>{m(null),_({sourceName:e,targetName:t}),y(e=>e+1)},[]),[x,S]=(0,g.useState)(uE.opt1),[C,w]=(0,g.useState)(Ux[0].id),T=Wx(C)??Ux[0],E=e=>{s(e),S(uE[e]),m(null)},D=e=>{w(e),S(`brand-auth`)},O=e=>{w(e),S(`brand`)},k=o===`opt3`&&x!==`moved`?`Brands`:`End user authentication`;return(0,g.useEffect)(()=>{document.title=`End user authentication — Admin Center`},[]),(0,G.jsx)(Uo,{children:(0,G.jsxs)(tE,{children:[(0,G.jsx)(tu,{title:`Department spaces authentication`,meta:`Aug 2026`,versions:cE,versionId:o,onVersionChange:E,versionLabel:`Option`,commentSlotRef:l}),(0,G.jsxs)(nE,{children:[(0,G.jsx)(sE,{children:(0,G.jsx)(pl,{currentProduct:e,onProductChange:t})}),(0,G.jsxs)(rE,{ref:u,children:[(0,G.jsx)(Al,{currentProduct:`admin-center`,activeNavItem:n,setActiveNavItem:r,isSubnavExpanded:i,setIsSubnavExpanded:a}),(0,G.jsx)(su,{activeItem:k,onSelect:e=>{if(e===`Brands`){S(`brands`);return}S(uE[o])},brandsEnabled:o===`opt3`}),(0,G.jsx)(oE,{"data-comment-root":`true`,children:o===`opt1`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`}],showBrandMenu:!0,onBrandChange:w,toastTop:124}):o===`opt2`?x===`brand-auth`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Security`},{label:`End user authentication`,onClick:()=>S(`table`)},{label:T.name}],title:`${T.name} end user authentication`,toastTop:124}):(0,G.jsx)(BC,{onSelectBrand:D,onOpenCopyPanel:m,copyRefreshKey:v}):x===`brand-auth`?(0,G.jsx)(bS,{brand:T,breadcrumbs:[{label:`Account`},{label:`Brand management`},{label:`Brands`,onClick:()=>S(`brands`)},{label:T.name,onClick:()=>S(`brand`)},{label:`End user authentication`}],toastTop:124}):x===`brand`?(0,G.jsx)(lw,{brand:T,onOpenAuth:()=>S(`brand-auth`),onNavigateBrands:()=>S(`brands`)}):x===`brands`?(0,G.jsx)(ZC,{onSelectBrand:O}):(0,G.jsx)(pw,{onViewBrands:()=>S(`brands`)})}),(0,G.jsx)(aE,{$open:!!p})]})]}),p&&(0,G.jsx)(eE,{targetBrand:p,contentTop:d,onClose:()=>m(null),onSaved:b}),h&&(0,G.jsxs)(jx,{title:`Settings copied`,top:124,right:20,onClose:()=>_(null),resetKey:v,children:[h.sourceName,` settings copied to `,h.targetName,`.`]}),(0,G.jsx)(DT,{toggleContainer:c,context:{option:o,route:x,brandId:C},onRestoreContext:e=>{lE(e.option)&&s(e.option),e.brandId&&Wx(e.brandId)&&w(e.brandId),e.route&&S(e.route)}})]})})}(0,_.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(g.StrictMode,{children:(0,G.jsx)(dE,{})}));
