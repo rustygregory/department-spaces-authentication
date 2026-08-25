@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Combobox, Field as ComboField, Option } from '@zendeskgarden/react-dropdowns'
-import { BRANDS, saveBrandAuth } from '../data/brands'
+import { BRANDS, getBrand, saveBrandAuth } from '../data/brands'
 
 /* Copy-settings side panel — position:fixed so its Combobox listbox never
  * touches the document layout. The push effect comes from a PanelSpacer in
@@ -109,11 +109,39 @@ const BrandField = styled(ComboField)`
   width: 100%;
 `
 
-const ConfirmText = styled.div`
+/* Row holding the confirm sentence and the refresh button side by side. */
+const ConfirmRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin-top: 16px;
-  /* The 12px below this is handled by PanelBody's padding-top. */
+`
+
+const ConfirmText = styled.div`
   font-size: 14px;
   color: #646864;
+`
+
+/* A small link-style button — pressing it re-reads the source brand's current
+   auth from the roster, picking up any saves made since the panel was opened. */
+const RefreshButton = styled.button`
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1f73b7;
+  font-family: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const SummarySection = styled.div`
@@ -243,6 +271,15 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [onClose])
 
+  /* Re-read the source brand from the shared roster. saveBrandAuth mutates the
+     object in-place so the auth values are current, but React only re-renders
+     when state changes — spreading into a new object gives it a new reference. */
+  const handleRefresh = useCallback(() => {
+    if (!sourceBrand) return
+    const fresh = getBrand(sourceBrand.id)
+    if (fresh) setSourceBrand({ ...fresh })
+  }, [sourceBrand])
+
   const handleSave = useCallback(() => {
     if (!sourceBrand) return
     saveBrandAuth(targetBrand.id, { ...sourceBrand.auth })
@@ -294,7 +331,10 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
           </Combobox>
         </BrandField>
         {sourceBrand && (
-          <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
+          <ConfirmRow>
+            <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
+            <RefreshButton onClick={handleRefresh}>↻ Refresh</RefreshButton>
+          </ConfirmRow>
         )}
       </PanelStatic>
 
