@@ -143,8 +143,8 @@ export default function App() {
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  /* 72px below the work area's top edge, per Rusty. */
-  const toastTop = contentTop + 72
+  /* 72px below the prototype bar (52px), per Rusty. */
+  const toastTop = 52 + 72
 
   /* Copy-settings panel — lives in App so it survives navigating from the table
      into a brand's settings page while it's open. Closing on option switch since
