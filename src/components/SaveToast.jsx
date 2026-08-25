@@ -21,7 +21,8 @@ const Anchored = styled.div`
   position: fixed;
   top: ${(props) => props.$top}px;
   right: ${(props) => props.$right}px;
-  z-index: 100;
+  /* Above the copy-settings panel (z-index: 2000). */
+  z-index: 2100;
 `
 
 const Toast = styled(Notification)`
