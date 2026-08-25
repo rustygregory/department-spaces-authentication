@@ -956,7 +956,7 @@ Error generating stack: `+e.message+`
   border-radius: 8px 0px 0px 0px;
   flex: 1;
   align-self: stretch;
-`;var Ml=48,Nl=9500,Pl=B.header`
+`;var Ml=9500,Nl=B.header`
   position: relative;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -964,145 +964,135 @@ Error generating stack: `+e.message+`
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: ${Ml}px;
-  padding: 0 16px 0 20px;
-  background-color: #313739;
+  height: ${48}px;
+  padding: 0 16px;
+  background-color: #1a1f24;
   color: #ffffff;
-  font-size: 14px;
-`,Fl=B.div`
+  font-family: inherit;
+  user-select: none;
+`,Pl=B.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
+  flex: 1;
   min-width: 0;
-`,Il=B.span`
-  overflow: hidden;
-  font-size: 14px;
+`,Fl=B.span`
+  font-size: 13px;
   font-weight: 600;
-  text-overflow: ellipsis;
+  color: #ffffff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`,Il=B.span`
+  flex-shrink: 0;
+  color: #363d44;
+  font-size: 13px;
+  line-height: 1;
 `,Ll=B.span`
   flex-shrink: 0;
-  color: #8d9391;
-  font-size: 13px;
+  color: #7c8590;
+  font-size: 12px;
   white-space: nowrap;
-
-  /* A rule rather than a literal "|", so the divider can't be selected or read
-     out as text. */
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    margin-right: 10px;
-    background-color: #4c5254;
-    vertical-align: -1px;
-  }
 `,Rl=B.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
 `,zl=B.div`
   position: relative;
+`,Bl=B.button`
   display: flex;
   align-items: center;
-`,Bl=B.button`
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 32px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background-color: ${e=>e.$open?`#bfc4c2`:`#ced2d0`};
-  color: #22282a;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid ${e=>e.$open?`#555e66`:`#363d44`};
+  border-radius: 4px;
+  background: ${e=>e.$open?`#262c32`:`transparent`};
+  color: #c8cdd0;
   font-family: inherit;
+  font-size: 13px;
+  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
-    background-color: #bfc4c2;
+    background-color: #262c32;
+    border-color: #555e66;
+    color: #ffffff;
   }
 `,Vl=B.div`
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 7px;
 `,Hl=B.span`
-  font-size: 14px;
   font-weight: 600;
-  white-space: nowrap;
 `,Ul=B.span`
-  font-size: 13px;
   font-weight: 400;
-  color: #4c5254;
-  white-space: nowrap;
+  color: #7c8590;
+  font-size: 12px;
 `,Wl=B.svg`
   flex-shrink: 0;
-  width: 12px;
-  height: 12px;
   transform: ${e=>e.$open?`rotate(180deg)`:`none`};
-`,Gl=({$open:e})=>(0,G.jsx)(Wl,{$open:e,viewBox:`0 0 12 12`,"aria-hidden":`true`,focusable:`false`,children:(0,G.jsx)(`path`,{d:`M2 4.25 6 8.25l4-4`,fill:`none`,stroke:`currentColor`,strokeWidth:`1.75`,strokeLinecap:`round`,strokeLinejoin:`round`})}),Kl=B.div`
+`,Gl=({$open:e})=>(0,G.jsx)(Wl,{$open:e,width:`8`,height:`5`,viewBox:`0 0 8 5`,fill:`currentColor`,"aria-hidden":`true`,focusable:`false`,children:(0,G.jsx)(`path`,{d:`M0 0 L4 5 L8 0 Z`})}),Kl=B.div`
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   right: 0;
-  z-index: ${Nl};
-  box-sizing: border-box;
+  z-index: ${Ml};
+  padding: 4px 0;
+  border: 1px solid #363d44;
+  border-radius: 4px;
+  background-color: #262c32;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   width: max-content;
-  min-width: 100%;
-  padding: 4px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 8px 24px rgba(10, 13, 14, 0.32);
 `,ql=B.button`
-  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 9px 12px;
+  padding: 7px 14px;
   border: 0;
-  border-radius: 6px;
-  background-color: ${e=>e.$selected?`#f3f6fb`:`transparent`};
-  color: #2f3130;
+  background: ${e=>e.$selected?`#323b44`:`transparent`};
+  color: ${e=>e.$selected?`#ffffff`:`#c8cdd0`};
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   text-align: left;
+  white-space: nowrap;
   cursor: pointer;
 
   &:hover {
-    background-color: ${e=>e.$selected?`#e4eaf6`:`#f7f7f7`};
+    background-color: #323b44;
+    color: #ffffff;
   }
 `,Jl=B.span`
   flex-shrink: 0;
-  width: 14px;
-  color: #406cc4;
-  font-size: 12px;
+  width: 12px;
+  color: #6ba4e0;
+  font-size: 11px;
 `,Yl=B.div`
   display: flex;
   align-items: baseline;
   gap: 8px;
 `,Xl=B.span`
-  font-size: 14px;
   font-weight: 600;
 `,Zl=B.span`
-  font-size: 13px;
   font-weight: 400;
-  color: #646864;
+  font-size: 12px;
+  color: #7c8590;
 `,Ql=B.div`
   height: 1px;
-  background: #eae9e8;
+  background: #363d44;
   margin: 4px 0;
 `,$l=B.div`
-  padding: 6px 12px 2px;
-  font-size: 11px;
+  padding: 5px 14px 2px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #999b97;
+  letter-spacing: 0.06em;
+  color: #555e66;
 `,eu=B.div`
   display: flex;
   align-items: center;
-`;function tu({title:e,meta:t,versions:n,versionId:r,onVersionChange:i,versionLabel:a=`Version`,commentSlotRef:o}){let[s,c]=(0,g.useState)(!1),l=(0,g.useRef)(null),u=n?.find(e=>e.id===r),d=n?.filter(e=>!e.archived)??[],f=n?.filter(e=>e.archived)??[];return(0,g.useEffect)(()=>{if(!s)return;let e=e=>{l.current?.contains(e.target)||c(!1)},t=e=>{e.key===`Escape`&&c(!1)};return document.addEventListener(`pointerdown`,e,!0),document.addEventListener(`keydown`,t),()=>{document.removeEventListener(`pointerdown`,e,!0),document.removeEventListener(`keydown`,t)}},[s]),(0,G.jsxs)(Pl,{children:[(0,G.jsxs)(Fl,{children:[(0,G.jsx)(Il,{children:e}),t&&(0,G.jsx)(Ll,{children:t})]}),(0,G.jsxs)(Rl,{children:[n?.length>0&&(0,G.jsxs)(zl,{ref:l,children:[(0,G.jsxs)(Bl,{type:`button`,$open:s,onClick:()=>c(e=>!e),"aria-expanded":s,"aria-haspopup":`listbox`,children:[(0,G.jsxs)(Vl,{children:[(0,G.jsx)(Hl,{children:u?.label??a}),u?.description&&(0,G.jsx)(Ul,{children:u.description})]}),(0,G.jsx)(Gl,{$open:s})]}),s&&(0,G.jsxs)(Kl,{role:`listbox`,"aria-label":a,children:[d.map(e=>(0,G.jsxs)(ql,{type:`button`,role:`option`,"aria-selected":e.id===r,$selected:e.id===r,onClick:()=>{c(!1),e.id!==r&&i?.(e.id)},children:[(0,G.jsx)(Jl,{children:e.id===r?`✓`:``}),(0,G.jsxs)(Yl,{children:[(0,G.jsx)(Xl,{children:e.label}),e.description&&(0,G.jsx)(Zl,{children:e.description})]})]},e.id)),f.length>0&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Ql,{}),(0,G.jsx)($l,{children:`Archive`}),f.map(e=>(0,G.jsxs)(ql,{type:`button`,role:`option`,"aria-selected":e.id===r,$selected:e.id===r,onClick:()=>{c(!1),e.id!==r&&i?.(e.id)},children:[(0,G.jsx)(Jl,{children:e.id===r?`✓`:``}),(0,G.jsxs)(Yl,{children:[(0,G.jsx)(Xl,{children:e.label}),e.description&&(0,G.jsx)(Zl,{children:e.description})]})]},e.id))]})]})]}),(0,G.jsx)(eu,{ref:o})]})]})}var nu=B.nav`
+`;function tu({title:e,meta:t,versions:n,versionId:r,onVersionChange:i,versionLabel:a=`Version`,commentSlotRef:o}){let[s,c]=(0,g.useState)(!1),l=(0,g.useRef)(null),u=n?.find(e=>e.id===r),d=n?.filter(e=>!e.archived)??[],f=n?.filter(e=>e.archived)??[];return(0,g.useEffect)(()=>{if(!s)return;let e=e=>{l.current?.contains(e.target)||c(!1)},t=e=>{e.key===`Escape`&&c(!1)};return document.addEventListener(`pointerdown`,e,!0),document.addEventListener(`keydown`,t),()=>{document.removeEventListener(`pointerdown`,e,!0),document.removeEventListener(`keydown`,t)}},[s]),(0,G.jsxs)(Nl,{children:[(0,G.jsxs)(Pl,{children:[(0,G.jsx)(Fl,{children:e}),t&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Il,{"aria-hidden":`true`,children:`|`}),(0,G.jsx)(Ll,{children:t})]})]}),(0,G.jsxs)(Rl,{children:[n?.length>0&&(0,G.jsxs)(zl,{ref:l,children:[(0,G.jsxs)(Bl,{type:`button`,$open:s,onClick:()=>c(e=>!e),"aria-expanded":s,"aria-haspopup":`listbox`,children:[(0,G.jsxs)(Vl,{children:[(0,G.jsx)(Hl,{children:u?.label??a}),u?.description&&(0,G.jsx)(Ul,{children:u.description})]}),(0,G.jsx)(Gl,{$open:s})]}),s&&(0,G.jsxs)(Kl,{role:`listbox`,"aria-label":a,children:[d.map(e=>(0,G.jsxs)(ql,{type:`button`,role:`option`,"aria-selected":e.id===r,$selected:e.id===r,onClick:()=>{c(!1),e.id!==r&&i?.(e.id)},children:[(0,G.jsx)(Jl,{children:e.id===r?`✓`:``}),(0,G.jsxs)(Yl,{children:[(0,G.jsx)(Xl,{children:e.label}),e.description&&(0,G.jsx)(Zl,{children:e.description})]})]},e.id)),f.length>0&&(0,G.jsxs)(G.Fragment,{children:[(0,G.jsx)(Ql,{}),(0,G.jsx)($l,{children:`Archive`}),f.map(e=>(0,G.jsxs)(ql,{type:`button`,role:`option`,"aria-selected":e.id===r,$selected:e.id===r,onClick:()=>{c(!1),e.id!==r&&i?.(e.id)},children:[(0,G.jsx)(Jl,{children:e.id===r?`✓`:``}),(0,G.jsxs)(Yl,{children:[(0,G.jsx)(Xl,{children:e.label}),e.description&&(0,G.jsx)(Zl,{children:e.description})]})]},e.id))]})]})]}),(0,G.jsx)(eu,{ref:o})]})]})}var nu=B.nav`
   box-sizing: border-box;
   width: 240px;
   min-width: 240px;
@@ -1467,22 +1457,25 @@ Error generating stack: `+e.message+`
   align-items: center;
   gap: 8px;
   box-sizing: border-box;
-  min-height: ${e=>e.$inline?32:40}px;
-  padding: 0 16px;
-  border: ${e=>e.$active?`1px solid #284173`:e.$inline?`0`:`1px solid #dcdcda`};
-  /* Fully round inline, to the same pill as the switcher. */
-  border-radius: ${e=>e.$inline?`999px`:`20px`};
-  background-color: ${e=>e.$active?`#406cc4`:e.$inline?`#ced2d0`:`#ffffff`};
-  color: ${e=>e.$active?`#ffffff`:e.$inline?`#22282a`:`#2f3130`};
+  min-height: ${e=>e.$inline?28:40}px;
+  padding: ${e=>e.$inline?`0 10px`:`0 16px`};
+  /* Inline: dark outlined to match the prototype bar's control set.
+     Floating: white pill with shadow, the original floating style. */
+  border: ${e=>e.$active?`1px solid #4d7fd4`:e.$inline?`1px solid #363d44`:`1px solid #dcdcda`};
+  border-radius: ${e=>e.$inline?`4px`:`20px`};
+  background-color: ${e=>e.$active?`#406cc4`:e.$inline?`transparent`:`#ffffff`};
+  color: ${e=>e.$active?`#ffffff`:e.$inline?`#c8cdd0`:`#2f3130`};
   box-shadow: ${e=>e.$inline?`none`:`0 2px 8px rgba(10, 13, 14, 0.16)`};
   font-family: inherit;
-  font-size: 14px;
+  font-size: ${e=>e.$inline?13:14}px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
 
   &:hover {
-    background-color: ${e=>e.$active?`#284173`:e.$inline?`#bfc4c2`:`#f7f7f7`};
+    background-color: ${e=>e.$active?`#284173`:e.$inline?`#262c32`:`#f7f7f7`};
+    border-color: ${e=>e.$active?`#4d7fd4`:e.$inline?`#555e66`:`#dcdcda`};
+    color: ${e=>e.$inline?`#ffffff`:void 0};
   }
 `,Qw=B.div`
   position: fixed;
