@@ -77,25 +77,26 @@ const ToggleButton = styled.button`
   align-items: center;
   gap: 8px;
   box-sizing: border-box;
-  min-height: ${(props) => (props.$inline ? 32 : 40)}px;
-  padding: 0 16px;
+  min-height: ${(props) => (props.$inline ? 28 : 40)}px;
+  padding: ${(props) => (props.$inline ? '0 10px' : '0 16px')};
+  /* Inline: dark outlined to match the prototype bar's control set.
+     Floating: white pill with shadow, the original floating style. */
   border: ${(props) => {
-    if (props.$active) return '1px solid #284173'
-    return props.$inline ? '0' : '1px solid #dcdcda'
+    if (props.$active) return '1px solid #4d7fd4'
+    return props.$inline ? '1px solid #363d44' : '1px solid #dcdcda'
   }};
-  /* Fully round inline, to the same pill as the switcher. */
-  border-radius: ${(props) => (props.$inline ? '999px' : '20px')};
+  border-radius: ${(props) => (props.$inline ? '4px' : '20px')};
   background-color: ${(props) => {
     if (props.$active) return '#406cc4'
-    return props.$inline ? '#ced2d0' : '#ffffff'
+    return props.$inline ? 'transparent' : '#ffffff'
   }};
   color: ${(props) => {
     if (props.$active) return '#ffffff'
-    return props.$inline ? '#22282a' : '#2f3130'
+    return props.$inline ? '#c8cdd0' : '#2f3130'
   }};
   box-shadow: ${(props) => (props.$inline ? 'none' : '0 2px 8px rgba(10, 13, 14, 0.16)')};
   font-family: inherit;
-  font-size: 14px;
+  font-size: ${(props) => (props.$inline ? 13 : 14)}px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -103,8 +104,13 @@ const ToggleButton = styled.button`
   &:hover {
     background-color: ${(props) => {
       if (props.$active) return '#284173'
-      return props.$inline ? '#bfc4c2' : '#f7f7f7'
+      return props.$inline ? '#262c32' : '#f7f7f7'
     }};
+    border-color: ${(props) => {
+      if (props.$active) return '#4d7fd4'
+      return props.$inline ? '#555e66' : '#dcdcda'
+    }};
+    color: ${(props) => (props.$inline ? '#ffffff' : undefined)};
   }
 `
 
