@@ -227,7 +227,7 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
     [targetBrand.id],
   )
 
-  const [sourceBrand, setSourceBrand] = useState(sourceBrands[0])
+  const [sourceBrand, setSourceBrand] = useState(null)
   const [query, setQuery] = useState('')
 
   const matching = useMemo(() => {
@@ -244,10 +244,11 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
   }, [onClose])
 
   const handleSave = useCallback(() => {
+    if (!sourceBrand) return
     saveBrandAuth(targetBrand.id, { ...sourceBrand.auth })
     onSaved({ sourceName: sourceBrand.name, targetName: targetBrand.name })
     onClose()
-  }, [targetBrand.id, targetBrand.name, sourceBrand.auth, sourceBrand.name, onSaved, onClose])
+  }, [targetBrand.id, targetBrand.name, sourceBrand, onSaved, onClose])
 
   return (
     <Panel role="dialog" aria-modal="false" aria-labelledby="copy-panel-title" $top={contentTop}>
@@ -259,13 +260,13 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
       </PanelHeader>
 
       <PanelStatic>
-        <SourceLabel>Choose a brand to copy settings</SourceLabel>
+        <SourceLabel>Choose a brand to copy settings from</SourceLabel>
         <BrandField>
           <Combobox
             isAutocomplete
             listboxAriaLabel="Brands"
             listboxMaxHeight={listboxHeightFor(10)}
-            selectionValue={sourceBrand.id}
+            selectionValue={sourceBrand?.id}
             onChange={({ selectionValue, inputValue, isExpanded }) => {
               if (selectionValue) {
                 const found = sourceBrands.find((b) => b.id === selectionValue)
@@ -281,7 +282,7 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
             }}
           >
             {matching.map((b) => (
-              <Option key={b.id} value={b.id} label={b.name} isSelected={b.id === sourceBrand.id}>
+              <Option key={b.id} value={b.id} label={b.name} isSelected={b.id === sourceBrand?.id}>
                 {b.name}
               </Option>
             ))}
@@ -292,11 +293,13 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
             )}
           </Combobox>
         </BrandField>
-        <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
+        {sourceBrand && (
+          <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
+        )}
       </PanelStatic>
 
       <PanelBody>
-        <SettingsSummary brand={sourceBrand} />
+        {sourceBrand && <SettingsSummary brand={sourceBrand} />}
       </PanelBody>
 
       <PanelFooter>
