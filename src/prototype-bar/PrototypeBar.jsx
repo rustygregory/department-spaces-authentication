@@ -31,7 +31,7 @@ import styled from 'styled-components'
  *                         `toggleContainer`); omit and nothing renders there
  */
 
-const BAR_HEIGHT = 52
+const BAR_HEIGHT = 48
 
 /* Above the comment layer (9000–9003), which is the one thing that would
    otherwise swallow clicks on the version menu: comment mode's click-catcher
