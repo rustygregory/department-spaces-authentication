@@ -120,7 +120,7 @@ const Trigger = styled.button`
   align-items: center;
   gap: 10px;
   min-height: 32px;
-  padding: 6px 16px;
+  padding: 0 16px;
   border: 0;
   border-radius: 999px;
   background-color: ${(props) => (props.$open ? '#bfc4c2' : '#ced2d0')};
@@ -133,27 +133,23 @@ const Trigger = styled.button`
   }
 `
 
-/* Left side of the trigger: label stacked above description. */
+/* Label and description side by side inside the trigger pill. */
 const TriggerContent = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1px;
-  text-align: left;
+  align-items: baseline;
+  gap: 8px;
 `
 
 const TriggerLabel = styled.span`
   font-size: 14px;
   font-weight: 600;
-  line-height: 1.2;
   white-space: nowrap;
 `
 
 const TriggerDesc = styled.span`
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   color: #4c5254;
-  line-height: 1.2;
   white-space: nowrap;
 `
 

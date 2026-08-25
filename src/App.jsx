@@ -143,6 +143,9 @@ export default function App() {
     return () => window.removeEventListener('resize', measure)
   }, [])
 
+  /* 72px below the work area's top edge, per Rusty. */
+  const toastTop = contentTop + 72
+
   /* Copy-settings panel — lives in App so it survives navigating from the table
      into a brand's settings page while it's open. Closing on option switch since
      the concept of "copy to [brand from table row]" is opt2-specific. */
@@ -212,6 +215,7 @@ export default function App() {
           ]}
           showBrandMenu
           onBrandChange={setBrandId}
+          toastTop={toastTop}
         />
       )
     }
@@ -224,12 +228,11 @@ export default function App() {
             breadcrumbs={[
               { label: 'Account' },
               { label: 'Security' },
-              // The one crumb that goes anywhere, and so the only blue one: back to
-              // the table.
               { label: 'End user authentication', onClick: () => setRoute('table') },
               { label: brand.name },
             ]}
             title={`${brand.name} end user authentication`}
+            toastTop={toastTop}
           />
         )
       }
@@ -258,6 +261,7 @@ export default function App() {
             { label: brand.name, onClick: () => setRoute('brand') },
             { label: 'End user authentication' },
           ]}
+          toastTop={toastTop}
         />
       )
     }
@@ -342,6 +346,7 @@ export default function App() {
         {copyToast && (
           <SaveToast
             title="Settings copied"
+            top={toastTop}
             right={20}
             onClose={() => setCopyToast(null)}
             resetKey={copyCount}

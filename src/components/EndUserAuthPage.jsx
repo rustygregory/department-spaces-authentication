@@ -199,6 +199,7 @@ export default function EndUserAuthPage({
   title = 'End user authentication',
   showBrandMenu = false,
   onBrandChange,
+  toastTop,
 }) {
   /* Settings are local state seeded from the brand, and re-seeded when the brand
      changes. That reset is the point of the option-1 switcher: picking another brand
@@ -475,7 +476,7 @@ export default function EndUserAuthPage({
       </Footer>
 
       {isSaved && (
-        <SaveToast title="Changes saved" onClose={dismissToast} resetKey={saves}>
+        <SaveToast title="Changes saved" top={toastTop} onClose={dismissToast} resetKey={saves}>
           {brand.name} end user authentication settings were updated.
         </SaveToast>
       )}
