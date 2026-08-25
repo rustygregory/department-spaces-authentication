@@ -260,7 +260,7 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
       </PanelHeader>
 
       <PanelStatic>
-        <SourceLabel>Select a brand to copy settings from</SourceLabel>
+        <SourceLabel>Copy settings from</SourceLabel>
         <BrandField>
           <Combobox
             isAutocomplete
