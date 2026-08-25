@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Combobox, Field as ComboField, Option } from '@zendeskgarden/react-dropdowns'
+import { Button } from '@zendeskgarden/react-buttons'
 import { BRANDS, getBrand, saveBrandAuth } from '../data/brands'
+import { RefreshIcon } from './icons'
 
 /* Copy-settings side panel — position:fixed so its Combobox listbox never
  * touches the document layout. The push effect comes from a PanelSpacer in
@@ -123,26 +125,6 @@ const ConfirmText = styled.div`
   color: #646864;
 `
 
-/* A small link-style button — pressing it re-reads the source brand's current
-   auth from the roster, picking up any saves made since the panel was opened. */
-const RefreshButton = styled.button`
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #1f73b7;
-  font-family: inherit;
-  font-size: 13px;
-  white-space: nowrap;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
 
 const SummarySection = styled.div`
   /* 8px between groups; the first group needs no top margin since PanelBody
@@ -333,7 +315,10 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
         {sourceBrand && (
           <ConfirmRow>
             <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
-            <RefreshButton onClick={handleRefresh}>↻ Refresh</RefreshButton>
+            <Button isLink size="small" onClick={handleRefresh}>
+              <Button.StartIcon><RefreshIcon /></Button.StartIcon>
+              Refresh
+            </Button>
           </ConfirmRow>
         )}
       </PanelStatic>

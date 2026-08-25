@@ -39,6 +39,13 @@ export const ExternalLinkIcon = () => (
   </svg>
 )
 
+// Garden's `reload-stroke`, for the copy-panel refresh button.
+export const RefreshIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" focusable="false" aria-hidden="true">
+    <path fill="none" stroke="currentColor" strokeLinecap="round" d="M10 4c-.8-1.1-2-2.5-4.1-2.5-2.5 0-4.4 2-4.4 4.5s2 4.5 4.4 4.5c1.3 0 2.5-.6 3.3-1.5m1.3-7.5V4c0 .3-.2.5-.5.5H7.5"/>
+  </svg>
+)
+
 /* Only three glyphs live here, and that's deliberate: Garden supplies the rest.
  * The Alert draws its own info icon, `SortableCell` its own sort control, and
  * `OverflowButton` the row kebab on the Brands list — so hand-rolled versions of
