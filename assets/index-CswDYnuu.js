@@ -1213,7 +1213,8 @@ Error generating stack: `+e.message+`
   position: fixed;
   top: ${e=>e.$top}px;
   right: ${e=>e.$right}px;
-  z-index: 100;
+  /* Above the copy-settings panel (z-index: 2000). */
+  z-index: 2100;
 `,kx=B(ox)`
   /* Wide enough for the brand's name on one line — "Hostile Takeover Bank" is the longest
      in the roster — and bounded so a toast never runs the width of the screen. */
