@@ -51,7 +51,8 @@ const PanelHeader = styled.div`
 
 const PanelTitle = styled.h2`
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 700;
   color: #2f3130;
   overflow: hidden;
@@ -92,16 +93,17 @@ const PanelStatic = styled.div`
 `
 
 /* Only the settings summary scrolls — the controls above stay visible.
-   padding-top: 12px is the gap between ConfirmText and the first summary group. */
+   padding-top: 20px is the gap between the confirm row and the first summary group. */
 const PanelBody = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 12px 24px 20px;
+  padding: 20px 24px;
 `
 
 const SourceLabel = styled.div`
   font-size: 14px;
+  line-height: 20px;
   font-weight: 700;
   color: #2f3130;
   margin-bottom: 8px;
@@ -114,7 +116,7 @@ const BrandField = styled(ComboField)`
 /* Row holding the confirm sentence and the refresh button side by side. */
 const ConfirmRow = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
   margin-top: 16px;
@@ -122,29 +124,37 @@ const ConfirmRow = styled.div`
 
 const ConfirmText = styled.div`
   font-size: 14px;
-  color: #646864;
+  line-height: 20px;
+  color: #2f3130;
 `
 
 
 const SummarySection = styled.div`
-  /* 8px between groups; the first group needs no top margin since PanelBody
-     padding-top already gives the 12px gap from ConfirmText. */
+  /* 20px between groups, as margin on the later group only so neighbours never
+     stack to 40px; the first group needs none since PanelBody padding-top already
+     gives the 20px gap from the confirm row. */
   & + & {
-    margin-top: 8px;
+    margin-top: 20px;
   }
 `
 
 const SectionHeading = styled.div`
   font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
   color: #2f3130;
 `
 
-const BulletList = styled.ul`
-  margin: 4px 0 0;
-  padding-left: 20px;
+/* Plain lines under the heading, no bullets — still a list underneath so a screen
+   reader announces how many providers there are. */
+const ValueList = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
   font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
   color: #2f3130;
-  line-height: 24px;
 `
 
 const PanelFooter = styled.div`
@@ -203,26 +213,26 @@ function SettingsSummary({ brand }) {
       {brand.auth.zendeskAuth && (
         <SummarySection>
           <SectionHeading>Zendesk authentication</SectionHeading>
-          <BulletList>
+          <ValueList>
             <li>{brand.auth.passwordLevel}</li>
-          </BulletList>
+          </ValueList>
         </SummarySection>
       )}
       {brand.auth.externalAuth && providers.length > 0 && (
         <SummarySection>
           <SectionHeading>External authentication</SectionHeading>
-          <BulletList>
+          <ValueList>
             {providers.map((p) => (
               <li key={p}>{p}</li>
             ))}
-          </BulletList>
+          </ValueList>
         </SummarySection>
       )}
       <SummarySection>
         <SectionHeading>How end users sign in</SectionHeading>
-        <BulletList>
+        <ValueList>
           <li>{brand.auth.signInMode === 'sso' ? 'Redirect to SSO' : 'Let them choose'}</li>
-        </BulletList>
+        </ValueList>
       </SummarySection>
     </>
   )
@@ -256,11 +266,22 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
   /* Re-read the source brand from the shared roster. saveBrandAuth mutates the
      object in-place so the auth values are current, but React only re-renders
      when state changes — spreading into a new object gives it a new reference. */
+  const [justRefreshed, setJustRefreshed] = useState(false)
+
   const handleRefresh = useCallback(() => {
     if (!sourceBrand) return
     const fresh = getBrand(sourceBrand.id)
     if (fresh) setSourceBrand({ ...fresh })
+    setJustRefreshed(true)
   }, [sourceBrand])
+
+  /* The re-read usually finds nothing new, so without a sign it looks like the button
+     did nothing. "Refreshed" for a moment says it ran. */
+  useEffect(() => {
+    if (!justRefreshed) return
+    const timer = setTimeout(() => setJustRefreshed(false), 1500)
+    return () => clearTimeout(timer)
+  }, [justRefreshed])
 
   const handleSave = useCallback(() => {
     if (!sourceBrand) return
@@ -315,9 +336,9 @@ export default function CopySettingsPanel({ targetBrand, contentTop, onClose, on
         {sourceBrand && (
           <ConfirmRow>
             <ConfirmText>Copy these settings into {targetBrand.name}.</ConfirmText>
-            <Button isLink size="small" onClick={handleRefresh}>
+            <Button size="small" onClick={handleRefresh}>
               <Button.StartIcon><RefreshIcon /></Button.StartIcon>
-              Refresh
+              {justRefreshed ? 'Refreshed' : 'Refresh'}
             </Button>
           </ConfirmRow>
         )}

@@ -1,3 +1,5 @@
+import refreshIcon from '../assets/refresh-icon.png'
+
 /* Inline SVGs.
  *
  * There is no SVG loader in this build (`vite-plugin-svgr` isn't installed), so
@@ -39,11 +41,18 @@ export const ExternalLinkIcon = () => (
   </svg>
 )
 
-// Garden's `reload-stroke`, for the copy-panel refresh button.
+// The Flora reload glyph, cropped from Rusty's reference PNG of the Refresh button — a
+// 16 x 16 tile (32px source, so it stays sharp at 2x). A raster rather than an SVG
+// because the Flora icon file isn't available here; swap for the SVG when it is.
 export const RefreshIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" focusable="false" aria-hidden="true">
-    <path fill="none" stroke="currentColor" strokeLinecap="round" d="M10 4c-.8-1.1-2-2.5-4.1-2.5-2.5 0-4.4 2-4.4 4.5s2 4.5 4.4 4.5c1.3 0 2.5-.6 3.3-1.5m1.3-7.5V4c0 .3-.2.5-.5.5H7.5"/>
-  </svg>
+  <img
+    src={refreshIcon}
+    width="16"
+    height="16"
+    alt=""
+    aria-hidden="true"
+    style={{ display: 'block', marginInlineEnd: 8 }}
+  />
 )
 
 /* Only three glyphs live here, and that's deliberate: Garden supplies the rest.

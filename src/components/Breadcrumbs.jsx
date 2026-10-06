@@ -31,21 +31,21 @@ const Trail = styled.nav`
    screenshot — not underlined on hover only. That's what distinguishes it from the grey
    ancestors beside it at a glance. */
 const Crumb = styled.span`
-  color: ${(p) => (p.$link ? '#1f73b7' : '#68737d')};
+  color: ${(p) => (p.$link ? '#1f73b7' : '#646864')};
   cursor: ${(p) => (p.$link ? 'pointer' : 'default')};
   text-decoration: ${(p) => (p.$link ? 'underline' : 'none')};
 
   &:hover {
-    color: ${(p) => (p.$link ? '#144a75' : '#68737d')};
+    color: ${(p) => (p.$link ? '#144a75' : '#646864')};
   }
 `
 
 const Current = styled.span`
-  color: #2f3130;
+  color: #646864;
 `
 
 const Separator = styled.span`
-  color: #87929d;
+  color: #646864;
 `
 
 /**
